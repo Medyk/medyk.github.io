@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Maciej Medyński" /><link rel="canonical" href="https://blog.nerdoza.studio/2022-11-12-wireguard/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>2022.11.12 - Wireguard - Nerdoza Studio</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "2022.11.12 - Wireguard";
+        var mkdocs_page_input_path = "2022-11-12-wireguard.md";
+        var mkdocs_page_url = "/2022-11-12-wireguard/";
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+ <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+    html.glightbox-open { overflow: initial; height: 100%; }
+    .gslide-title { margin-top: 0px; user-select: text; }
+    .gslide-desc { color: #666; user-select: text; }
+    .gslide-image img { background: white; }</style> <script src="../assets/javascripts/glightbox.min.js"></script></head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Nerdoza Studio
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../2022-12-25-ssh-certificates/">2022.12.25 - SSH Certificates</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">2022.11.12 - Wireguard</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#intro">Intro</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#konfiguracja-rasperrypi">Konfiguracja RasperryPi</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#konfiguracja-pfsense">Konfiguracja pfSense</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#test-poaczenia">Test połączenia</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#linki">Linki</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Nerdoza Studio</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+      <li>2022.11.12 - Wireguard</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="20221112-wireguard">2022.11.12 - Wireguard</h1>
+<h2 id="intro">Intro</h2>
+<p>Przetestowałem konfigurację WireGuard’a z moją aktualną siecią (UPC w domu, njumobile w pracowni - dodatkowe NATowanie po stronie Orange, więc brak możliwości wystawienia czegokolwiek na świat)</p>
+<p>Przyjęta adresacja</p>
+<pre><code class="language-conf"># Sieć
+Sięć domowa    - 192.168.0.0/24
+Sieć pracowni  - 192.168.3.0/24
+Sieć WireGuard - 172.27.0.0/24
+
+# Hosty
+UPC            - 192.168.0.1
+Komp           - 192.168.0.7
+RPI2           - 192.168.0.9 / 172.27.0.4
+
+pfSense        - 192.168.3.1 / 172.27.0.3
+RandomServer   - 192.168.3.253
+</code></pre>
+<h2 id="konfiguracja-rasperrypi">Konfiguracja RasperryPi</h2>
+<p>Instalacja WireGuard na RPi2 jest prosta bo idzie z pakietów</p>
+<pre><code class="language-bash">apt install raspberrypi-kernel-headers
+apt-get install wireguard wireguard-tools
+</code></pre>
+<p>Po instalacji trzeba zrestartować Pi <code>sudo reboot</code> (przynajmniej tak było w moim przypadku)</p>
+<p>Po restarcie dodanie nowego interfejsu powinno zadziałać</p>
+<pre><code class="language-bash">ip link add dev wg0 type wireguard
+</code></pre>
+<p>Konfigurację najlepiej zrobić toolsami (<code>wg</code> albo <code>wg-quick</code>)</p>
+<pre><code class="language-text">$ wg --help
+Usage: wg &lt;cmd&gt; [&lt;args&gt;]
+
+Available subcommands:
+  show: Shows the current configuration and device information
+  showconf: Shows the current configuration of a given WireGuard interface, for use with `setconf'
+  set: Change the current configuration, add peers, remove peers, or change peers
+  setconf: Applies a configuration file to a WireGuard interface
+  addconf: Appends a configuration file to a WireGuard interface
+  syncconf: Synchronizes a configuration file to a WireGuard interface
+  genkey: Generates a new private key and writes it to stdout
+  genpsk: Generates a new preshared key and writes it to stdout
+  pubkey: Reads a private key from stdin and writes a public key to stdout
+</code></pre>
+<p>Dokumentacja opisująca strukturę pliku conf jest pod linkiem <a href="https://git.zx2c4.com/wireguard-tools/about/src/man/wg-quick.8">https://git.zx2c4.com/wireguard-tools/about/src/man/wg-quick.8</a> (<code>wg-quick</code> ma więcej opcji w conf niż wg - jest komenda <code>wg-quick strip</code>)</p>
+<p>Generowanie kluczy prywatnych i publicznych</p>
+<pre><code class="language-bash">genkey &gt; private
+pubkey &lt; private
+</code></pre>
+<p>Utworzyłem plik w <code>/etc/wireguard/wg0.conf</code> dla <code>wg-quick</code></p>
+<pre><code class="language-conf"># home network
+[Interface]
+Address = 172.27.0.4/24
+MTU = 1400
+FwMark = 0x7767
+PrivateKey = &lt;server-private-key&gt;
+ListenPort = 51820
+
+# workshop network
+[Peer]
+PublicKey = &lt;client-public-key&gt;
+PresharedKey = &lt;client-preshared-key&gt;
+AllowedIPs = 172.27.0.0/24,192.168.3.0/24
+PersistentKeepalive = 25
+</code></pre>
+<p>Keepalive jest potrzebny do utrzymania NATu po stronie njumobile</p>
+<p>Uruchomienie tunelu</p>
+<pre><code class="language-bash">wg-quick up wg0
+</code></pre>
+<p>Aktualizacja ustawień</p>
+<pre><code class="language-bash">wg syncconf wg0 &lt;(wg-quick strip wg0)
+</code></pre>
+<p>Na routerze UPC dorzucony port-forwarding.</p>
+<h2 id="konfiguracja-pfsense">Konfiguracja pfSense</h2>
+<p>Trzeba doinstalować pakiet</p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2022-11-12/001.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2022-11-12/001.png' alt='' ></a>
+  <figcaption></figcaption>
+</figure>
+
+<p>Następnie dodajemy tunel</p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2022-11-12/002.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2022-11-12/002.png' alt='' ></a>
+  <figcaption></figcaption>
+</figure>
+
+<p>Przypisujemy interfejs (u mnie <code>OPT2</code>)</p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2022-11-12/003.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2022-11-12/003.png' alt='' ></a>
+  <figcaption></figcaption>
+</figure>
+
+<p>Ustawiamy IP (u mnie <code>172.27.0.3/24</code>)</p>
+<p>Dodatkowo MTU ustawiłem na 1400 - info w necie <a href="https://gist.github.com/nitred/f16850ca48c48c79bf422e90ee5b9d95">https://gist.github.com/nitred/f16850ca48c48c79bf422e90ee5b9d95</a></p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2022-11-12/004.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2022-11-12/004.png' alt='' ></a>
+  <figcaption></figcaption>
+</figure>
+
+<p>Tworzymy reguły FW - nie wiem czy potrzeba ale dodałem takie same reguły dla <code>OPT2</code></p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2022-11-12/005.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2022-11-12/005.png' alt='' ></a>
+  <figcaption></figcaption>
+</figure>
+
+<p>Dodajemy Gateway</p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2022-11-12/006.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2022-11-12/006.png' alt='' ></a>
+  <figcaption></figcaption>
+</figure>
+
+<p>Oraz trasę statyczną do mojego kompa</p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2022-11-12/007.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2022-11-12/007.png' alt='' ></a>
+  <figcaption></figcaption>
+</figure>
+
+<p>Na końcu dodałem Peer’a dla WG z dozwolonymi sieciami</p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2022-11-12/008.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2022-11-12/008.png' alt='' ></a>
+  <figcaption></figcaption>
+</figure>
+
+<p>Po chwili pracownia podłączyła się do sieci domowej</p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2022-11-12/009.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2022-11-12/009.png' alt='' ></a>
+  <figcaption></figcaption>
+</figure>
+
+<p>Status po stronie PIVPN</p>
+<pre><code class="language-bash">$ wg
+interface: wg0
+  public key: &lt;cut&gt;
+  private key: (hidden)
+  listening port: &lt;cut&gt;
+  fwmark: 0x7767
+
+peer: &lt;cut&gt;
+  preshared key: (hidden)
+  endpoint: &lt;cut&gt;
+  allowed ips: 172.27.0.0/24, 192.168.3.0/24
+  latest handshake: 1 minute, 26 seconds ago
+  transfer: 22.35 MiB received, 8.16 MiB sent
+  persistent keepalive: every 25 seconds
+</code></pre>
+<h2 id="test-poaczenia">Test połączenia</h2>
+<p>Na PIVPN dodałem trasę do jednego hosta</p>
+<pre><code class="language-bash">$ sudo route add -host 192.168.3.253 metric 0 dev wg0
+
+$ route
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+...
+192.168.3.253   0.0.0.0         255.255.255.255 UH    0      0        0 wg0
+...
+</code></pre>
+<p>Na komputerze domowym dodałem route’a via RPi</p>
+<pre><code class="language-powershell">route -p ADD 172.27.0.0 MASK 255.255.255.0  192.168.0.9 METRIC 95
+</code></pre>
+<p>Z sieci domowej widać hosta WG po stronie pracowni</p>
+<pre><code class="language-powershell"># komputer domowy
+PS C:\Projects&gt; ping 172.27.0.3
+
+Pinging 172.27.0.3 with 32 bytes of data:
+Reply from 172.27.0.3: bytes=32 time=64ms TTL=63
+Reply from 172.27.0.3: bytes=32 time=63ms TTL=63
+Reply from 172.27.0.3: bytes=32 time=59ms TTL=63
+Reply from 172.27.0.3: bytes=32 time=72ms TTL=63
+
+Ping statistics for 172.27.0.3:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 59ms, Maximum = 72ms, Average = 64ms
+</code></pre>
+<p>Pingowanie i wejście na HTTPS odkłada się do logów prawidłowo</p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2022-11-12/010.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2022-11-12/010.png' alt='' ></a>
+  <figcaption></figcaption>
+</figure>
+
+<p>Komunikacja z PIVPN też wygląda dobrze</p>
+<pre><code class="language-bash"># pivpn
+root@pivpn:~# traceroute -4 -T 192.168.3.253
+traceroute to 192.168.3.253 (192.168.3.253), 30 hops max, 60 byte packets
+ 1  172.27.0.3 (172.27.0.3)  158.550 ms  158.371 ms  166.330 ms
+ 2  192.168.3.253 (192.168.3.253)  166.135 ms  165.975 ms  166.307 ms
+
+root@pivpn:~# traceroute -4 -T -i wg0 192.168.3.253
+traceroute to 192.168.3.253 (192.168.3.253), 30 hops max, 60 byte packets
+ 1  172.27.0.3 (172.27.0.3)  59.417 ms  66.819 ms  72.106 ms
+ 2  192.168.3.253 (192.168.3.253)  71.728 ms  71.502 ms  71.789 ms
+
+root@pivpn:~# traceroute -4 -T -i tun0 192.168.3.253
+traceroute to 192.168.3.253 (192.168.3.253), 30 hops max, 60 byte packets
+ 1  10.15.5.2 (10.15.5.2)  59.213 ms  66.880 ms  66.885 ms
+ 2  192.168.3.253 (192.168.3.253)  66.944 ms  68.757 ms  68.930 ms
+</code></pre>
+<p>Czy działa niezawodnie dowiem się jak wyłączę ovpn 😀</p>
+<h2 id="linki">Linki</h2>
+<ul>
+<li><a href="https://www.wireguard.com/quickstart/">https://www.wireguard.com/quickstart/</a></li>
+<li><a href="https://www.howtogeek.com/657780/how-to-use-the-traceroute-command-on-linux/">https://www.howtogeek.com/657780/how-to-use-the-traceroute-command-on-linux/</a></li>
+<li><a href="https://www.howtogeek.com/howto/windows/adding-a-tcpip-route-to-the-windows-routing-table/">https://www.howtogeek.com/howto/windows/adding-a-tcpip-route-to-the-windows-routing-table/</a></li>
+<li><a href="https://git.zx2c4.com/wireguard-tools/about/src/man/wg.8">https://git.zx2c4.com/wireguard-tools/about/src/man/wg.8</a></li>
+<li><a href="https://git.zx2c4.com/wireguard-tools/about/src/man/wg-quick.8">https://git.zx2c4.com/wireguard-tools/about/src/man/wg-quick.8</a></li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../2022-12-25-ssh-certificates/" class="btn btn-neutral float-left" title="2022.12.25 - SSH Certificates"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../2022-12-25-ssh-certificates/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+<script>const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});</script></body>
+</html>

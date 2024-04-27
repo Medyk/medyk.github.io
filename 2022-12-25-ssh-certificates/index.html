@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Maciej Medyński" /><link rel="canonical" href="https://blog.nerdoza.studio/2022-12-25-ssh-certificates/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>2022.12.25 - SSH Certificates - Nerdoza Studio</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "2022.12.25 - SSH Certificates";
+        var mkdocs_page_input_path = "2022-12-25-ssh-certificates.md";
+        var mkdocs_page_url = "/2022-12-25-ssh-certificates/";
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+ <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+    html.glightbox-open { overflow: initial; height: 100%; }
+    .gslide-title { margin-top: 0px; user-select: text; }
+    .gslide-desc { color: #666; user-select: text; }
+    .gslide-image img { background: white; }</style> <script src="../assets/javascripts/glightbox.min.js"></script></head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Nerdoza Studio
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">2022.12.25 - SSH Certificates</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#intro">Intro</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#przygotowanie-ca">Przygotowanie CA</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#konfiguracja-serwera">Konfiguracja serwera</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#podpisanie-kluczy-publicznych-serwera">Podpisanie kluczy publicznych serwera</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#konfiguracja-sshd">Konfiguracja sshd</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#lista-odwoanych-kluczy-czyli-krl">Lista odwołanych kluczy czyli KRL</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#akceptacja-certyfikatu-hosta-przez-klienta">Akceptacja certyfikatu hosta przez klienta</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#konfiguracja-ssh">Konfiguracja ssh</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#konfiguracja-putty">Konfiguracja Putty</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#konfiguracja-klienta">Konfiguracja klienta</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#podpisanie-klucza">Podpisanie klucza</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#konfiguracja-ssh_1">Konfiguracja ssh</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#konfiguracja-putty_1">Konfiguracja Putty</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#linki">Linki</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../2022-11-12-wireguard/">2022.11.12 - Wireguard</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Nerdoza Studio</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+      <li>2022.12.25 - SSH Certificates</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="20221225-ssh-certificates">2022.12.25 - SSH Certificates</h1>
+<h2 id="intro">Intro</h2>
+<p>Ostatnio pracuję nad zestawieniem HomeLab/2, a przerwa świąteczna pozwala pobawić się nowymi tematami. Może nie aż tak nowymi bo z 2020 roku, ale nadal mało popularnymi.</p>
+<h2 id="przygotowanie-ca">Przygotowanie CA</h2>
+<p>Pierwszym krokiem jest przygotowanie CA do podpisywania kluczy publicznych hostów i userów. Może być jeden wspólny, może być kilka dedytkowanych.</p>
+<p>Nowe CA można wygenerować przy pomocy ssh-keygen</p>
+<pre><code class="language-bash"># generate new CA
+ssh-keygen -t rsa -b 4096 -f trusted_user_ca -C 'SSH Validation CA'
+</code></pre>
+<p>Na razie używam pfSense do zarządzania certami, więc nowe subCA tam wygenerowałem. Po ściągnięciu certa i klucza prywatnego należało je przekonwertować na format zrozumiały dla <code>ssh-keygen</code>.</p>
+<pre><code class="language-bash"># convert openssl to openssh
+openssl x509 -inform pem -in nerdoza-studio-ssh-ca.crt -noout -pubkey &gt; nerdoza-studio-ssh-ca.pubkey
+ssh-keygen -i -f nerdoza-studio-ssh-ca.pubkey -m PKCS8 &gt; nerdoza-studio-ssh-ca.pub
+</code></pre>
+<h2 id="konfiguracja-serwera">Konfiguracja serwera</h2>
+<h3 id="podpisanie-kluczy-publicznych-serwera">Podpisanie kluczy publicznych serwera</h3>
+<p>Żeby podpisać klucze publiczne musimy mieć pod ręką klucz prywatny CA. Oczywiście poszedłem po linii najmniejszego oporu i po prostu wrzuciłem <code>CA.pub</code> i <code>CA.key</code> bezpośrenio na serwer docelowy do <code>/etc/ssh</code> 🙂 Klucz publiczny musi być w formacie <code>OpenSSL</code> (zaczynać się np. od <code>ssh-rsa</code>)</p>
+<pre><code class="language-bash"># sign public keys
+ssh-keygen -s nerdoza-studio-ssh-ca.key -I serwer.nerdoza.studio -h -n serwer.nerdoza.studio -V -5m:+3650d ssh_host_rsa_key.pub
+</code></pre>
+<p><a href="https://www.man7.org/linux/man-pages/man1/ssh-keygen.1.html">https://www.man7.org/linux/man-pages/man1/ssh-keygen.1.html</a></p>
+<ul>
+<li><code>-s</code> - podpisanie klucza prywatnego wybranym kluczem CA (<code>CA.key</code>)</li>
+<li><code>-I</code> - ustawienie tożsamości podpisywanego klucza</li>
+<li><code>-h</code> - utworzenie certyfikatu hosta zamiast certyfikatu usera</li>
+<li><code>-n</code> - lista principalsów (nazwa hosta)</li>
+<li><code>-V</code> - okres ważności certyfikatu (5min wstecz, 10lat do przodu)</li>
+</ul>
+<p>Operacje wykonałem dla każdego typu klucza: <code>rsa</code>, <code>ecdsa</code> i <code>ed25519</code>.</p>
+<p>W odpowiedzi dostałem potwierdzenie utworzenia certyfikatu.</p>
+<pre><code class="language-bash">Signed host key serwer-cert.pub: id &quot;serwer.nerdoza.studio&quot; serial 0 for serwer.nerdoza.studio valid from 2022-12-26T19:32:27 to 2032-12-23T19:37:27
+</code></pre>
+<pre><code class="language-bash"># view certificate
+ssh-keygen -Lf serwer-cert.pub
+</code></pre>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2022-12-25/auth-log-1.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2022-12-25/auth-log-1.png' alt='serwer-cert.pub' ></a>
+  <figcaption>serwer-cert.pub</figcaption>
+</figure>
+
+<h3 id="konfiguracja-sshd">Konfiguracja sshd</h3>
+<p>Żeby skorzystać z certów po stronie serwera należy dodać następujące opcje do <code>sshd_config</code>.</p>
+<pre><code class="language-conf">HostKey /etc/ssh/ssh_host_rsa_key
+HostKey /etc/ssh/ssh_host_ecdsa_key
+HostKey /etc/ssh/ssh_host_ed25519_key
+
+HostCertificate /etc/ssh/ssh_host_rsa_key-cert.pub
+HostCertificate /etc/ssh/ssh_host_ecdsa_key-cert.pub
+HostCertificate /etc/ssh/ssh_host_ed25519_key-cert.pub
+
+PubkeyAuthentication yes
+
+# Accept user certs signed by this CA
+TrustedUserCAKeys /etc/ssh/nerdoza-studio-ssh-ca.pub
+# RevokedKeys /etc/ssh/revoked_keys
+</code></pre>
+<p>Na koniec trzeba zrestartować sshd</p>
+<pre><code class="language-bash">systemctl restart sshd
+</code></pre>
+<h3 id="lista-odwoanych-kluczy-czyli-krl">Lista odwołanych kluczy czyli KRL</h3>
+<p>SSH przyjmuje dwa rodzaje pliku z odwołanymi kluczami - plik tekstowy albo plik binarny:</p>
+<pre><code class="language-text">RevokedKeys
+    Specifies revoked public keys file, or none to not use one. Keys listed in this file 
+    will be refused for public key authentication. Note that if this file is not readable, 
+    then public key authentication will be refused for all users. Keys may be specified as 
+    a text file, listing one public key per line, or as an OpenSSH Key Revocation List 
+    (KRL) as generated by ssh-keygen(1). For more information on KRLs, see the KEY 
+    REVOCATION LISTS section in ssh-keygen(1).
+</code></pre>
+<p>Dla pliku tekstowego wystarczy wpisać po jednym kluczu per linia</p>
+<pre><code class="language-text">ssh-rsa AAAAB...
+ssh-rsa AAAAB...
+</code></pre>
+<p>W przypadku pliku binarnego trzeba nim zarządzać przez ssh-keygen.</p>
+<p><a href="https://www.man7.org/linux/man-pages/man1/ssh-keygen.1.html#KEY_REVOCATION_LISTS">https://www.man7.org/linux/man-pages/man1/ssh-keygen.1.html#KEY_REVOCATION_LISTS</a></p>
+<p>Opcji jest kilka - odwołanie przez serial number, public key albo hash to te które mnie interesowały.</p>
+<p>Hash można wyciągnąć z <code>/var/log/auth.log</code></p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2022-12-25/auth-log-2.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2022-12-25/auth-log-2.png' alt='' ></a>
+  <figcaption></figcaption>
+</figure>
+
+<pre><code class="language-bash"># cat revoke.txt
+hash: SHA256:XXXXXXXXXXXXXXXXXX
+</code></pre>
+<pre><code class="language-bash"># create new KRL
+ssh-keygen -k -f /etc/ssh/revoked_keys revoke.txt
+
+# update KRL
+ssh-keygen -k -u -f /etc/ssh/revoked_keys revoke.txt
+</code></pre>
+<p>Na razie nie używam KRL, ale konfigurację mam przygotowaną.</p>
+<pre><code class="language-bash"># !!! IMPORTANT  - file must be readable or SSH will deny all users !!!
+touch /etc/ssh/revoked_keys
+</code></pre>
+<pre><code class="language-bash"># uncomment in sshd_config
+RevokedKeys /etc/ssh/revoked_keys
+</code></pre>
+<p>Na koniec można przełączyć niektóre opcje <code>sshd</code>.</p>
+<pre><code class="language-conf">PasswordAuthentication no
+# restrict pubkeys to certs only - PubkeyAcceptedKeyTypes or PubkeyAcceptedAlgorithms depending on sshd version
+PubkeyAcceptedKeyTypes ssh-ed25519-cert-v01@openssh.com,ecdsa-sha2-nistp256-cert-v01@openssh.com,ecdsa-sha2-nistp384-cert-v01@openssh.com,ecdsa-sha2-nistp521-cert-v01@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,sk-ecdsa-sha2-nistp256-cert-v01@openssh.com,rsa-sha2-512-cert-v01@openssh.com,rsa-sha2-256-cert-v01@openssh.com
+</code></pre>
+<h2 id="akceptacja-certyfikatu-hosta-przez-klienta">Akceptacja certyfikatu hosta przez klienta</h2>
+<h3 id="konfiguracja-ssh">Konfiguracja ssh</h3>
+<p>Dodajemy <code>CA.pub</code> do <code>known_hosts</code></p>
+<pre><code class="language-conf">@cert-authority *.nerdoza.studio ssh-rsa AAAAB...
+</code></pre>
+<h3 id="konfiguracja-putty">Konfiguracja Putty</h3>
+<p>Tutaj jest więcej zabawy i dodatkowo potrzeba Putty w wersji 0.78+</p>
+<p>Wybieramy <code>Configure host CAs</code></p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2022-12-25/01.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2022-12-25/01.png' alt='' ></a>
+  <figcaption></figcaption>
+</figure>
+
+<p>Ustawiamy nazwę, ładujemy zawartość z pliku, dodajemy listę hostów (analogicznie do <code>known_hosts</code>)</p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2022-12-25/02.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2022-12-25/02.png' alt='' ></a>
+  <figcaption></figcaption>
+</figure>
+
+<p>W rejestrze pojawią się nowe wpisy</p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2022-12-25/04.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2022-12-25/04.png' alt='' ></a>
+  <figcaption></figcaption>
+</figure>
+
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2022-12-25/05.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2022-12-25/05.png' alt='' ></a>
+  <figcaption></figcaption>
+</figure>
+
+<h2 id="konfiguracja-klienta">Konfiguracja klienta</h2>
+<h3 id="podpisanie-klucza">Podpisanie klucza</h3>
+<p>Klucz podpisujemy analogicznie do podpisu serwera jednak bez opcji <code>-h</code>.</p>
+<pre><code class="language-bash"># sign public key
+ssh-keygen -s ssh-ca.key -I myuser@myhost -n myuser -V -5m:+3650d myid_rsa.pub
+</code></pre>
+<ul>
+<li><code>-n</code> - lista principalsów (domyślnie nazwy użytkowników, którymi loguje się klient, jeśli serwer nie ma ustawionej opcji AuthorizedPrincipalsFile)</li>
+</ul>
+<p><a href="https://man.openbsd.org/sshd_config.5#AuthorizedPrincipalsFile">https://man.openbsd.org/sshd_config.5#AuthorizedPrincipalsFile</a></p>
+<h3 id="konfiguracja-ssh_1">Konfiguracja ssh</h3>
+<p>Dodajemy wpisy do pliku <code>~/.ssh/config</code>. Dodatkowo ustawiłem listę używanych algorytmów algorytmów (tylko certy).</p>
+<p><a href="https://man.openbsd.org/ssh_config#PubkeyAcceptedAlgorithms">https://man.openbsd.org/ssh_config#PubkeyAcceptedAlgorithms</a></p>
+<pre><code class="language-conf">Host myhost
+  IdentitiesOnly yes
+  IdentityFile ~/.ssh/myid_rsa
+  PubkeyAcceptedAlgorithms ssh-ed25519-cert-v01@openssh.com,ecdsa-sha2-nistp256-cert-v01@openssh.com,ecdsa-sha2-nistp384-cert-v01@openssh.com,ecdsa-sha2-nistp521-cert-v01@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,sk-ecdsa-sha2-nistp256-cert-v01@openssh.com,rsa-sha2-512-cert-v01@openssh.com,rsa-sha2-256-cert-v01@openssh.com
+  User myuser
+</code></pre>
+<p>Weryfikujemy połączenie przez dodanie <code>-v</code> do komendy <code>ssh</code>.</p>
+<pre><code class="language-text">(...)
+debug1: Reading configuration data C:\\Users\\#####/.ssh/config
+debug1: C:\\Users\\#####/.ssh/config line 4: Applying options for serwer.nerdoza.studio
+debug1: C:\\Users\\#####/.ssh/config line 7: Applying options for *
+debug1: Connecting to serwer.nerdoza.studio [192.*.*.*] port 22.
+debug1: Connection established.
+debug1: identity file C:\\Users\\#####/.ssh/mykey_rsa type 0
+debug1: identity file C:\\Users\\#####/.ssh/mykey_rsa-cert type 4
+debug1: Authenticating to serwer.nerdoza.studio:22 as '#####'
+debug1: Server host certificate: ssh-ed25519-cert-v01@openssh.com SHA256:#####, serial 0 ID &quot;serwer.nerdoza.studio&quot; CA ssh-rsa SHA256:##### valid from 2022-12-26T02:22:00 to 2032-12-23T02:23:17
+debug1: Host 'serwer.nerdoza.studio' is known and matches the ED25519-CERT host certificate.
+debug1: Found CA key in C:\\Users\\#####/.ssh/known_hosts:1
+debug1: Skipping ssh-rsa key C:\\Users\\#####/.ssh/mykey_rsa - corresponding algo not in PubkeyAcceptedAlgorithms
+debug1: Will attempt key: C:\\Users\\#####/.ssh/mykey_rsa RSA-CERT SHA256:##### explicit
+debug1: Authentications that can continue: publickey
+debug1: Next authentication method: publickey
+debug1: Offering public key: C:\\Users\\#####/.ssh/mykey_rsa RSA-CERT SHA256:##### explicit
+debug1: Server accepts key: C:\\Users\\#####/.ssh/mykey_rsa RSA-CERT SHA256:##### explicit
+debug1: Authentication succeeded (publickey).
+Authenticated to serwer.nerdoza.studio ([192.*.*.*]:22).
+(...)
+</code></pre>
+<h3 id="konfiguracja-putty_1">Konfiguracja Putty</h3>
+<p>Najpierw należy przekonwertować klucz prywatny do postaci PPK.</p>
+<p><a href="https://gcore.com/support/articles/360012640597/">https://gcore.com/support/articles/360012640597/</a></p>
+<p>Następnie konfigurację w Putty ustawiam per sesję.</p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2022-12-25/key-settings.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2022-12-25/key-settings.png' alt='' ></a>
+  <figcaption></figcaption>
+</figure>
+
+<p>Podczas połączenia wyskakuje monit o hasło do klucza prywatnego (PPK).</p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2022-12-25/03.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2022-12-25/03.png' alt='' ></a>
+  <figcaption></figcaption>
+</figure>
+
+<p>Użycie certów możemy zweryfikować w logu Puttiego (włączamy przez Session <code>→</code> Logging)</p>
+<pre><code class="language-text">(...)
+Incoming packet #0x2, type 21 / 0x15 (SSH2_MSG_NEWKEYS)
+Event Log: Server also has ssh-ed25519/ecdsa-sha2-nistp256/rsa-sha2-512/rsa-sha2-256/ssh-rsa/ecdsa-sha2-nistp256-cert-v01@openssh.com/rsa-sha2-512-cert-v01@openssh.com/rsa-sha2-256-cert-v01@openssh.com/ssh-rsa-cert-v01@openssh.com host keys, but we don't know any of them
+Event Log: Host key fingerprint is:
+Event Log: ssh-ed25519-cert-v01@openssh.com 255 SHA256:#####
+Event Log: Host key is a certificate. Hash including certificate:
+Event Log: ssh-ed25519-cert-v01@openssh.com 255 SHA256:#####
+Event Log: Certificate ID string is &quot;serwer.nerdoza.studio&quot;
+Event Log: Fingerprint of certification authority:
+Event Log: ssh-rsa 4096 SHA256:#####
+Event Log: Certification authority matches 'nerdoza-studio-ssh-ca'
+Event Log: Accepted certificate
+Outgoing packet #0x2, type 21 / 0x15 (SSH2_MSG_NEWKEYS)
+(...)
+Incoming packet #0x4, type 6 / 0x06 (SSH2_MSG_SERVICE_ACCEPT)
+Event Log: Reading key file &quot;C:\Users\#####\.ssh\mykey_rsa.ppk&quot;
+Event Log: Reading certificate file &quot;C:\Users\#####\.ssh\mykey_rsa-cert.pub&quot;
+Outgoing packet #0x4, type 50 / 0x32 (SSH2_MSG_USERAUTH_REQUEST)
+Incoming packet #0x5, type 51 / 0x33 (SSH2_MSG_USERAUTH_FAILURE)
+Event Log: Sending public key with certificate from &quot;C:\Users\#####\.ssh\mykey_rsa-cert.pub&quot;
+Event Log: Offered public key
+Outgoing packet #0x5, type 50 / 0x32 (SSH2_MSG_USERAUTH_REQUEST)
+Incoming packet #0x6, type 60 / 0x3c (SSH2_MSG_USERAUTH_PK_OK)
+Event Log: Offer of public key accepted
+Event Log: Sent public key signature
+Outgoing packet #0x6, type 50 / 0x32 (SSH2_MSG_USERAUTH_REQUEST)
+Incoming packet #0x7, type 52 / 0x34 (SSH2_MSG_USERAUTH_SUCCESS)
+Event Log: Access granted
+Event Log: Opening main session channel
+(...)
+</code></pre>
+<h2 id="linki">Linki</h2>
+<ul>
+<li><a href="https://en.wikibooks.org/wiki/OpenSSH/Cookbook/Certificate-based_Authentication">https://en.wikibooks.org/wiki/OpenSSH/Cookbook/Certificate-based_Authentication</a></li>
+<li><a href="https://goteleport.com/blog/how-to-configure-ssh-certificate-based-authentication/">https://goteleport.com/blog/how-to-configure-ssh-certificate-based-authentication/</a></li>
+<li><a href="https://www.lorier.net/docs/ssh-ca.html">https://www.lorier.net/docs/ssh-ca.html</a></li>
+<li><a href="https://www.man7.org/linux/man-pages/man1/ssh-keygen.1.html#KEY_REVOCATION_LISTS">https://www.man7.org/linux/man-pages/man1/ssh-keygen.1.html#KEY_REVOCATION_LISTS</a></li>
+<li><a href="https://the.earth.li/~sgtatham/putty/0.78/htmldoc/Chapter4.html#config-ssh-auth-creds">https://the.earth.li/~sgtatham/putty/0.78/htmldoc/Chapter4.html#config-ssh-auth-creds</a></li>
+<li><a href="https://sleeplessbeastie.eu/2020/02/17/how-to-revoke-specific-key-used-to-login-with-openssh/">https://sleeplessbeastie.eu/2020/02/17/how-to-revoke-specific-key-used-to-login-with-openssh/</a></li>
+<li><a href="https://www.youtube.com/watch?v=lYzklWPTbsQ">https://www.youtube.com/watch?v=lYzklWPTbsQ</a></li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../2022-11-12-wireguard/" class="btn btn-neutral float-right" title="2022.11.12 - Wireguard">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+      <span><a href="../2022-11-12-wireguard/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+<script>const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});</script></body>
+</html>

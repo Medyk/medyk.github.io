@@ -1,0 +1,11 @@
+.figure-image {
+    text-align: center;
+}
+.figure-image figcaption {
+    color: var(--fbc-secondary-text);
+    font-size: 0.8rem;
+}
+
+.wy-nav-content {
+    max-width: fit-content;
+}
