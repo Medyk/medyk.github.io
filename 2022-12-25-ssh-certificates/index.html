@@ -45,6 +45,10 @@
       </div>
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../2024-04-27-factorio/">2024.04.27 - Factorio Headless Server</a>
+                </li>
+              </ul>
               <ul class="current">
                 <li class="toctree-l1 current"><a class="reference internal current" href="./">2022.12.25 - SSH Certificates</a>
     <ul class="current">
@@ -114,23 +118,23 @@
               
                 <h1 id="20221225-ssh-certificates">2022.12.25 - SSH Certificates</h1>
 <h2 id="intro">Intro</h2>
-<p>Ostatnio pracuję nad zestawieniem HomeLab/2, a przerwa świąteczna pozwala pobawić się nowymi tematami. Może nie aż tak nowymi bo z 2020 roku, ale nadal mało popularnymi.</p>
+<p>Ostatnio pracuję nad zestawieniem <code>HomeLab/2</code>, a przerwa świąteczna pozwala pobawić się nowymi tematami. Może nie aż tak nowymi bo z 2020 roku, ale nadal mało popularnymi.</p>
 <h2 id="przygotowanie-ca">Przygotowanie CA</h2>
 <p>Pierwszym krokiem jest przygotowanie CA do podpisywania kluczy publicznych hostów i userów. Może być jeden wspólny, może być kilka dedytkowanych.</p>
-<p>Nowe CA można wygenerować przy pomocy ssh-keygen</p>
+<p>Nowe CA można wygenerować przy pomocy <code>ssh-keygen</code></p>
 <pre><code class="language-bash"># generate new CA
-ssh-keygen -t rsa -b 4096 -f trusted_user_ca -C 'SSH Validation CA'
+$ ssh-keygen -t rsa -b 4096 -f trusted_user_ca -C 'SSH Validation CA'
 </code></pre>
-<p>Na razie używam pfSense do zarządzania certami, więc nowe subCA tam wygenerowałem. Po ściągnięciu certa i klucza prywatnego należało je przekonwertować na format zrozumiały dla <code>ssh-keygen</code>.</p>
+<p>Na razie używam <code>pfSense</code> do zarządzania certami, więc nowe subCA tam wygenerowałem. Po ściągnięciu certa i klucza prywatnego należało je przekonwertować na format zrozumiały dla <code>ssh-keygen</code>.</p>
 <pre><code class="language-bash"># convert openssl to openssh
-openssl x509 -inform pem -in nerdoza-studio-ssh-ca.crt -noout -pubkey &gt; nerdoza-studio-ssh-ca.pubkey
-ssh-keygen -i -f nerdoza-studio-ssh-ca.pubkey -m PKCS8 &gt; nerdoza-studio-ssh-ca.pub
+$ openssl x509 -inform pem -in nerdoza-studio-ssh-ca.crt -noout -pubkey &gt; nerdoza-studio-ssh-ca.pubkey
+$ ssh-keygen -i -f nerdoza-studio-ssh-ca.pubkey -m PKCS8 &gt; nerdoza-studio-ssh-ca.pub
 </code></pre>
 <h2 id="konfiguracja-serwera">Konfiguracja serwera</h2>
 <h3 id="podpisanie-kluczy-publicznych-serwera">Podpisanie kluczy publicznych serwera</h3>
 <p>Żeby podpisać klucze publiczne musimy mieć pod ręką klucz prywatny CA. Oczywiście poszedłem po linii najmniejszego oporu i po prostu wrzuciłem <code>CA.pub</code> i <code>CA.key</code> bezpośrenio na serwer docelowy do <code>/etc/ssh</code> 🙂 Klucz publiczny musi być w formacie <code>OpenSSL</code> (zaczynać się np. od <code>ssh-rsa</code>)</p>
 <pre><code class="language-bash"># sign public keys
-ssh-keygen -s nerdoza-studio-ssh-ca.key -I serwer.nerdoza.studio -h -n serwer.nerdoza.studio -V -5m:+3650d ssh_host_rsa_key.pub
+$ ssh-keygen -s nerdoza-studio-ssh-ca.key -I serwer.nerdoza.studio -h -n serwer.nerdoza.studio -V -5m:+3650d ssh_host_rsa_key.pub
 </code></pre>
 <p><a href="https://www.man7.org/linux/man-pages/man1/ssh-keygen.1.html">https://www.man7.org/linux/man-pages/man1/ssh-keygen.1.html</a></p>
 <ul>
@@ -145,7 +149,7 @@ ssh-keygen -s nerdoza-studio-ssh-ca.key -I serwer.nerdoza.studio -h -n serwer.ne
 <pre><code class="language-bash">Signed host key serwer-cert.pub: id &quot;serwer.nerdoza.studio&quot; serial 0 for serwer.nerdoza.studio valid from 2022-12-26T19:32:27 to 2032-12-23T19:37:27
 </code></pre>
 <pre><code class="language-bash"># view certificate
-ssh-keygen -Lf serwer-cert.pub
+$ ssh-keygen -Lf serwer-cert.pub
 </code></pre>
 <figure class='figure-image'>
   <a class="glightbox" href="/img/2022-12-25/auth-log-1.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2022-12-25/auth-log-1.png' alt='serwer-cert.pub' ></a>
@@ -154,7 +158,7 @@ ssh-keygen -Lf serwer-cert.pub
 
 <h3 id="konfiguracja-sshd">Konfiguracja sshd</h3>
 <p>Żeby skorzystać z certów po stronie serwera należy dodać następujące opcje do <code>sshd_config</code>.</p>
-<pre><code class="language-conf">HostKey /etc/ssh/ssh_host_rsa_key
+<pre><code class="language-ini">HostKey /etc/ssh/ssh_host_rsa_key
 HostKey /etc/ssh/ssh_host_ecdsa_key
 HostKey /etc/ssh/ssh_host_ed25519_key
 
@@ -169,7 +173,7 @@ TrustedUserCAKeys /etc/ssh/nerdoza-studio-ssh-ca.pub
 # RevokedKeys /etc/ssh/revoked_keys
 </code></pre>
 <p>Na koniec trzeba zrestartować sshd</p>
-<pre><code class="language-bash">systemctl restart sshd
+<pre><code class="language-bash">$ systemctl restart sshd
 </code></pre>
 <h3 id="lista-odwoanych-kluczy-czyli-krl">Lista odwołanych kluczy czyli KRL</h3>
 <p>SSH przyjmuje dwa rodzaje pliku z odwołanymi kluczami - plik tekstowy albo plik binarny:</p>
@@ -194,31 +198,33 @@ ssh-rsa AAAAB...
   <figcaption></figcaption>
 </figure>
 
-<pre><code class="language-bash"># cat revoke.txt
+<pre><code class="language-bash">$ cat revoke.txt
+
+---
 hash: SHA256:XXXXXXXXXXXXXXXXXX
 </code></pre>
 <pre><code class="language-bash"># create new KRL
-ssh-keygen -k -f /etc/ssh/revoked_keys revoke.txt
+$ ssh-keygen -k -f /etc/ssh/revoked_keys revoke.txt
 
 # update KRL
-ssh-keygen -k -u -f /etc/ssh/revoked_keys revoke.txt
+$ ssh-keygen -k -u -f /etc/ssh/revoked_keys revoke.txt
 </code></pre>
 <p>Na razie nie używam KRL, ale konfigurację mam przygotowaną.</p>
 <pre><code class="language-bash"># !!! IMPORTANT  - file must be readable or SSH will deny all users !!!
-touch /etc/ssh/revoked_keys
+$ touch /etc/ssh/revoked_keys
 </code></pre>
-<pre><code class="language-bash"># uncomment in sshd_config
+<pre><code class="language-ini"># uncomment in sshd_config
 RevokedKeys /etc/ssh/revoked_keys
 </code></pre>
 <p>Na koniec można przełączyć niektóre opcje <code>sshd</code>.</p>
-<pre><code class="language-conf">PasswordAuthentication no
+<pre><code class="language-ini">PasswordAuthentication no
 # restrict pubkeys to certs only - PubkeyAcceptedKeyTypes or PubkeyAcceptedAlgorithms depending on sshd version
 PubkeyAcceptedKeyTypes ssh-ed25519-cert-v01@openssh.com,ecdsa-sha2-nistp256-cert-v01@openssh.com,ecdsa-sha2-nistp384-cert-v01@openssh.com,ecdsa-sha2-nistp521-cert-v01@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,sk-ecdsa-sha2-nistp256-cert-v01@openssh.com,rsa-sha2-512-cert-v01@openssh.com,rsa-sha2-256-cert-v01@openssh.com
 </code></pre>
 <h2 id="akceptacja-certyfikatu-hosta-przez-klienta">Akceptacja certyfikatu hosta przez klienta</h2>
 <h3 id="konfiguracja-ssh">Konfiguracja ssh</h3>
 <p>Dodajemy <code>CA.pub</code> do <code>known_hosts</code></p>
-<pre><code class="language-conf">@cert-authority *.nerdoza.studio ssh-rsa AAAAB...
+<pre><code class="language-ini">@cert-authority *.nerdoza.studio ssh-rsa AAAAB...
 </code></pre>
 <h3 id="konfiguracja-putty">Konfiguracja Putty</h3>
 <p>Tutaj jest więcej zabawy i dodatkowo potrzeba Putty w wersji 0.78+</p>
@@ -249,7 +255,7 @@ PubkeyAcceptedKeyTypes ssh-ed25519-cert-v01@openssh.com,ecdsa-sha2-nistp256-cert
 <h3 id="podpisanie-klucza">Podpisanie klucza</h3>
 <p>Klucz podpisujemy analogicznie do podpisu serwera jednak bez opcji <code>-h</code>.</p>
 <pre><code class="language-bash"># sign public key
-ssh-keygen -s ssh-ca.key -I myuser@myhost -n myuser -V -5m:+3650d myid_rsa.pub
+$ ssh-keygen -s ssh-ca.key -I myuser@myhost -n myuser -V -5m:+3650d myid_rsa.pub
 </code></pre>
 <ul>
 <li><code>-n</code> - lista principalsów (domyślnie nazwy użytkowników, którymi loguje się klient, jeśli serwer nie ma ustawionej opcji AuthorizedPrincipalsFile)</li>
@@ -258,7 +264,7 @@ ssh-keygen -s ssh-ca.key -I myuser@myhost -n myuser -V -5m:+3650d myid_rsa.pub
 <h3 id="konfiguracja-ssh_1">Konfiguracja ssh</h3>
 <p>Dodajemy wpisy do pliku <code>~/.ssh/config</code>. Dodatkowo ustawiłem listę używanych algorytmów algorytmów (tylko certy).</p>
 <p><a href="https://man.openbsd.org/ssh_config#PubkeyAcceptedAlgorithms">https://man.openbsd.org/ssh_config#PubkeyAcceptedAlgorithms</a></p>
-<pre><code class="language-conf">Host myhost
+<pre><code class="language-ini">Host myhost
   IdentitiesOnly yes
   IdentityFile ~/.ssh/myid_rsa
   PubkeyAcceptedAlgorithms ssh-ed25519-cert-v01@openssh.com,ecdsa-sha2-nistp256-cert-v01@openssh.com,ecdsa-sha2-nistp384-cert-v01@openssh.com,ecdsa-sha2-nistp521-cert-v01@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,sk-ecdsa-sha2-nistp256-cert-v01@openssh.com,rsa-sha2-512-cert-v01@openssh.com,rsa-sha2-256-cert-v01@openssh.com
@@ -348,6 +354,7 @@ Event Log: Opening main session channel
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../2024-04-27-factorio/" class="btn btn-neutral float-left" title="2024.04.27 - Factorio Headless Server"><span class="icon icon-circle-arrow-left"></span> Previous</a>
         <a href="../2022-11-12-wireguard/" class="btn btn-neutral float-right" title="2022.11.12 - Wireguard">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
@@ -370,6 +377,8 @@ Event Log: Opening main session channel
   <div class="rst-versions" role="note" aria-label="Versions">
   <span class="rst-current-version" data-toggle="rst-current-version">
     
+    
+      <span><a href="../2024-04-27-factorio/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
       <span><a href="../2022-11-12-wireguard/" style="color: #fcfcfc">Next &raquo;</a></span>

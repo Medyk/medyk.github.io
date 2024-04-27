@@ -46,6 +46,10 @@
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../2024-04-27-factorio/">2024.04.27 - Factorio Headless Server</a>
+                </li>
+              </ul>
+              <ul>
                 <li class="toctree-l1"><a class="reference internal" href="../2022-12-25-ssh-certificates/">2022.12.25 - SSH Certificates</a>
                 </li>
               </ul>
@@ -107,20 +111,20 @@ RandomServer   - 192.168.3.253
 </code></pre>
 <h2 id="konfiguracja-rasperrypi">Konfiguracja RasperryPi</h2>
 <p>Instalacja WireGuard na RPi2 jest prosta bo idzie z pakietów</p>
-<pre><code class="language-bash">apt install raspberrypi-kernel-headers
-apt-get install wireguard wireguard-tools
+<pre><code class="language-bash">$ apt install raspberrypi-kernel-headers
+$ apt-get install wireguard wireguard-tools
 </code></pre>
 <p>Po instalacji trzeba zrestartować Pi <code>sudo reboot</code> (przynajmniej tak było w moim przypadku)</p>
 <p>Po restarcie dodanie nowego interfejsu powinno zadziałać</p>
-<pre><code class="language-bash">ip link add dev wg0 type wireguard
+<pre><code class="language-bash">$ ip link add dev wg0 type wireguard
 </code></pre>
 <p>Konfigurację najlepiej zrobić toolsami (<code>wg</code> albo <code>wg-quick</code>)</p>
-<pre><code class="language-text">$ wg --help
+<pre><code class="language-bash">$ wg --help
 Usage: wg &lt;cmd&gt; [&lt;args&gt;]
 
 Available subcommands:
   show: Shows the current configuration and device information
-  showconf: Shows the current configuration of a given WireGuard interface, for use with `setconf'
+  showconf: Shows the current configuration of a given WireGuard interface, for use with `setconf`
   set: Change the current configuration, add peers, remove peers, or change peers
   setconf: Applies a configuration file to a WireGuard interface
   addconf: Appends a configuration file to a WireGuard interface
@@ -131,11 +135,11 @@ Available subcommands:
 </code></pre>
 <p>Dokumentacja opisująca strukturę pliku conf jest pod linkiem <a href="https://git.zx2c4.com/wireguard-tools/about/src/man/wg-quick.8">https://git.zx2c4.com/wireguard-tools/about/src/man/wg-quick.8</a> (<code>wg-quick</code> ma więcej opcji w conf niż wg - jest komenda <code>wg-quick strip</code>)</p>
 <p>Generowanie kluczy prywatnych i publicznych</p>
-<pre><code class="language-bash">genkey &gt; private
-pubkey &lt; private
+<pre><code class="language-bash">$ wg genkey &gt; private
+$ wg pubkey &lt; private
 </code></pre>
 <p>Utworzyłem plik w <code>/etc/wireguard/wg0.conf</code> dla <code>wg-quick</code></p>
-<pre><code class="language-conf"># home network
+<pre><code class="language-ini"># home network
 [Interface]
 Address = 172.27.0.4/24
 MTU = 1400
@@ -152,10 +156,10 @@ PersistentKeepalive = 25
 </code></pre>
 <p>Keepalive jest potrzebny do utrzymania NATu po stronie njumobile</p>
 <p>Uruchomienie tunelu</p>
-<pre><code class="language-bash">wg-quick up wg0
+<pre><code class="language-bash">$ wg-quick up wg0
 </code></pre>
 <p>Aktualizacja ustawień</p>
-<pre><code class="language-bash">wg syncconf wg0 &lt;(wg-quick strip wg0)
+<pre><code class="language-bash">$ wg syncconf wg0 &lt;(wg-quick strip wg0)
 </code></pre>
 <p>Na routerze UPC dorzucony port-forwarding.</p>
 <h2 id="konfiguracja-pfsense">Konfiguracja pfSense</h2>
@@ -242,11 +246,11 @@ Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
 ...
 </code></pre>
 <p>Na komputerze domowym dodałem route’a via RPi</p>
-<pre><code class="language-powershell">route -p ADD 172.27.0.0 MASK 255.255.255.0  192.168.0.9 METRIC 95
+<pre><code class="language-pwsh">PS&gt; route -p ADD 172.27.0.0 MASK 255.255.255.0  192.168.0.9 METRIC 95
 </code></pre>
 <p>Z sieci domowej widać hosta WG po stronie pracowni</p>
-<pre><code class="language-powershell"># komputer domowy
-PS C:\Projects&gt; ping 172.27.0.3
+<pre><code class="language-pwsh"># komputer domowy
+PS&gt; ping 172.27.0.3
 
 Pinging 172.27.0.3 with 32 bytes of data:
 Reply from 172.27.0.3: bytes=32 time=64ms TTL=63

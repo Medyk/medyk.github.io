@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Maciej Medyński" /><link rel="canonical" href="https://blog.nerdoza.studio/2024-04-27-factorio/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>2024.04.27 - Factorio Headless Server - Nerdoza Studio</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "2024.04.27 - Factorio Headless Server";
+        var mkdocs_page_input_path = "2024-04-27-factorio.md";
+        var mkdocs_page_url = "/2024-04-27-factorio/";
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+ <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+    html.glightbox-open { overflow: initial; height: 100%; }
+    .gslide-title { margin-top: 0px; user-select: text; }
+    .gslide-desc { color: #666; user-select: text; }
+    .gslide-image img { background: white; }</style> <script src="../assets/javascripts/glightbox.min.js"></script></head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Nerdoza Studio
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">2024.04.27 - Factorio Headless Server</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#intro">Intro</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#przygotowanie-vm">Przygotowanie VM</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#instalacja-serwera">Instalacja serwera</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#przygotowanie-serwisow">Przygotowanie serwisów</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#uruchomienie-serwera">Uruchomienie serwera</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#linki">Linki</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../2022-12-25-ssh-certificates/">2022.12.25 - SSH Certificates</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../2022-11-12-wireguard/">2022.11.12 - Wireguard</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Nerdoza Studio</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+      <li>2024.04.27 - Factorio Headless Server</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="20240427-factorio-headless-server">2024.04.27 - Factorio Headless Server</h1>
+<h2 id="intro">Intro</h2>
+<p>Prace nad <code>HomeLab/3</code> postępują i kolejnym ważnym krokiem jest serwerek <a href="https://www.factorio.com/">Factorio</a> (pewnie nawet kilka) 😁</p>
+<h2 id="przygotowanie-vm">Przygotowanie VM</h2>
+<p>Postanowiłem zainstalować <code>Factorio Headless Server</code> (alias <code>FHS</code>) na dedykowanej maszynce. W <a href="https://www.proxmox.com/">PVE</a> wyklikałem następującą VMkę:</p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2024-04-27/vm.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2024-04-27/vm.png' alt='pve - vm' ></a>
+  <figcaption>pve - vm</figcaption>
+</figure>
+
+<p>Następnie przygotowałem maszynę z <a href="/404.html">domowego playbooka Ansibla</a>:</p>
+<ul>
+<li>konfiguracja sshd (klucze)</li>
+<li>instalacja pakietów</li>
+</ul>
+<h2 id="instalacja-serwera">Instalacja serwera</h2>
+<p>Serwer będzie chodził bezpośrednio na maszynie (na razie bez dockera).</p>
+<p>Przygotowanie kalagów, użytkownika i plików (wszystkie peracje z poziomu <code>root</code>):</p>
+<pre><code class="language-bash"># add user
+$ adduser --disabled-login --no-create-home --gecos factorio factorio
+
+# download server
+$ cd /opt
+$ wget -O factorio-headless-1.1.107.tar.xz https://www.factorio.com/get-download/1.1.107/headless/linux64
+$ tar -xJf factorio-headless-1.1.107.tar.xz
+
+# prepare folders
+$ cd factorio
+$ mkdir saves mods
+
+# create config
+$ cp -a server-settings.example.json server-settings.json
+
+# set permissions
+$ chown -R factorio:factorio /opt/factorio
+</code></pre>
+<p>Następnie poprawiłem konfigurację serwera i ustawiłem grę prywatną z hasełkiem.</p>
+<pre><code class="language-json">$ mcedit /opt/factorio/data/server-settings.json
+
+---
+{
+  &quot;name&quot;: &quot;HomeLab/3/Factorio&quot;,
+  &quot;description&quot;: &quot;Vanilla&quot;,
+  &quot;tags&quot;: [&quot;homelab&quot;, &quot;nerdoza&quot;],
+  &quot;visibility&quot;:
+  {
+    &quot;public&quot;: false,
+    &quot;lan&quot;: true
+  },
+  &quot;game_password&quot;: &quot;&lt;tajne-przez-poufne&gt;&quot;,
+  &quot;&lt;inne ustawienia&gt;&quot;: &quot;(...)&quot;
+}
+</code></pre>
+<p>Dodatkowo utworzyłem listę adminów serwera.</p>
+<pre><code class="language-json">$ mcedit /opt/factorio/server-adminlist.json
+
+---
+[ &quot;kim-jestes?-jestem-adminem!&quot; ]
+</code></pre>
+<h2 id="przygotowanie-serwisow">Przygotowanie serwisów</h2>
+<p>Serwer będzie odpalany przez systemd. W przypadku awarii ma zostać wysłane powiadomienie na prywatną instancję <code>ntfy</code>.</p>
+<p>"Główny" serwis <code>FHS</code> (<a href="https://gist.github.com/Medyk/561ed65dc70ff7ab75ec87dc1bcbf7fc">gist</a>)</p>
+<p>Podczas awarii zostanie wyzwolony serwis ntfy@.service z nazwą aktualnego unitu <code>%n</code>. (<a href="https://www.freedesktop.org/software/systemd/man/latest/systemd.unit.html#Specifiers">docs</a>)</p>
+<p><code>ExecStopPost=</code> powoduje 'fail' serwisu nawet w przypadku ręcznego zatrzymania i wysłanie powiadomienia na <code>ntfy</code>.</p>
+<pre><code class="language-ini">$ mcedit /etc/systemd/system/factorio.service
+
+---
+[Unit]
+Description=Factorio Headless Server
+After=network.target
+OnFailure=ntfy@%n.service
+
+[Service]
+Type=simple
+User=factorio
+WorkingDirectory=/opt/factorio
+ExecStart=/opt/factorio/bin/x64/factorio --start-server-load-latest --server-settings ./data/server-settings.json
+ExecStopPost=/bin/false
+Restart=on-failure
+RestartSec=60s
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+<p>Serwis do powiadomień ntfy (<a href="https://gist.github.com/Medyk/ac52e670f83d037027013be89d79e1ed">gist</a>)</p>
+<p>Przekazujemy orginalną nazwę unitu w nazwie instancji <code>%i</code> (<a href="https://www.freedesktop.org/software/systemd/man/latest/systemd.unit.html#Specifiers">docs</a>)</p>
+<pre><code class="language-ini">$ mcedit /etc/systemd/system/ntfy@.service
+
+---
+[Unit]
+Description=Notify about service failure
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/ntfy.sh %i
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+<p>Skrypt notyfikujący ntfy (<a href="https://gist.github.com/Medyk/bb9b2a204d37097f0a34fccf86ccf788">gist</a>)</p>
+<pre><code class="language-bash">$ mcedit /usr/local/sbin/ntfy.sh
+
+---
+#!/bin/bash
+
+# Get input
+SERVICE_NAME=${1:-service_unknown}
+
+# Local variables
+NTFY_URL=&quot;https://ntfy.home/&quot;
+NTFY_AUTH=&quot;Basic &lt;auth&gt;&quot;
+NTFY_TOPIC=homelab
+
+# Get status
+STATUS=$(systemctl is-active $SERVICE_NAME)
+
+# Compute message
+MESSAGE=$(jq -cn '{&quot;topic&quot;: $topic, &quot;message&quot;: $message}' \
+    --arg topic &quot;$NTFY_TOPIC&quot; \
+    --arg message &quot;Service $SERVICE_NAME is ${STATUS:-status_unknown}&quot;)
+
+# Send notification
+curl -qk --connect-timeout 5 \
+    -X POST $NTFY_URL \
+    -H &quot;Authorization: $NTFY_AUTH&quot; \
+    -H &quot;X-Tags: rotating_light&quot; \
+    -H &quot;X-Title: $SERVICE_NAME&quot; \
+    -H &quot;X-Priority: 4&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    -d &quot;$MESSAGE&quot;
+</code></pre>
+<h2 id="uruchomienie-serwera">Uruchomienie serwera</h2>
+<p>Za pierwszym razem trzeba wygenerować mapę do gry. Nie bawiłem się w żadne customizacje generatora więc komenda wygląda prosto</p>
+<pre><code class="language-bash">$ cd /opt/factorio/saves
+$ sudo -u factorio /opt/factorio/bin/x64/factorio --create map01.zip
+</code></pre>
+<p>Odpalenie serwera sprowadza się kilku komend <code>systemctl</code></p>
+<pre><code class="language-bash"># enable service
+$ systemctl enable factorio.service
+
+# start service
+$ systemctl start factorio.service
+
+# check status
+$ systemctl status factorio.service
+● factorio.service - Factorio Headless Server
+     Loaded: loaded (/etc/systemd/system/factorio.service; enabled; preset: enabled)
+     Active: active (running) since Sat 2024-04-27 20:14:04 CEST; 46min ago
+   Main PID: 11889 (factorio)
+      Tasks: 13 (limit: 2303)
+     Memory: 206.8M
+        CPU: 15.110s
+     CGroup: /system.slice/factorio.service
+             └─11889 /opt/factorio/bin/x64/factorio --start-server-load-latest --server-settings ./data/server-settings.json
+</code></pre>
+<p>Restart serwera powoduje wysłanie powiadomienia na telefon.</p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2024-04-27/ntfy.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2024-04-27/ntfy.png' alt='' ></a>
+  <figcaption></figcaption>
+</figure>
+
+<h2 id="linki">Linki</h2>
+<ul>
+<li><a href="https://wiki.factorio.com/Multiplayer#Dedicated/Headless_server">https://wiki.factorio.com/Multiplayer#Dedicated/Headless_server</a></li>
+<li><a href="https://www.freedesktop.org/software/systemd/man/latest/systemd.unit.html">https://www.freedesktop.org/software/systemd/man/latest/systemd.unit.html</a></li>
+<li><a href="https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html">https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html</a></li>
+<li><a href="https://ntfy.sh/">https://ntfy.sh/</a></li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../2022-12-25-ssh-certificates/" class="btn btn-neutral float-right" title="2022.12.25 - SSH Certificates">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+      <span><a href="../2022-12-25-ssh-certificates/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+<script>const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});</script></body>
+</html>
