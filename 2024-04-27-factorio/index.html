@@ -111,7 +111,7 @@
 </ul>
 <h2 id="instalacja-serwera">Instalacja serwera</h2>
 <p>Serwer będzie chodził bezpośrednio na maszynie (na razie bez dockera).</p>
-<p>Przygotowanie kalagów, użytkownika i plików (wszystkie peracje z poziomu <code>root</code>):</p>
+<p>Przygotowanie katalogów, użytkownika i plików (wszystkie peracje z poziomu <code>root</code>):</p>
 <pre><code class="language-bash"># add user
 $ adduser --disabled-login --no-create-home --gecos factorio factorio
 
@@ -157,7 +157,8 @@ $ chown -R factorio:factorio /opt/factorio
 <p>Serwer będzie odpalany przez systemd. W przypadku awarii ma zostać wysłane powiadomienie na prywatną instancję <code>ntfy</code>.</p>
 <p>"Główny" serwis <code>FHS</code> (<a href="https://gist.github.com/Medyk/561ed65dc70ff7ab75ec87dc1bcbf7fc">gist</a>)</p>
 <p>Podczas awarii zostanie wyzwolony serwis ntfy@.service z nazwą aktualnego unitu <code>%n</code>. (<a href="https://www.freedesktop.org/software/systemd/man/latest/systemd.unit.html#Specifiers">docs</a>)</p>
-<p><code>ExecStopPost=</code> powoduje 'fail' serwisu nawet w przypadku ręcznego zatrzymania i wysłanie powiadomienia na <code>ntfy</code>.</p>
+<p><code>ExecStopPost=</code> powoduje 'fail' serwisu nawet w przypadku ręcznego zatrzymania i wysłanie powiadomienia na <code>ntfy</code>.<br />
+Później&trade; rozszerzę powiadomenia o zdarzeniach uruchomienia/zatrzymania serwera.</p>
 <pre><code class="language-ini">$ mcedit /etc/systemd/system/factorio.service
 
 ---
