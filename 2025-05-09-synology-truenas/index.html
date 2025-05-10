@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Maciej Medyński" /><link rel="canonical" href="https://blog.nerdoza.studio/2025-05-09-synology-truenas/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>2025.05.09 - Synology DS414 → TrueNAS - Nerdoza Studio</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "2025.05.09 - Synology DS414 \u2192 TrueNAS";
+        var mkdocs_page_input_path = "2025-05-09-synology-truenas.md";
+        var mkdocs_page_url = "/2025-05-09-synology-truenas/";
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+ <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+    html.glightbox-open { overflow: initial; height: 100%; }
+    .gslide-title { margin-top: 0px; user-select: text; }
+    .gslide-desc { color: #666; user-select: text; }
+    .gslide-image img { background: white; }</style> <script src="../assets/javascripts/glightbox.min.js"></script></head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Nerdoza Studio
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">2025.05.09 - Synology DS414 → TrueNAS</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#intro">Intro</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#przygotowanie-teoretyczne">Przygotowanie teoretyczne</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#gdzie-to-zmiescic">Gdzie to zmieścić?</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#drukowanie">Drukowanie</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#backup-syno-do-truenas">Backup Syno do TrueNAS</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#konfiguracja-synology">Konfiguracja Synology</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#test-rsync">Test rsync</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#konfiguracja-truenas">Konfiguracja TrueNAS</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#linki">Linki</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../2024-05-17-factorio-stats/">2024.05.17 - Factorio Stats</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../2024-04-27-factorio/">2024.04.27 - Factorio Headless Server</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../2022-12-25-ssh-certificates/">2022.12.25 - SSH Certificates</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../2022-11-12-wireguard/">2022.11.12 - Wireguard</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Nerdoza Studio</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+      <li>2025.05.09 - Synology DS414 → TrueNAS</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="20250509-synology-ds414-truenas">2025.05.09 - Synology DS414 → TrueNAS</h1>
+<h2 id="intro">Intro</h2>
+<p>Po <a href="https://www.theverge.com/news/652364/synology-nas-third-party-hard-drive-restrictions">ostatnich ruchach Synology</a> w zakresie obsługi dysków w modelach Plus i przechodzenia na model biznesowy doszedłem do wniosku, że dam szansę <code>NAS</code>'owi DIY.</p>
+<p>Wybór padł na <a href="https://www.truenas.com/truenas-scale/">TrueNAS Scale</a>. Celem jest zrobienie z istniejących komponentów <code>NAS</code>'a do backupu istniejącej jednostki Syno <code>DS414</code>.</p>
+<h2 id="przygotowanie-teoretyczne">Przygotowanie teoretyczne</h2>
+<p>Po obejrzeniu kilku(nastu) filmików o <a href="https://www.youtube.com/watch?v=_aACgNm8UCw&amp;t=322s">TrueNAS</a> i <a href="https://www.youtube.com/watch?v=-AnkHc7N0zM">ZFS</a> wybrałem następującą konfigurację i podział dysków:</p>
+<ul>
+<li><a href="https://www.asrock.com.tw/MB/Intel/J3355M/">ASRock J3355M</a></li>
+<li>16GB RAM</li>
+<li>vdev1 - 3x <a href="https://www.westerndigital.com/pl-pl/products/internal-drives/wd-red-sata-hdd?sku=WD30EFAX">WD Red 3TB</a> - RAIDZ1</li>
+<li>vdev2 - 3x <a href="https://www.westerndigital.com/pl-pl/products/internal-drives/wd-red-sata-hdd?sku=WD20EFAX">WD Red 2TB</a> - RAIDZ1</li>
+<li><a href="https://www.chieftec.eu/products-detail/pl/183/SERIA_COMPACT">zasilacz SFX 450W</a></li>
+<li>karta PCIe x1 na 4x SATA</li>
+</ul>
+<p>Jeśli dobrze zrozumiałem to powinno to dać 2x IOPSy (w uproszczeniu każdy <code>VDEV</code> ma IOPSy pojedynczego dysku) i odporność na awarię dwóch dysków w dwóch grupach. Oczywiście jeśli strzelą dwa dysku w jednym <code>VDEV</code>'ie to papa dane :)</p>
+<h2 id="gdzie-to-zmiescic">Gdzie to zmieścić?</h2>
+<p>Po zebraniu gratów przyszła kolej na ważne pytanie: gdzie to wszystko zmieścić? Nie chciałem tworzyć kolejnego klockowantego PC'a, tylko coś co w minimalnym stopniu przypominałoby domowego <code>NAS</code>'a.</p>
+<p>Wymagania były następujące:</p>
+<ul>
+<li><code>obudowa na dyski modułowa</code>, żeby można było w przyszłości dodać ich więcej (na początek 6 HDD)</li>
+<li>wykorzystanie standardowej płyty <code>micro-atx</code></li>
+<li>opcjonalnie montaż w <code>racku</code> 10" lub 19"</li>
+<li>opcjonalnie umieścić <code>zasilacz SFX</code> obok dysków żeby zmieścić się w racku 10"</li>
+</ul>
+<p>W trakcie przeszukiwania internetu oraz prototypowania własnej obudowy do druku 3D trafiłem na piękny projekt DIY :)</p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2025-05-09-synology/01-nas-3d.webp" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2025-05-09-synology/01-nas-3d.webp' alt='3D Printed NAS' ></a>
+  <figcaption>3D Printed NAS</figcaption>
+</figure>
+
+<p style="text-align: center; font-size:0.8rem; margin-top: -20px"><a href="https://www.youtube.com/watch?v=NXIu-B52WPU">https://www.youtube.com/watch?v=NXIu-B52WPU</a></p>
+<p>Cały projekt dostępny jest na Githubie <a href="https://github.com/sb-ocr/3d-printed-nas">https://github.com/sb-ocr/3d-printed-nas</a>. Zdecydowałem się na pewno wykorzystać montaż dysków, oraz może montaż na płytę głóną. Reszta obudowy będzie prosta do zaprojektowania więc ogarnę to w <code>Fusion 360</code>.</p>
+<h2 id="drukowanie">Drukowanie</h2>
+<p>Obudowa od <a href="https://www.youtube.com/@salimbenbouz">Salim'a</a> nie nadaje sie do użytku przez mnie 1:1. Po pierwsze cała elektronika jest inna (<code>micro-ATX</code> zamiast <code>ZimaBoard</code>), a po drugie nie mam tak dużej drukarki żeby części drukować w jednym kawałku. <code>Prusa Mini</code> ma pole wydruku 18x18cm, <code>Bambu</code> 25x25cm.</p>
+<p>Niektóre części udało się upchnąć, ale reszta musiała być pocięta na mniejsze kawałki. Największym problemem jest drive-bay - tam gdzie zamontowana jest przejściówka do <code>SATA</code> - na nią działają siły wpinania i wyrywania dysku. Na szczęście z pomocą przyszło <code>Allegro</code> i wspaniała, chińska zgrzewarka do plastiku :)</p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2025-05-09-synology/02-zgrzewarka.jpg" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2025-05-09-synology/02-zgrzewarka.jpg' alt='Zgrzewarka do plastiku' ></a>
+  <figcaption>Zgrzewarka do plastiku</figcaption>
+</figure>
+
+<p>Po wydrukowaniu pierwszych elementów, efekt był zadowalający.</p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2025-05-09-synology/03-nas-3d.jpg" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2025-05-09-synology/03-nas-3d.jpg' alt='Drive-bay' ></a>
+  <figcaption>Drive-bay</figcaption>
+</figure>
+
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2025-05-09-synology/04-nas-3d.jpg" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2025-05-09-synology/04-nas-3d.jpg' alt='Drive-bay' ></a>
+  <figcaption>Drive-bay</figcaption>
+</figure>
+
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2025-05-09-synology/05-nas-3d.jpg" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2025-05-09-synology/05-nas-3d.jpg' alt='Sanki' ></a>
+  <figcaption>Sanki</figcaption>
+</figure>
+
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2025-05-09-synology/06-nas-3d.jpg" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2025-05-09-synology/06-nas-3d.jpg' alt='1/2 Drive-bay druk' ></a>
+  <figcaption>1/2 Drive-bay druk</figcaption>
+</figure>
+
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2025-05-09-synology/07-nas-3d.jpg" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2025-05-09-synology/07-nas-3d.jpg' alt='Inserty M3' ></a>
+  <figcaption>Inserty M3</figcaption>
+</figure>
+
+<h2 id="backup-syno-do-truenas">Backup Syno do TrueNAS</h2>
+<p>Backup będzie z wykorzystaniem <code>rsync</code> inicjowany po stronie <code>TrueNAS</code>.</p>
+<h3 id="konfiguracja-synology">Konfiguracja Synology</h3>
+<p>Wszystkie operacje wykonywane były na DSM 7.1.</p>
+<p>Najpierw trzeba włączyć <code>rsync</code> po stronie Syno.</p>
+<p><code>Panel sterowania</code> → <code>Usługi plików</code> → <code>rsync</code></p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2025-05-09-synology/08-syno-rsync.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2025-05-09-synology/08-syno-rsync.png' alt='Właczenie usługi rsync' ></a>
+  <figcaption>Właczenie usługi rsync</figcaption>
+</figure>
+
+<p>Następnie trzeba utworzyć użytkownika z prawami tylko do odczytu do backupowanych zasobów.</p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2025-05-09-synology/09-syno-user.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2025-05-09-synology/09-syno-user.png' alt='Tworzenie użytkownika' ></a>
+  <figcaption>Tworzenie użytkownika</figcaption>
+</figure>
+
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2025-05-09-synology/10-syno-user.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2025-05-09-synology/10-syno-user.png' alt='Tworzenie użytkownika' ></a>
+  <figcaption>Tworzenie użytkownika</figcaption>
+</figure>
+
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2025-05-09-synology/11-syno-user.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2025-05-09-synology/11-syno-user.png' alt='Ustawienie uprawnień do plików' ></a>
+  <figcaption>Ustawienie uprawnień do plików</figcaption>
+</figure>
+
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2025-05-09-synology/12-syno-user.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2025-05-09-synology/12-syno-user.png' alt='Ustawienie uprawnień do aplikacji' ></a>
+  <figcaption>Ustawienie uprawnień do aplikacji</figcaption>
+</figure>
+
+<p>Następnie trzeba się zalogować via <code>ssh</code> na Synology i dodać klucz dla użytkownika <code>truenas</code> oraz włączyć logowanie po kluczu w pliku <code>/etc/ssh/sshd_config</code></p>
+<pre><code>PubkeyAuthentication yes
+</code></pre>
+<h3 id="test-rsync">Test rsync</h3>
+<p>Teraz można przetestować działanie <code>rsync</code>'a z komputera.</p>
+<p>Wygenerowałem z PuttyGen'a nowy klucz <code>Ed25519</code> i dodałem <code>authorized_keys</code> po stronie <code>Syno</code>. Następnie w konfiguracji klienta <code>.ssh/config</code> dodałem następujące wpisy, żeby nie musiec podawać ich za każdym razem:</p>
+<pre><code>Host ds414
+  IdentityFile ~/.ssh/truenas
+  # moje Syno bez dodania algorytmu nie znajdowało wspólnego języka
+  PubkeyAcceptedAlgorithms +ssh-ed25519
+  User truenas
+</code></pre>
+<p>Uworzyłem testowy plik z filtrami</p>
+<pre><code class="language-text">- @eaDir
++ /my_files/
++ /my_files/**
+- *
+</code></pre>
+<p>Następnie wykonałem kilka testów z różnymi parametrami. Docelowo będzie to chyba wyglądać tak:</p>
+<pre><code class="language-bash">$ rsync -e &quot;ssh -p 2222&quot; -avPW --delete --no-z -f '. /tmp/.rsync-filter' truenas@synology:/volume1/ /tmp/volume1/
+
+receiving incremental file list
+./
+
+sent 90 bytes  received 252 bytes  228.00 bytes/sec
+total size is 59,135,637  speedup is 172,911.22 (DRY RUN)
+</code></pre>
+<h3 id="konfiguracja-truenas">Konfiguracja TrueNAS</h3>
+<p>Testowo podłączyłem jeden dysk i utworzyłem data-set</p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2025-05-09-synology/13-truenas-pool.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2025-05-09-synology/13-truenas-pool.png' alt='test-dataset' ></a>
+  <figcaption>test-dataset</figcaption>
+</figure>
+
+<p>Następnie w panelu <code>Credentials</code> -&gt; <code>Backup credentials</code> wygenerowałem nowy klucz dla połączenia do <code>Syno</code> i dodałem go na <code>DS414</code> dla użytkownika <code>truenas</code></p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2025-05-09-synology/14-truenas-privkey.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2025-05-09-synology/14-truenas-privkey.png' alt='' ></a>
+  <figcaption></figcaption>
+</figure>
+
+<p>Oraz skonfigurowałem <code>SSH Connection</code></p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2025-05-09-synology/15-truenas-ssh-conn.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2025-05-09-synology/15-truenas-ssh-conn.png' alt='' ></a>
+  <figcaption></figcaption>
+</figure>
+
+<p>Przyszła pora na skonfigurowanie backupu. W panelu <code>Data Protection</code> -&gt; <code>Rsync Tasks</code> dodałem nowego job'a. Najważniejsze ustawienia to ścieżki oraz kierunek połączenia na <code>Pull</code></p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2025-05-09-synology/16-truenas-rsync-1.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2025-05-09-synology/16-truenas-rsync-1.png' alt='' ></a>
+  <figcaption></figcaption>
+</figure>
+
+<p>Parametry oraz harmonogram na pewno będą się zmieniać z czasem, ale na początek dałem coś takiego</p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2025-05-09-synology/17-truenas-rsync-2.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2025-05-09-synology/17-truenas-rsync-2.png' alt='' ></a>
+  <figcaption></figcaption>
+</figure>
+
+<p>Po zalogowaniu się na <code>TrueNAS</code> via <code>SSH</code> utworzyłem wymagane katalogi na <code>test-dataset</code> i puściłem joba z ręki. Job zaczął się kręcić, a na dysku pojawiać pliki.</p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2025-05-09-synology/18-truenas-status.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2025-05-09-synology/18-truenas-status.png' alt='' ></a>
+  <figcaption></figcaption>
+</figure>
+
+<h2 id="linki">Linki</h2>
+<ul>
+<li><a href="https://www.theverge.com/news/652364/synology-nas-third-party-hard-drive-restrictions">https://www.theverge.com/news/652364/synology-nas-third-party-hard-drive-restrictions</a></li>
+<li><a href="https://www.blackvoid.club/new-2025-synology-disk-compatibility-policy/">https://www.blackvoid.club/new-2025-synology-disk-compatibility-policy/</a></li>
+<li><a href="https://www.truenas.com/truenas-scale/">https://www.truenas.com/truenas-scale/</a></li>
+<li><a href="https://www.youtube.com/watch?v=_aACgNm8UCw">https://www.youtube.com/watch?v=_aACgNm8UCw</a></li>
+<li><a href="https://www.youtube.com/watch?v=-AnkHc7N0zM">https://www.youtube.com/watch?v=-AnkHc7N0zM</a></li>
+<li><a href="https://www.youtube.com/watch?v=0d4_nvdZdOc">https://www.youtube.com/watch?v=0d4_nvdZdOc</a></li>
+<li><a href="https://www.youtube.com/watch?v=M4DLChRXJog">https://www.youtube.com/watch?v=M4DLChRXJog</a></li>
+<li><a href="https://www.youtube.com/watch?v=NXIu-B52WPU">https://www.youtube.com/watch?v=NXIu-B52WPU</a></li>
+<li><a href="https://github.com/sb-ocr/3d-printed-nas">https://github.com/sb-ocr/3d-printed-nas</a></li>
+<li><a href="https://www.silica.io/using-ssh-key-authentification-on-a-synology-nas-for-remote-rsync-backups/">https://www.silica.io/using-ssh-key-authentification-on-a-synology-nas-for-remote-rsync-backups/</a></li>
+<li><a href="https://stackoverflow.com/questions/73795935/sign-and-send-pubkey-no-mutual-signature-supported">https://stackoverflow.com/questions/73795935/sign-and-send-pubkey-no-mutual-signature-supported</a></li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../2024-05-17-factorio-stats/" class="btn btn-neutral float-right" title="2024.05.17 - Factorio Stats">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+      <span><a href="../2024-05-17-factorio-stats/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+<script>const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});</script></body>
+</html>

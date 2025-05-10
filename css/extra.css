@@ -9,3 +9,7 @@
 .wy-nav-content {
     max-width: 1600px;
 }
+
+figure.figure-image > a.glightbox > img {
+    max-height: 200px;
+}
