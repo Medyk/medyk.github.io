@@ -1,0 +1,279 @@
+:: StoryTitle
+Adventure Game
+
+
+:: StoryData
+{
+  "ifid": "85296A4C-EAFF-4F6C-A7B5-931D46DFFFAA",
+  "format": "Harlowe",
+  "format-version": "3.3.9",
+  "start": "Intro",
+  "tag-colors": {
+    "startup": "red",
+    "header": "orange"
+  },
+  "zoom": 1
+}
+
+
+:: A Pyrrhic Victory {"position":"2100,200","size":"100,100"}
+(text-colour:grey)[^^Sanity: (print: $sanity), Abyss Influence: (print: $influence)^^]
+
+//October 20, 1928//
+
+The crypt was still, but the air remained heavy with the echoes of what had occurred. The entity had retreated, though not without a cost. Elias was gone—consumed by the very ritual he had sought to control. I stood alone in the dim light of the chamber, my mind a battlefield of memories that I could scarcely comprehend. The whispers had weakened, but they were still there, scratching at the edges of my thoughts like the claws of some unseen predator.
+
+The estate felt different as I emerged from the crypt, its oppressive weight diminished but not entirely lifted. The wind carried a faint, mournful sound, as if the cliffs themselves were lamenting what had been lost. I could not shake the feeling that my actions had merely delayed the inevitable. The abyss had tasted freedom, and its hunger would not be sated forever.
+
+As I returned to Dunhaven, the townsfolk looked at me with a mixture of suspicion and pity. They seemed to know, in some unspoken way, that the darkness beneath the Marrow estate had been stirred. My nights were restless, haunted by fragments of alien melodies and glimpses of cyclopean horrors. I resolved to dedicate my life to understanding what had transpired, though I feared that doing so would only draw me closer to the abyss. My victory, if it could be called that, felt hollow—like a thin veneer of light stretched over an ever-encroaching shadow.
+
+''THE END''
+
+
+:: Arrival at the Estate {"position":"300,200","size":"100,100"}
+(text-colour:grey)[^^Sanity: (print: $sanity), Abyss Influence: (print: $influence)^^]
+
+//October 16, 1928//
+
+The estate seemed to breathe with a life of its own, its ancient walls groaning in the wind. I could feel the weight of its history pressing down on me as Elias led me through the shadowy halls. His words were cryptic, his voice trembling as he spoke of a "sleeper" beneath the mansion, something that had been waiting for millennia to be found. The unease I felt upon entering grew heavier with every step, and though I tried to focus on Elias’s words, my mind wandered to the strange shapes I glimpsed in the carvings lining the walls.
+
+I knew I would need to understand the source of this madness if I were to help Elias—or save myself. There were clues to be found here, though every instinct screamed at me to leave this accursed place.
+
+Choose wisely...
+* [[Search Elias’s Study]] (+1 Sanity, -1 Abyss Influence)
+* [[Speak with Elias]] (No change)
+* [[Walk the Grounds]] (-1 Sanity, +1 Abyss Influence)
+
+
+:: Assist Elias {"position":"1300,100","size":"100,100"}
+{(if:visits is 1)[(set: $sanity to it - 2)(set: $influence to it + 2)]
+(text-colour:grey)[^^Sanity: (print: $sanity), Abyss Influence: (print: $influence)^^]}
+
+Against my better judgment, I joined Elias in the ritual. The artifacts pulsed with energy as we chanted, and the air around us seemed to crackle with unseen power. The whispers grew into a dreadful melody, their tones harmonizing with our voices. I felt the abyss reaching out, drawing us closer to its dark embrace.
+
+[[Continue->The Revelation]]
+
+
+:: Destroy the Ritual Objects {"position":"1700,200","size":"100,100"}
+{(if:visits is 1)[(set: $sanity to it + 1)(set: $influence to it - 1)]
+(text-colour:grey)[^^Sanity: (print: $sanity), Abyss Influence: (print: $influence)^^]}
+
+Desperation gave me strength as I seized Elias’s artifacts and shattered them against the floor. The entity roared in rage, its form writhing and distorting before it began to recede into the pit.
+
+[[Continue->Ending]]
+
+
+:: Ending {"position":"1900,200","size":"100,100"}
+(text-colour:grey)[^^Sanity: (print: $sanity), Abyss Influence: (print: $influence)^^]
+
+* Good Ending: The Pit Sealed //(Sanity ≥ 7 and Abyss Influence ≤ 4)//
+* Neutral Ending: A Pyrrhic Victory //(Sanity 4–6 or Abyss Influence 5–6)//
+* Bad Ending: The World Consumed //(Sanity ≤ 3 or Abyss Influence ≥ 7)//
+
+{
+  (if: $sanity >= 7 and $influence <= 4)[
+    [[The Pit Sealed]]
+  ]
+  (else-if: ($sanity >= 4 and $sanity <= 6) or ($influence >= 5 and $influence <= 6))[
+    [[A Pyrrhic Victory]]
+  ]
+  (else:)[
+    [[The World Consumed]]
+  ]
+}
+
+
+:: Examine the Crypt Walls {"position":"900,200","size":"100,100"}
+{(if:visits is 1)[(set: $sanity to it + 1)]
+(text-colour:grey)[^^Sanity: (print: $sanity), Abyss Influence: (print: $influence)^^]}
+
+My gaze wandered to the walls as Elias spoke, and I noticed intricate carvings that seemed almost alive. They depicted monstrous forms—amorphous and grotesque—locked in eternal struggle with beings I could not identify. A spiral motif repeated throughout, its presence strangely hypnotic. The carvings hinted at a ritual to bind the Sleeper, though the details eluded me.
+
+[[The Ritual]]
+
+
+:: Flee in Panic {"position":"1300,300","size":"100,100"}
+{(if:visits is 1)[(set: $sanity to it - 1)(set: $influence to it + 1)]
+(text-colour:grey)[^^Sanity: (print: $sanity), Abyss Influence: (print: $influence)^^]}
+
+Overcome by terror, I turned and fled the crypt, my footsteps echoing in the oppressive silence. Behind me, I heard Elias’s chants grow frantic, mingled with sounds too horrific to describe. The pull of the abyss lingered even as I reached the surface, a reminder that escape might be impossible.
+
+[[Continue->The Revelation]]
+
+
+:: Intro {"position":"100,50","size":"100,100"}
+(align:"=><=")+(box:"X")[=
+Short interactive story
+(text-size: 1.8)[
+  ''"The Whispering Depths: A Diary of Descent"''
+]
+
+(text-size: 0.6)[
+Written by ChatGPT AI
+Read by ElevenLabs AI
+Created by Nerdoza Studio
+]
+
+(align:"<==")+(box:"X")[=
+* [[Succumb to the Whispers->Prologue]]
+
+
+:: Investigate the Pit Alone {"position":"900,300","size":"100,100"}
+{(if:visits is 1)[(set: $sanity to it - 2)(set: $influence to it + 2)]
+(text-colour:grey)[^^Sanity: (print: $sanity), Abyss Influence: (print: $influence)^^]}
+
+Against Elias’s warnings, I stepped closer to the edge of the pit. The whispers grew louder, their alien tones forming fragments of words I could almost understand. My breath caught as I felt a vibration beneath my feet, a thrumming rhythm that seemed to resonate with my heartbeat. The abyss seemed alive, and I realized with horror that it was aware of me.
+
+[[Continue->The Ritual]]
+
+
+:: Prologue {"position":"100,200","size":"100,100"}
+(text-colour:grey)[^^Sanity: (print: $sanity), Abyss Influence: (print: $influence)^^]
+
+//October 15, 1928//
+
+I pen these words as the shadows lengthen in the dim light of my study. The storm outside batters the windows, much as the horrors of recent days have battered my mind. My soul is haunted by what I have witnessed, and my thoughts spiral endlessly back to the abyss. It began with a letter—innocent enough, or so I thought. Elias Marrow, a friend from years past, wrote of a discovery beneath his family’s estate in Dunhaven. His words were disjointed, feverish, yet I could not ignore their urgency.
+
+The journey to Dunhaven was uneventful, yet a growing dread settled over me as I approached the coastal town. The sea churned angrily beneath dark clouds, and the air hung heavy with brine and decay. The townsfolk, gaunt and unwelcoming, avoided my gaze, as if they feared what I might bring. I arrived at the Marrow estate just as night fell, its crumbling façade barely visible through the mist. Elias greeted me at the door, his eyes sunken and wild, and spoke of a discovery beneath his home that defied comprehension.
+
+[[Continue->Arrival at the Estate]]
+
+
+:: Search Elias’s Study {"position":"500,100","size":"100,100"}
+{(if:visits is 1)[(set: $sanity to it + 1)(set: $influence to it - 1)]
+(text-colour:grey)[^^Sanity: (print: $sanity), Abyss Influence: (print: $influence)^^]}
+
+I waited until Elias retired for the night, then slipped into his study. The room was cluttered with papers, ancient tomes, and strange artifacts that seemed to hum faintly when touched. Among the chaos, I found notes written in Elias’s hand, their contents disturbing yet illuminating. They spoke of rituals, symbols of binding, and a being referred to only as "The Sleeper Below." The diagrams of the pit Elias had sketched sent a chill through me, but they also hinted at a means to resist its influence.
+
+[[Continue->The Descent into the Crypt]]
+
+
+:: Speak with Elias {"position":"500,200","size":"100,100"}
+(text-colour:grey)[^^Sanity: (print: $sanity), Abyss Influence: (print: $influence)^^]
+
+Over a strained supper, I tried to engage Elias in conversation, hoping to unravel the mystery of his distress. He spoke in fragments, his voice trembling as he described visions of cyclopean cities beneath the waves and whispers that invaded his dreams. "It calls to me," he said, his gaze distant. "Something ancient, older than the stars themselves. I don’t know if it seeks knowledge or...destruction." His words left me shaken but no closer to understanding the full truth.
+
+[[Continue->The Descent into the Crypt]]
+
+
+:: Stand and Resist {"position":"1700,100","size":"100,100"}
+{(if:visits is 1)[(set: $sanity to it + 2)(set: $influence to it - 1)]
+(text-colour:grey)[^^Sanity: (print: $sanity), Abyss Influence: (print: $influence)^^]}
+
+Summoning every ounce of my will, I stood against the entity. Its voice clawed at my mind, but I shouted my defiance into the void. For a moment, its form flickered, and I sensed its grasp weakening.
+
+[[Continue->Ending]]
+
+
+:: Succumb to the Whispers {"position":"1700,300","size":"100,100"}
+{(if:visits is 1)[(set: $sanity to it - 3)(set: $influence to it + 3)]
+(text-colour:grey)[^^Sanity: (print: $sanity), Abyss Influence: (print: $influence)^^]}
+
+I knelt before the pit, unable to resist the alien melody. The entity’s voice consumed me, and its tendrils reached out, drawing me into the abyss.
+
+[[Continue->Ending]]
+
+
+:: The Descent into the Crypt {"position":"700,200","size":"100,100"}
+(text-colour:grey)[^^Sanity: (print: $sanity), Abyss Influence: (print: $influence)^^]
+
+//October 17, 1928//
+
+Elias insisted I follow him to the crypt the next morning, his voice carrying an edge of urgency that left no room for refusal. The journey down was like descending into another world. The air grew colder with each step, the light from our lanterns barely piercing the darkness. The walls, slick with moisture, were adorned with carvings of monstrous figures locked in eternal struggle. At the center of the chamber lay the pit, a yawning void that seemed to devour light and sound.
+
+The whispers began almost immediately—faint at first, like the sighing of wind, but growing louder as we approached. They were not words, not exactly, but the suggestion of words, speaking directly to my mind. I tried to maintain my composure, but the pull of the pit was undeniable.
+
+Choose wisely...
+* [[Trust Elias’s Guidance]] (-1 Sanity, +1 Abyss Influence)
+* [[Examine the Crypt Walls]] (+1 Sanity, No change)
+* [[Investigate the Pit Alone]] (-2 Sanity, +2 Abyss Influence)
+
+
+:: The Pit Sealed {"position":"2100,100","size":"100,100"}
+(text-colour:grey)[^^Sanity: (print: $sanity), Abyss Influence: (print: $influence)^^]
+
+//October 20, 1928//
+
+As I stood against the entity, the effort to resist its overwhelming presence felt like lifting a mountain with bare hands. The whispers clawed at my mind, threatening to unravel the very fabric of my sanity, yet I held firm. The abyss pulsed and writhed, its tendrils retreating inch by inch as my defiance pushed back against its dark will. The room around me seemed to breathe as the oppressive air lightened, and for the first time in days, I felt the faintest glimmer of hope.
+
+Elias, weakened and trembling, collapsed beside me. He gazed at the pit with a mixture of relief and horror, as though he too felt the enormity of what had transpired. Together, we performed a final act of sealing, using the knowledge I had gleaned from his notes. The sigils around the pit flared with a brilliant light, and a deafening roar filled the crypt as the Sleeper was bound once more.
+
+When the ritual ended, silence reigned. The pit had receded, its presence now a faint scar on the earth. Elias and I fled the estate, the dawn light washing over us as if to cleanse the horrors we had endured. Yet, even as we escaped, I knew the shadows of that place would follow me. Though I had triumphed, the abyss had left its mark—an eternal whisper at the edge of my mind, a reminder of the fragility of the barrier we had rebuilt. Still, I took solace in the thought that, for now, the world was safe from the Sleeper Below.
+
+''THE END''
+
+
+:: The Revelation {"position":"1500,200","size":"100,100"}
+(text-colour:grey)[^^Sanity: (print: $sanity), Abyss Influence: (print: $influence)^^]
+
+//October 19, 1928//
+
+The pit awakened. A massive, amorphous entity rose from its depths, its form defying logic and comprehension. Writhing tendrils stretched toward the ceiling, and countless eyes opened, each one staring directly into my soul. The whispers solidified into a single, terrible voice that filled my mind with alien truths and unspeakable horrors.
+
+Choose wisely...
+* [[Stand and Resist]] (+2 Sanity, -1 Abyss Influence)
+* [[Destroy the Ritual Objects]] (+1 Sanity, -1 Abyss Influence)
+* [[Succumb to the Whispers]] (-3 Sanity, +3 Abyss Influence)
+
+
+:: The Ritual {"position":"1100,200","size":"100,100"}
+(text-colour:grey)[^^Sanity: (print: $sanity), Abyss Influence: (print: $influence)^^]
+
+//October 18, 1928//
+
+Elias’s obsession reached a fever pitch as the day wore on. He produced strange artifacts—runes carved into stone, symbols painted on bone—and began chanting in a guttural, alien tongue. The air grew thick, and the whispers from the pit transformed into a low hum that pressed against my mind like an unseen hand.
+
+I felt the pull of the abyss stronger than ever, as if it were reaching for my very soul. I had to act, but I hesitated, torn between aiding Elias, stopping him, or saving myself.
+
+Choose wisely...
+* [[Assist Elias]] (-2 Sanity, +2 Abyss Influence)
+* [[Try to Stop Him]] (+1 Sanity, No change)
+* [[Flee in Panic]] (-1 Sanity, +1 Abyss Influence)
+
+
+:: The World Consumed {"position":"2100,300","size":"100,100"}
+(text-colour:grey)[^^Sanity: (print: $sanity), Abyss Influence: (print: $influence)^^]
+
+//Date Unknown//
+
+I can barely hold the pen as I write these final words. Time has lost all meaning, and the world I once knew has been devoured by the Sleeper’s endless hunger. It began with my surrender, a moment of weakness that I cannot undo. The whispers were too seductive, their promises too alluring. When I knelt before the pit, I felt its tendrils wrap around my soul, pulling me into its unfathomable depths.
+
+The crypt collapsed as the Sleeper rose, its form a chaotic mass of shifting tendrils and glaring eyes. The very fabric of reality seemed to tear apart as its presence expanded, swallowing the estate, the cliffs, and the town of Dunhaven. The sky darkened to a sickly hue, and the sea boiled as the Sleeper’s influence spread like a plague. I heard the screams of the townsfolk as they were consumed, their voices joining the cacophony of the abyss.
+
+Now I wander in a landscape that defies description—a warped reality shaped by the Sleeper’s alien mind. The ground is a pulsating, amorphous mass, and the air hums with the unceasing melody of the abyss. I am neither alive nor dead, trapped in a liminal state as the Sleeper’s thrall. Its voice fills my mind, not with whispers but with a deafening chorus that drowns out all else. I see now that humanity was always insignificant, a fleeting spark in the vast, eternal void.
+
+There is no escape, no hope. The Sleeper is awake, and its will is absolute. My only solace, if it can be called that, is that I will soon fade entirely, becoming one with the abyss. If this account somehow survives, let it be a warning: do not seek the depths, for they will claim you as they claimed me.
+
+''THE END''
+
+
+:: Trust Elias’s Guidance {"position":"900,100","size":"100,100"}
+{(if:visits is 1)[(set: $sanity to it - 1)(set: $influence to it + 1)]
+(text-colour:grey)[^^Sanity: (print: $sanity), Abyss Influence: (print: $influence)^^]}
+
+I allowed Elias to guide me closer to the pit, though every instinct screamed at me to stop. His voice took on a reverent tone as he spoke of the Sleeper, a being of incomprehensible power that slumbered beneath the earth, waiting for the right moment to awaken. The whispers seemed to harmonize with his words, and I felt a strange, almost seductive pull toward the abyss.
+
+[[The Ritual]]
+
+
+:: Try to Stop Him {"position":"1300,200","size":"100,100"}
+{(if:visits is 1)[(set: $sanity to it + 1)]
+(text-colour:grey)[^^Sanity: (print: $sanity), Abyss Influence: (print: $influence)^^]}
+
+I lunged forward, knocking the artifacts from Elias’s hands. His chant broke, and the air split with an unholy shriek. The pit seemed to recoil, its whispers rising in anger. Elias glared at me, his face a mask of desperation and fury, but I could see cracks forming in the abyss’s hold.
+
+[[Continue->The Revelation]]
+
+
+:: Walk the Grounds {"position":"500,300","size":"100,100"}
+{(if:visits is 1)[(set: $sanity to it - 1)(set: $influence to it + 1)]
+(text-colour:grey)[^^Sanity: (print: $sanity), Abyss Influence: (print: $influence)^^]}
+
+I ventured outside as the last light of day faded, hoping to clear my mind and escape the oppressive air of the house. The grounds were overgrown, the path to the cliffs treacherous, yet I pressed on. Near the edge of the cliff, I discovered strange sigils carved into the rock, their shapes twisting and writhing in ways that defied logic. As I stared at them, I felt a faint pulse beneath my feet, as if the very earth were alive and breathing. I returned to the house unsettled and burdened by a sense of foreboding.
+
+[[Continue->The Descent into the Crypt]]
+
+
+:: startup [startup] {"position":"300,50","size":"100,100"}
+{(set: $sanity to 5)
+(set: $influence to 5)}
