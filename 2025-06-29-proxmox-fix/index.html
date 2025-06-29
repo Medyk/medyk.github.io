@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Maciej Medyński" /><link rel="canonical" href="https://blog.nerdoza.studio/2025-06-29-proxmox-fix/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>2025.06.29 - Proxmox Fix - Nerdoza Studio</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "2025.06.29 - Proxmox Fix";
+        var mkdocs_page_input_path = "2025-06-29-proxmox-fix.md";
+        var mkdocs_page_url = "/2025-06-29-proxmox-fix/";
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+ <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+    html.glightbox-open { overflow: initial; height: 100%; }
+    .gslide-title { margin-top: 0px; user-select: text; }
+    .gslide-desc { color: #666; user-select: text; }
+    .gslide-image img { background: white; }</style> <script src="../assets/javascripts/glightbox.min.js"></script></head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Nerdoza Studio
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">2025.06.29 - Proxmox Fix</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#intro">Intro</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#network-fix-z-internetu">Network - fix z internetu</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#firewall-fix-z-internetu">Firewall - fix z internetu</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../2025-05-09-synology-truenas/">2025.05.09 - Synology DS414 → TrueNAS</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../2024-05-17-factorio-stats/">2024.05.17 - Factorio Stats</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../2024-04-27-factorio/">2024.04.27 - Factorio Headless Server</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../2022-12-25-ssh-certificates/">2022.12.25 - SSH Certificates</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../2022-11-12-wireguard/">2022.11.12 - Wireguard</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Nerdoza Studio</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+      <li>2025.06.29 - Proxmox Fix</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="20250629-proxmox-fix">2025.06.29 - Proxmox Fix</h1>
+<h2 id="intro">Intro</h2>
+<p>Po ostatnich aktualizacjach Proxmoxa zaczął mi się resetować Lenovo m920q. Przejrzałem internety i problem jest diagnozowany jako "marne sterowniki do karty sieciowej Intela".</p>
+<p>Drugim problemem to zaśmiecanie logów wpisami z firewall'a.</p>
+<pre><code class="language-text">Jun 29 11:02:36 pve3 pve-firewall[1155]: status update error: ipset_restore_cmdlist: ipset v7.17: Error in line 4: Element cannot be added to the set: it's already added
+</code></pre>
+<h2 id="network-fix-z-internetu">Network - fix z internetu</h2>
+<p>Problem opisany w https://bugzilla.proxmox.com/show_bug.cgi?id=6273</p>
+<p>Potencjalne rozwiązanie to https://forum.proxmox.com/threads/e1000-driver-hang.58284/page-8#post-375919</p>
+<p>Dopisałem do /etc/networking/interfaces <code>post-up</code> dla <code>eno1</code>.</p>
+<pre><code class="language-text">(...)
+
+iface eno1 inet manual
+        post-up /usr/bin/logger -p info -t ifup &quot;Disabling offload for eno1&quot; &amp;&amp; /sbin/ethtool -K eno1 tso off gso off gro off &amp;&amp; /usr/bin/logger -p info -t ifup &quot;Disabled offload of eno1&quot;
+
+(...)
+</code></pre>
+<p>Po ręcznym uruchomieniu skrypty w logach widać wpis</p>
+<pre><code class="language-text"># journalctl -S &quot;1min ago&quot;
+Jun 29 11:03:03 pve3 ifup[167278]: Disabling offload for eno1
+Jun 29 11:03:03 pve3 ifup[167280]: Disabled offload of eno1
+</code></pre>
+<p>Teraz patrzymy czy serwer będzie bardziej stabilny.</p>
+<h2 id="firewall-fix-z-internetu">Firewall - fix z internetu</h2>
+<p>Problem i rozwiązanie opisane w https://forum.proxmox.com/threads/proxmox-firewall-doesnt-seem-to-work-and-errors-in-log.128359/#post-561729</p>
+<p>Przy konfiguracji firewalla chyba źle podałem aliasy dla hostów PVE - miały adresy 192.168.2.x/24 zamiast /32. Usunięcie maski via GUI rozwiązało sprawę i w logach nie ma już błędów.</p>
+<p><code>Datacenter</code> -&gt; <code>Firewall</code> -&gt; <code>Alias</code></p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2025-06-29-proxmox/firewall-1.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2025-06-29-proxmox/firewall-1.png' alt='Firewall config' ></a>
+  <figcaption>Firewall config</figcaption>
+</figure>
+
+<pre><code class="language-text">Jun 29 11:07:46 pve3 pvefw-logger[592]: received terminate request (signal)
+Jun 29 11:07:46 pve3 pvefw-logger[592]: stopping pvefw logger
+Jun 29 11:07:46 pve3 systemd[1]: Stopping pvefw-logger.service - Proxmox VE firewall logger...
+Jun 29 11:07:47 pve3 systemd[1]: pvefw-logger.service: Deactivated successfully.
+Jun 29 11:07:47 pve3 systemd[1]: Stopped pvefw-logger.service - Proxmox VE firewall logger.
+Jun 29 11:07:47 pve3 systemd[1]: pvefw-logger.service: Consumed 1.316s CPU time.
+Jun 29 11:07:47 pve3 systemd[1]: Starting pvefw-logger.service - Proxmox VE firewall logger...
+Jun 29 11:07:47 pve3 pvefw-logger[169286]: starting pvefw logger
+Jun 29 11:07:47 pve3 systemd[1]: Started pvefw-logger.service - Proxmox VE firewall logger.
+Jun 29 11:08:16 pve3 pmxcfs[146658]: [status] notice: received log
+Jun 29 11:08:45 pve3 pmxcfs[146658]: [status] notice: received log
+Jun 29 11:08:45 pve3 pmxcfs[146658]: [status] notice: received log
+Jun 29 11:11:13 pve3 pmxcfs[146658]: [status] notice: received log
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../2025-05-09-synology-truenas/" class="btn btn-neutral float-right" title="2025.05.09 - Synology DS414 → TrueNAS">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+      <span><a href="../2025-05-09-synology-truenas/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+<script>const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});</script></body>
+</html>
