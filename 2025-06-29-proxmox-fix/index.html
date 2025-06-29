@@ -107,8 +107,8 @@
 <pre><code class="language-text">Jun 29 11:02:36 pve3 pve-firewall[1155]: status update error: ipset_restore_cmdlist: ipset v7.17: Error in line 4: Element cannot be added to the set: it's already added
 </code></pre>
 <h2 id="network-fix-z-internetu">Network - fix z internetu</h2>
-<p>Problem opisany w https://bugzilla.proxmox.com/show_bug.cgi?id=6273</p>
-<p>Potencjalne rozwiązanie to https://forum.proxmox.com/threads/e1000-driver-hang.58284/page-8#post-375919</p>
+<p>Problem opisany w <a href="https://bugzilla.proxmox.com/show_bug.cgi?id=6273">https://bugzilla.proxmox.com/show_bug.cgi?id=6273</a></p>
+<p>Potencjalne rozwiązanie to <a href="https://forum.proxmox.com/threads/e1000-driver-hang.58284/page-8#post-375919">https://forum.proxmox.com/threads/e1000-driver-hang.58284/page-8#post-375919</a></p>
 <p>Dopisałem do /etc/networking/interfaces <code>post-up</code> dla <code>eno1</code>.</p>
 <pre><code class="language-text">(...)
 
@@ -124,9 +124,8 @@ Jun 29 11:03:03 pve3 ifup[167280]: Disabled offload of eno1
 </code></pre>
 <p>Teraz patrzymy czy serwer będzie bardziej stabilny.</p>
 <h2 id="firewall-fix-z-internetu">Firewall - fix z internetu</h2>
-<p>Problem i rozwiązanie opisane w https://forum.proxmox.com/threads/proxmox-firewall-doesnt-seem-to-work-and-errors-in-log.128359/#post-561729</p>
-<p>Przy konfiguracji firewalla chyba źle podałem aliasy dla hostów PVE - miały adresy 192.168.2.x/24 zamiast /32. Usunięcie maski via GUI rozwiązało sprawę i w logach nie ma już błędów.</p>
-<p><code>Datacenter</code> -&gt; <code>Firewall</code> -&gt; <code>Alias</code></p>
+<p>Problem i rozwiązanie opisane w <a href="https://forum.proxmox.com/threads/proxmox-firewall-doesnt-seem-to-work-and-errors-in-log.128359/#post-561729">https://forum.proxmox.com/threads/proxmox-firewall-doesnt-seem-to-work-and-errors-in-log.128359/#post-561729</a></p>
+<p>Przy konfiguracji firewalla chyba źle podałem aliasy dla hostów PVE - miały adresy 192.168.2.x/24 zamiast /32. Usunięcie maski via GUI (<code>Datacenter</code> -&gt; <code>Firewall</code> -&gt; <code>Alias</code>) rozwiązało sprawę i w logach nie ma już błędów.</p>
 <figure class='figure-image'>
   <a class="glightbox" href="/img/2025-06-29-proxmox/firewall-1.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2025-06-29-proxmox/firewall-1.png' alt='Firewall config' ></a>
   <figcaption>Firewall config</figcaption>
