@@ -102,11 +102,33 @@
               
                 <h1 id="20250629-proxmox-fix">2025.06.29 - Proxmox Fix</h1>
 <h2 id="intro">Intro</h2>
-<p>Po ostatnich aktualizacjach Proxmoxa zaczął mi się resetować Lenovo m920q. Przejrzałem internety i problem jest diagnozowany jako "marne sterowniki do karty sieciowej Intela".</p>
-<p>Drugim problemem to zaśmiecanie logów wpisami z firewall'a.</p>
-<pre><code class="language-text">Jun 29 11:02:36 pve3 pve-firewall[1155]: status update error: ipset_restore_cmdlist: ipset v7.17: Error in line 4: Element cannot be added to the set: it's already added
-</code></pre>
+<p>Po ostatnich aktualizacjach Proxmoxa zaczął mi się resetować Lenovo m920q. Przejrzałem internety i problem jest diagnozowany jako "marne sterowniki do karty sieciowej Intela".<br />
+Drugim problemem to zaśmiecanie logów wpisami z firewall'a.</p>
 <h2 id="network-fix-z-internetu">Network - fix z internetu</h2>
+<p>W logach widać, że maszyna przed resetem ma problem z kartą sieciową:</p>
+<pre><code class="language-text">Jun 29 04:24:07 pve3 ceph-osd[1173]: 2025-06-29T04:24:07.113+0200 xxx -1 osd.0 1844 get_health_metrics reporting 1 slow ops, oldest is osd_op(client.xxx.0:xxx 4.12 4:xxx:::rbd_data.xxx.xxx:head [write 1200128~4096 in=4096b] snapc 0=[] ondisk+write+known_if_redirected+supports_pool_eio e1844)
+Jun 29 04:24:07 pve3 kernel: e1000e 0000:00:1f.6 eno1: Detected Hardware Unit Hang:
+                               TDH                  &lt;95&gt;
+                               TDT                  &lt;7f&gt;
+                               next_to_use          &lt;7f&gt;
+                               next_to_clean        &lt;94&gt;
+                             buffer_info[next_to_clean]:
+                               time_stamp           &lt;10ce578be&gt;
+                               next_to_watch        &lt;95&gt;
+                               jiffies              &lt;10ce60f00&gt;
+                               next_to_watch.status &lt;0&gt;
+                             MAC Status             &lt;80083&gt;
+                             PHY Status             &lt;796d&gt;
+                             PHY 1000BASE-T Status  &lt;3800&gt;
+                             PHY Extended Status    &lt;3000&gt;
+                             PCI Status             &lt;10&gt;
+Jun 29 04:24:08 pve3 ceph-osd[1173]: 2025-06-29T04:24:08.090+0200 xxx -1 osd.0 1844 heartbeat_check: no reply from 192.168.2.251:6806 osd.1 since back 2025-06-29T04:23:25.862229+0200 front 2025-06-29T04:23:25.862237+0200 (oldest deadline 2025-06-29T04:23:51.161943+0200)
+Jun 29 04:24:08 pve3 ceph-osd[1173]: 2025-06-29T04:24:08.090+0200 xxx -1 osd.0 1844 heartbeat_check: no reply from 192.168.2.250:6806 osd.2 since back 2025-06-29T04:23:25.862255+0200 front 2025-06-29T04:23:25.862248+0200 (oldest deadline 2025-06-29T04:23:51.161943+0200)
+Jun 29 04:24:08 pve3 ceph-osd[1173]: 2025-06-29T04:24:08.090+0200 xxx -1 osd.0 1844 get_health_metrics reporting 1 slow ops, oldest is osd_op(client.xxx.0:xxx 4.12 4:xxx:::rbd_data.xxx.xxx:head [write 1200128~4096 in=4096b] snapc 0=[] ondisk+write+known_if_redirected+supports_pool_eio e1844)
+-- Boot xxx --
+Jun 29 04:26:41 pve3 kernel: Linux version 6.8.12-11-pve (build@proxmox) (gcc (Debian 12.2.0-14+deb12u1) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40) #1 SMP PREEMPT_DYNAMIC PMX 6.8.12-11 (2025-05-22T09:39Z) ()
+Jun 29 04:26:41 pve3 kernel: Command line: BOOT_IMAGE=/boot/vmlinuz-6.8.12-11-pve root=/dev/mapper/pve-root ro quiet
+</code></pre>
 <p>Problem opisany w <a href="https://bugzilla.proxmox.com/show_bug.cgi?id=6273">https://bugzilla.proxmox.com/show_bug.cgi?id=6273</a></p>
 <p>Potencjalne rozwiązanie to <a href="https://forum.proxmox.com/threads/e1000-driver-hang.58284/page-8#post-375919">https://forum.proxmox.com/threads/e1000-driver-hang.58284/page-8#post-375919</a></p>
 <p>Dopisałem do /etc/networking/interfaces <code>post-up</code> dla <code>eno1</code>.</p>
@@ -122,8 +144,21 @@ iface eno1 inet manual
 Jun 29 11:03:03 pve3 ifup[167278]: Disabling offload for eno1
 Jun 29 11:03:03 pve3 ifup[167280]: Disabled offload of eno1
 </code></pre>
-<p>Teraz patrzymy czy serwer będzie bardziej stabilny.</p>
+<p>Teraz czekamy i patrzymy czy serwer będzie bardziej stabilny.</p>
 <h2 id="firewall-fix-z-internetu">Firewall - fix z internetu</h2>
+<p>W logach widnieje dużo wpisów:</p>
+<pre><code class="language-text">Jun 29 10:03:36 pve3 pve-firewall[1155]: status update error: ipset_restore_cmdlist: ipset v7.17: Error in line 4: Element cannot be added to the set: it's already added
+Jun 29 10:03:46 pve3 pve-firewall[1155]: status update error: ipset_restore_cmdlist: ipset v7.17: Error in line 4: Element cannot be added to the set: it's already added
+Jun 29 10:03:56 pve3 pve-firewall[1155]: status update error: ipset_restore_cmdlist: ipset v7.17: Error in line 4: Element cannot be added to the set: it's already added
+Jun 29 10:04:06 pve3 pve-firewall[1155]: status update error: ipset_restore_cmdlist: ipset v7.17: Error in line 4: Element cannot be added to the set: it's already added
+Jun 29 10:04:16 pve3 pve-firewall[1155]: status update error: ipset_restore_cmdlist: ipset v7.17: Error in line 4: Element cannot be added to the set: it's already added
+Jun 29 10:04:26 pve3 pve-firewall[1155]: status update error: ipset_restore_cmdlist: ipset v7.17: Error in line 4: Element cannot be added to the set: it's already added
+Jun 29 10:04:36 pve3 pve-firewall[1155]: status update error: ipset_restore_cmdlist: ipset v7.17: Error in line 4: Element cannot be added to the set: it's already added
+Jun 29 10:04:46 pve3 pve-firewall[1155]: status update error: ipset_restore_cmdlist: ipset v7.17: Error in line 4: Element cannot be added to the set: it's already added
+Jun 29 10:04:56 pve3 pve-firewall[1155]: status update error: ipset_restore_cmdlist: ipset v7.17: Error in line 4: Element cannot be added to the set: it's already added
+Jun 29 10:05:06 pve3 pve-firewall[1155]: status update error: ipset_restore_cmdlist: ipset v7.17: Error in line 4: Element cannot be added to the set: it's already added
+Jun 29 10:05:16 pve3 pve-firewall[1155]: status update error: ipset_restore_cmdlist: ipset v7.17: Error in line 4: Element cannot be added to the set: it's already added
+</code></pre>
 <p>Problem i rozwiązanie opisane w <a href="https://forum.proxmox.com/threads/proxmox-firewall-doesnt-seem-to-work-and-errors-in-log.128359/#post-561729">https://forum.proxmox.com/threads/proxmox-firewall-doesnt-seem-to-work-and-errors-in-log.128359/#post-561729</a></p>
 <p>Przy konfiguracji firewalla chyba źle podałem aliasy dla hostów PVE - miały adresy 192.168.2.x/24 zamiast /32. Usunięcie maski via GUI (<code>Datacenter</code> -&gt; <code>Firewall</code> -&gt; <code>Alias</code>) rozwiązało sprawę i w logach nie ma już błędów.</p>
 <figure class='figure-image'>
