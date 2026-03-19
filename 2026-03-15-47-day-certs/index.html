@@ -65,6 +65,16 @@
     <li class="toctree-l2"><a class="reference internal" href="#test-http-01">Test http-01</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#test-dns-01">Test dns-01</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#generowanie-klucza-api-ovhcloud">Generowanie klucza API OVHcloud</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#ustawienie-zmiennych">Ustawienie zmiennych</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#generowanie-certyfikatu">Generowanie certyfikatu</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#test-dns-01-z-wykorzystaniem-aliasow">Test dns-01 z wykorzystaniem aliasów</a>
     </li>
     </ul>
                 </li>
@@ -156,14 +166,14 @@
 </tr>
 </tbody>
 </table>
-<p>Certum wykazało się nadgorliwością i u nich certyfikaty są krótsze już od 13 marca (w końcu piątek 13-go) :)</p>
+<p>Certum wykazało się nadgorliwością i u nich certyfikaty są krótsze już od 13 marca (w końcu piątek 13-go) <img alt="😄" class="emojione" src="https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f604.png" title=":smile:" /></p>
 <figure class='figure-image'>
   <a class="glightbox" href="/img/2026-03-15-47-day-certs/certum-info.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/certum-info.png' alt='Certum SSL Info' ></a>
   <figcaption>Certum SSL Info</figcaption>
 </figure>
 
 <h3 id="walidacja-wasciciela-domeny">Walidacja właściciela domeny</h3>
-<p>Drugą zmianą jest walidacja właściciela domeny. Aktualnie wystawca certyfikatów (CA) po walidacji właściciela przechowywał informacje ponad rok bez wymogu ponownej weryfikacji. Powodowało to problemy, jeśli domena zmieniła właściciela, stary mógł nadal wystawić sobie certyfikat :)</p>
+<p>Drugą zmianą jest walidacja właściciela domeny. Aktualnie wystawca certyfikatów (CA) po walidacji właściciela przechowywał informacje ponad rok bez wymogu ponownej weryfikacji. Powodowało to problemy, jeśli domena zmieniła właściciela, stary mógł nadal wystawić sobie certyfikat <img alt="😄" class="emojione" src="https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f604.png" title=":smile:" /></p>
 <p><em>4.2.1 Performing identification and authentication functions</em> (<a href="https://cabforum.org/2025/04/11/ballot-sc081v3-introduce-schedule-of-reducing-validity-and-data-reuse-periods/BR-SC081v3.pdf#%5B%7B%22num%22%3A125%2C%22gen%22%3A0%7D%2C%7B%22name%22%3A%22XYZ%22%7D%2C69%2C275%2C0%5D">strona 61</a>)</p>
 <table>
 <thead>
@@ -230,12 +240,11 @@ cd ./acme.sh
 <h2 id="test-http-01">Test http-01</h2>
 <p>Pierwsze wystawienie certu będzie zrealizowane z użyciem metody <code>http-01</code>. <code>acme.sh</code> wspiera tę metodę uruchamiając własny serwerek HTTP na dowolnym porcie. Dla testu przekierowałem na tunelu CloudFlare prefix URI <code>/.well-known/.acme-challenge/</code> na maszynkę wirtualną z <code>acme.sh</code>.</p>
 <p>Tryb <code>--test</code> obsługiwany jest tylko przez Let's Encrypt.</p>
-<pre><code class="language-bash"># Uruchom lokalny serwerek na porcie 8080
-$ acme.sh --issue -d acme.nerdoza.studio -k ec-256 --standalone --httpport 8080 --force
+<pre><code class="language-bash"># run standalone webserver on port 8080
+# @see https://github.com/acmesh-official/acme.sh/wiki/Options-and-Params
+acme.sh --issue -d acme.nerdoza.studio -k ec-256 --standalone --httpport 8080 --force
 </code></pre>
-<pre><code class="language-text"># Wynik komendy
-
-[Tue Mar 15 08:38:05 PM CET 2026] Using CA: https://acme.zerossl.com/v2/DV90
+<pre><code class="language-text">[Tue Mar 15 08:38:05 PM CET 2026] Using CA: https://acme.zerossl.com/v2/DV90
 [Tue Mar 15 08:38:05 PM CET 2026] Standalone mode.
 [Tue Mar 15 08:38:05 PM CET 2026] Creating domain key
 [Tue Mar 15 08:38:05 PM CET 2026] The domain key is here: /home/user/.acme.sh/acme.nerdoza.studio_ecc/acme.nerdoza.studio.key
@@ -263,15 +272,135 @@ MIIEADC...
 [Tue Mar 15 08:38:29 PM CET 2026] The intermediate CA cert is in: /home/user/.acme.sh/acme.nerdoza.studio_ecc/ca.cer
 [Tue Mar 15 08:38:29 PM CET 2026] And the full-chain cert is in: /home/user/.acme.sh/acme.nerdoza.studio_ecc/fullchain.cer
 </code></pre>
-<p>Generowanie pojedynczego certyfikatu działa bez zarzutu. Próba wygenerowanie wildcard'a daje spodziewany efekt.</p>
+<p>Generowanie pojedynczego certyfikatu działa bez zarzutu. Próba wygenerowania <code>wildcard'a</code> daje spodziewany efekt.</p>
 <pre><code class="language-text">[Tue Mar 17 08:53:35 PM CET 2026] Single domain='*.nerdoza.studio'
 [Tue Mar 17 08:53:36 PM CET 2026] Getting webroot for domain='*.nerdoza.studio'
 [Tue Mar 17 08:53:37 PM CET 2026] Cannot get domain token entry *.nerdoza.studio for http-01
 [Tue Mar 17 08:53:37 PM CET 2026] Supported validation types are: dns-01 , but you specified: http-01
 </code></pre>
 <h2 id="test-dns-01">Test dns-01</h2>
-<p>Do obsługi certyfikatów <code>wildcard</code> trzeba użyć trybu <code>dns-01</code>. Jest to obecnie jedyny sposób wykazania, że jest się właścicielem całej strefy, a nie tylko pojedynczych nazw.</p>
-<hr />
+<p>Do obsługi certyfikatów <code>wildcard</code> trzeba użyć trybu <code>dns-01</code>. Jest to obecnie jedyny sposób wykazania, że jest się właścicielem całej strefy, a nie tylko pojedynczych nazw. <code>acme.sh</code> wspiera używane przeze mnie usługi: <code>CloudFlare</code> oraz <code>OVHcloud</code>.</p>
+<p>Tutorial do OVH znajduje się na stronie wiki <a href="https://github.com/acmesh-official/acme.sh/wiki/How-to-use-OVH-domain-api">How to use OVH domain api</a>.</p>
+<p>Dodatkowo przejrzałem dokumentację i kody:
+- Zarządzanie kluczami API w OVH: <a href="https://help.ovhcloud.com/csm/en-gb-api-getting-started-ovhcloud-api?id=kb_article_view&amp;sysparm_article=KB0042784">https://help.ovhcloud.com/csm/en-gb-api-getting-started-ovhcloud-api</a>
+- Specyfikacja API w OVH: <a href="https://eu.api.ovh.com/console/?section=%2Fdomain&amp;branch=v1#get-/domain">https://eu.api.ovh.com/console/</a>
+- Kod skryptu <code>dns_ovh.sh</code>: <a href="https://github.com/acmesh-official/acme.sh/blob/master/dnsapi/dns_ovh.sh">https://github.com/acmesh-official/acme.sh/blob/master/dnsapi/dns_ovh.sh</a></p>
+<h3 id="generowanie-klucza-api-ovhcloud">Generowanie klucza API OVHcloud</h3>
+<p>Po zalogowaniu się w panelu OVH przeszedłem na stronę do zarządzania kluczami API.</p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2026-03-15-47-day-certs/ovh-1.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/ovh-1.png' alt='ovh-1.png' ></a>
+  <figcaption>ovh-1.png</figcaption>
+</figure>
+
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2026-03-15-47-day-certs/ovh-2.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/ovh-2.png' alt='ovh-2.png' ></a>
+  <figcaption>ovh-2.png</figcaption>
+</figure>
+
+<p>Dodałem uprawnienia do zarządzania strefą <code>medynski.ovh</code>. Dodatkowo ograniczyłem użycie klucza do wybranego zakresu IP.</p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2026-03-15-47-day-certs/ovh-3.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/ovh-3.png' alt='ovh-3.png' ></a>
+  <figcaption>ovh-3.png</figcaption>
+</figure>
+
+<p>Można też <a href="https://api.ovh.com/createToken/?GET=/auth/time&amp;GET=/domain/zone/example.com&amp;GET=/domain/zone/example.com/*&amp;POST=/domain/zone/example.com/*&amp;PUT=/domain/zone/example.com/*&amp;DELETE=/domain/zone/example.com/record/*">skorzystać z linku</a>, który od razu ustawi wymagane uprawnienia w formularzu.</p>
+<p>Po wciśnięciu przycisku <code>Create</code> dostaniemy wszystkie wymagane wartości dla <code>dns_api</code>.</p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2026-03-15-47-day-certs/ovh-4.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/ovh-4.png' alt='ovh-4.png' ></a>
+  <figcaption>ovh-4.png</figcaption>
+</figure>
+
+<h3 id="ustawienie-zmiennych">Ustawienie zmiennych</h3>
+<p>Zgodnie z opisem <a href="https://github.com/acmesh-official/acme.sh/blob/master/dnsapi/dns_ovh.sh">dnsapi/dns_ovh.sh</a> ustawiłem zmienne środowiskowe.</p>
+<pre><code class="language-bash"># endpoint (eu is default)
+export export OVH_END_POINT=ovh-eu
+
+# application key
+export OVH_AK=&quot;your application key&quot;
+
+# application secret
+export OVH_AS=&quot;your application secret&quot;
+
+# consumer key
+export OVH_CK=&quot;your consumer key&quot;
+</code></pre>
+<h3 id="generowanie-certyfikatu">Generowanie certyfikatu</h3>
+<p>Wygenerowałem certyfikat <code>wildcard</code> korzystając z weryfikacji domeny via API OVHcloud.</p>
+<pre><code class="language-bash"># sleep added to manually check DNS zone in OVH admin panel
+# @see https://github.com/acmesh-official/acme.sh/wiki/Options-and-Params
+acme.sh --issue --dns dns_ovh --dnssleep 60 -d blog.medynski.ovh -d *.blog.medynski.ovh --force
+</code></pre>
+<pre><code class="language-text">[Thu Mar 19 01:44:49 AM CET 2026] Using CA: https://acme.zerossl.com/v2/DV90
+[Thu Mar 19 01:44:49 AM CET 2026] Multi domain='DNS:blog.medynski.ovh,DNS:*.blog.medynski.ovh'
+[Thu Mar 19 01:44:51 AM CET 2026] Getting webroot for domain='blog.medynski.ovh'
+[Thu Mar 19 01:44:51 AM CET 2026] Getting webroot for domain='*.blog.medynski.ovh'
+[Thu Mar 19 01:44:51 AM CET 2026] Adding TXT value: Gkwxxxxx for domain: _acme-challenge.blog.medynski.ovh
+[Thu Mar 19 01:44:51 AM CET 2026] Using OVH endpoint: ovh-eu
+[Thu Mar 19 01:44:51 AM CET 2026] Checking authentication
+[Thu Mar 19 01:44:51 AM CET 2026] Consumer key is ok.
+[Thu Mar 19 01:44:52 AM CET 2026] Adding record
+[Thu Mar 19 01:44:53 AM CET 2026] Added, sleep 10 seconds.
+[Thu Mar 19 01:45:04 AM CET 2026] The TXT record has been successfully added.
+[Thu Mar 19 01:45:04 AM CET 2026] Adding TXT value: Cg8xxxxx for domain: _acme-challenge.blog.medynski.ovh
+[Thu Mar 19 01:45:04 AM CET 2026] Using OVH endpoint: ovh-eu
+[Thu Mar 19 01:45:04 AM CET 2026] Checking authentication
+[Thu Mar 19 01:45:04 AM CET 2026] Consumer key is ok.
+[Thu Mar 19 01:45:05 AM CET 2026] Adding record
+[Thu Mar 19 01:45:06 AM CET 2026] Added, sleep 10 seconds.
+[Thu Mar 19 01:45:17 AM CET 2026] The TXT record has been successfully added.
+[Thu Mar 19 01:45:17 AM CET 2026] Sleeping for 60 seconds to wait for the the TXT records to take effect
+[Thu Mar 19 01:46:18 AM CET 2026] Verifying: blog.medynski.ovh
+[Thu Mar 19 01:46:19 AM CET 2026] Processing. The CA is processing your order, please wait. (1/30)
+[Thu Mar 19 01:46:22 AM CET 2026] Success
+[Thu Mar 19 01:46:22 AM CET 2026] Verifying: *.blog.medynski.ovh
+[Thu Mar 19 01:46:22 AM CET 2026] Processing. The CA is processing your order, please wait. (1/30)
+[Thu Mar 19 01:46:26 AM CET 2026] Success
+[Thu Mar 19 01:46:26 AM CET 2026] Removing DNS records.
+[Thu Mar 19 01:46:26 AM CET 2026] Removing txt: Gkwxxxxx for domain: _acme-challenge.blog.medynski.ovh
+[Thu Mar 19 01:46:26 AM CET 2026] Using OVH endpoint: ovh-eu
+[Thu Mar 19 01:46:26 AM CET 2026] Checking authentication
+[Thu Mar 19 01:46:26 AM CET 2026] Consumer key is ok.
+[Thu Mar 19 01:46:28 AM CET 2026] Successfully removed
+[Thu Mar 19 01:46:28 AM CET 2026] Removing txt: Cg8xxxxx for domain: _acme-challenge.blog.medynski.ovh
+[Thu Mar 19 01:46:29 AM CET 2026] Using OVH endpoint: ovh-eu
+[Thu Mar 19 01:46:29 AM CET 2026] Checking authentication
+[Thu Mar 19 01:46:29 AM CET 2026] Consumer key is ok.
+[Thu Mar 19 01:46:31 AM CET 2026] Successfully removed
+[Thu Mar 19 01:46:31 AM CET 2026] Verification finished, beginning signing.
+[Thu Mar 19 01:46:31 AM CET 2026] Let's finalize the order.
+[Thu Mar 19 01:46:31 AM CET 2026] Le_OrderFinalize='https://acme.zerossl.com/v2/DV90/order/xxxxx/finalize'
+[Thu Mar 19 01:46:31 AM CET 2026] Order status is 'processing', let's sleep and retry.
+[Thu Mar 19 01:46:31 AM CET 2026] Sleeping for 15 seconds then retrying
+[Thu Mar 19 01:46:47 AM CET 2026] Polling order status: https://acme.zerossl.com/v2/DV90/order/xxxxx
+[Thu Mar 19 01:46:48 AM CET 2026] Downloading cert.
+[Thu Mar 19 01:46:48 AM CET 2026] Le_LinkCert='https://acme.zerossl.com/v2/DV90/cert/xxxxx'
+[Thu Mar 19 01:46:48 AM CET 2026] Cert success.
+-----BEGIN CERTIFICATE-----
+MIIED...
+-----END CERTIFICATE-----
+[Thu Mar 19 01:46:48 AM CET 2026] Your cert is in: /home/user/.acme.sh/blog.medynski.ovh_ecc/blog.medynski.ovh.cer
+[Thu Mar 19 01:46:48 AM CET 2026] Your cert key is in: /home/user/.acme.sh/blog.medynski.ovh_ecc/blog.medynski.ovh.key
+[Thu Mar 19 01:46:48 AM CET 2026] The intermediate CA cert is in: /home/user/.acme.sh/blog.medynski.ovh_ecc/ca.cer
+[Thu Mar 19 01:46:48 AM CET 2026] And the full-chain cert is in: /home/user/.acme.sh/blog.medynski.ovh_ecc/fullchain.cer
+</code></pre>
+<p>W trakcie działania skryptu sprawdziłem wpisy w strefie <code>medynski.ovh</code>.</p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2026-03-15-47-day-certs/ovh-5.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/ovh-5.png' alt='ovh-5.png' ></a>
+  <figcaption>ovh-5.png</figcaption>
+</figure>
+
+<p>Po wygenerowaniu certyfikatu sprawdziłem szczegóły w <a href="https://keystore-explorer.org/features.html">KeyStore Explorer</a>. Wygląda cudownie <img alt="😄" class="emojione" src="https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f604.png" title=":smile:" /></p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2026-03-15-47-day-certs/keystore-explorer.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/keystore-explorer.png' alt='keystore-explorer.png' ></a>
+  <figcaption>keystore-explorer.png</figcaption>
+</figure>
+
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2026-03-15-47-day-certs/keystore-explorer-2.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/keystore-explorer-2.png' alt='keystore-explorer-2.png' ></a>
+  <figcaption>keystore-explorer-2.png</figcaption>
+</figure>
+
+<h2 id="test-dns-01-z-wykorzystaniem-aliasow">Test dns-01 z wykorzystaniem aliasów</h2>
 <blockquote>
 <p>TODO</p>
 </blockquote>
