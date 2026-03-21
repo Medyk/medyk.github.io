@@ -85,6 +85,12 @@
         </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#prywatne-pki-z-wykorzystaniem-hashicorp-vault">Prywatne PKI z wykorzystaniem HashiCorp Vault</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#publiczny-dostep">Publiczny dostęp</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#wymuszenie-eab">Wymuszenie EAB</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#lokalny-dns">Lokalny DNS</a>
     </li>
@@ -562,6 +568,7 @@ MIIEG...
 <h2 id="prywatne-pki-z-wykorzystaniem-hashicorp-vault">Prywatne PKI z wykorzystaniem HashiCorp Vault</h2>
 <p>Do przetestowania pozostał jedynie temat prywatnego <code>PKI</code> z <code>ACME</code>. Skorzystałem z <a href="https://www.hashicorp.com/en/products/vault">HashiCorp Vault</a> do zbudowania własnego Certificate Authority.</p>
 <p>Zestawienie środowiska testowego jest całkiem <a href="https://developer.hashicorp.com/vault/tutorials/pki/pki-engine">dobrze opisane na stronie projektu</a>. Użyłem instalacji w <code>dockerze</code>.</p>
+<p>Na stronie <code>HashiCorp</code> istnieje <a href="https://developer.hashicorp.com/vault/tutorials/pki/pki-acme-caddy">gotowy tutorial</a> dla PKI ACME.</p>
 <ul>
 <li>
 <p>uruchomienie serwera</p>
@@ -623,7 +630,7 @@ docker exec -it vault-acme /bin/sh
 export VAULT_ADDR=http://127.0.0.1:8201
 
 # login
-vault login
+vault login -no-print
 
 # tune pki_int
 vault secrets tune \
@@ -640,7 +647,8 @@ vault secrets tune \
 [Sat Mar 21 10:36:25 AM CET 2026] Please refer to https://curl.haxx.se/libcurl/c/libcurl-errors.html for error code: 7
 [Sat Mar 21 10:36:25 AM CET 2026] Could not get nonce, let's try again.
 </code></pre>
-<p>Żeby skorzystać z prywatnego wystawcy certów wystarczy podać dodatkowy parametr <code>--server</code>.</p>
+<h3 id="publiczny-dostep">Publiczny dostęp</h3>
+<p>Żeby skorzystać z prywatnego wystawcy certów, wystarczy podać dodatkowy parametr <code>--server</code>.</p>
 <pre><code class="language-bash"># sleep added to manually check DNS zone in OVH admin panel
 # @see https://github.com/acmesh-official/acme.sh/wiki/Options-and-Params
 # @see https://github.com/acmesh-official/acme.sh/wiki/Server
@@ -686,7 +694,11 @@ MIIEL...
 [Sat Mar 21 10:40:00 AM CET 2026] And the full-chain cert is in: /home/user/.acme.sh/vault-test.medynski.ovh_ecc/fullchain.cer
 </code></pre>
 <p>Widać, że wszystko działa, jak należy. W <code>OVHcloud</code> pojawił się wpis <code>TXT</code>.</p>
-<p>![OVHcloud DNS](/img/2026-03-15-47-day-certs/vault-acme-1.png</p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2026-03-15-47-day-certs/vault-acme-1.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/vault-acme-1.png' alt='OVHcloud DNS' ></a>
+  <figcaption>OVHcloud DNS</figcaption>
+</figure>
+
 <p>Wystawiony certyfikat jest prawidłowy. Wpis pojawił się w Vaulcie.</p>
 <figure class='figure-image'>
   <a class="glightbox" href="/img/2026-03-15-47-day-certs/vault-cert-1.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/vault-cert-1.png' alt='Vault cert' ></a>
@@ -703,6 +715,60 @@ MIIEL...
   <figcaption>Vault cert</figcaption>
 </figure>
 
+<h3 id="wymuszenie-eab">Wymuszenie EAB</h3>
+<p>Zmieniłem politykę EAB dla ACME pki_int. Od teraz nie można wystawić certyfikatu bez "logowania się" użytkownika.</p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2026-03-15-47-day-certs/vault-eab-1.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/vault-eab-1.png' alt='Vault EAB Policy' ></a>
+  <figcaption>Vault EAB Policy</figcaption>
+</figure>
+
+<p>Próba wygenerowania certyfikatu kończy się teraz błędem.</p>
+<pre><code>[Sat Mar 21 03:11:48 PM CET 2026] Using CA: http://172.16.16.21:8201/v1/pki_int/acme/directory
+[Sat Mar 21 03:11:48 PM CET 2026] Single domain='vault-test-47.medynski.ovh'
+[Sat Mar 21 03:11:48 PM CET 2026] Error creating new order. Le_OrderFinalize not found. {&quot;type&quot;:&quot;urn:ietf:params:acme:error:externalAccountRequired&quot;,&quot;detail&quot;:&quot;The request must include a value for the 'externalAccountBinding' field&quot;}
+[Sat Mar 21 03:11:48 PM CET 2026] Please check log file for more details: /home/user/.acme.sh/acme.sh.log
+</code></pre>
+<p>Należy zarejestrować nowe konto podając EAB. Po stronie <code>vault</code> EAB wygenerowałem w konsoli GUI.</p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2026-03-15-47-day-certs/vault-eab-2.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/vault-eab-2.png' alt='Vault EAB Create' ></a>
+  <figcaption>Vault EAB Create</figcaption>
+</figure>
+
+<pre><code class="language-bash"># set EAB
+export EAB_KEY=&quot;d1745201-xxxxx&quot;          # vault 'id' field
+export EAB_HMAC_KEY=&quot;vault-eab-0-xxxxx&quot;  # vault 'key' field
+
+# remove old registration
+rm -rf ~/.acme.sh/ca/172.16.16.21/v1/pki_int/acme/directory
+
+# register account
+# @see https://github.com/acmesh-official/acme.sh/wiki/Options-and-Params
+acme.sh --register-account \
+  --server http://172.16.16.21:8201/v1/pki_int/acme/directory \
+  --eab-kid &quot;$EAB_KEY&quot; \
+  --eab-hmac-key &quot;$EAB_HMAC_KEY&quot;
+</code></pre>
+<p>Generowanie certyfikatów ponownie działa.</p>
+<pre><code class="language-bash">acme.sh --issue --dns dns_ovh -d vault-test-47.medynski.ovh --server http://172.16.16.21:8201/v1/pki_int/acme/directory --force
+
+[Sat Mar 21 03:33:25 PM CET 2026] Using CA: http://172.16.16.21:8201/v1/pki_int/acme/directory
+[Sat Mar 21 03:33:25 PM CET 2026] Single domain='vault-test-47.medynski.ovh'
+[Sat Mar 21 03:33:25 PM CET 2026] Getting webroot for domain='vault-test-47.medynski.ovh'
+[Sat Mar 21 03:33:26 PM CET 2026] Adding TXT value: iFsq6Ubxxxxx for domain: _acme-challenge.vault-test-47.medynski.ovh
+[Sat Mar 21 03:33:26 PM CET 2026] Using OVH endpoint: ovh-eu
+[Sat Mar 21 03:33:26 PM CET 2026] Checking authentication
+[Sat Mar 21 03:33:26 PM CET 2026] Consumer key is ok.
+[Sat Mar 21 03:33:27 PM CET 2026] Adding record
+[Sat Mar 21 03:33:28 PM CET 2026] Added, sleep 10 seconds.
+[Sat Mar 21 03:33:39 PM CET 2026] The TXT record has been successfully added.
+[Sat Mar 21 03:33:39 PM CET 2026] Let's check each DNS record now. Sleeping for 20 seconds first.
+[Sat Mar 21 03:34:00 PM CET 2026] You can use '--dnssleep' to disable public dns checks.
+[Sat Mar 21 03:34:00 PM CET 2026] See: https://github.com/acmesh-official/acme.sh/wiki/dnscheck
+[Sat Mar 21 03:34:00 PM CET 2026] Checking vault-test-47.medynski.ovh for _acme-challenge.vault-test-47.medynski.ovh
+[Sat Mar 21 03:34:00 PM CET 2026] Success for domain vault-test-47.medynski.ovh '_acme-challenge.vault-test-47.medynski.ovh'.
+[Sat Mar 21 03:34:00 PM CET 2026] All checks succeeded
+(...)
+</code></pre>
 <h2 id="lokalny-dns">Lokalny DNS</h2>
 <blockquote>
 <p>TODO</p>
