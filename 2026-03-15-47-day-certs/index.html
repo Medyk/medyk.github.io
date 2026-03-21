@@ -75,6 +75,22 @@
         </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#test-dns-01-z-wykorzystaniem-aliasow">Test dns-01 z wykorzystaniem aliasów</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#konfiguracja-cloudflare">Konfiguracja CloudFlare</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#wystawienie-certyfikatu-z-opcja-challenge-alias">Wystawienie certyfikatu z opcją --challenge-alias</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#wystawienie-certyfikatu-z-opcja-domain-alias">Wystawienie certyfikatu z opcją --domain-alias</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#prywatne-pki-z-wykorzystaniem-hashicorp-vault">Prywatne PKI z wykorzystaniem HashiCorp Vault</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#lokalny-dns">Lokalny DNS</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#automatyzacja">Automatyzacja</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#linki">Linki</a>
     </li>
     </ul>
                 </li>
@@ -131,7 +147,7 @@
 <p>Z wejściem nowych czasów trwania certyfikatów oraz walidacji właścicieli domen postanowiłem przyjrzeć się automatyzacji całego procesu obsługi certów.</p>
 <h2 id="co-sie-zmieni">Co się zmieni?</h2>
 <p>W kwietniu 2025 CAB Forum przyjęło nowe zasady odświeżania certyfikatów oraz cachowania danych walidacyjnych. Zmiany będą następowały etapami.</p>
-<p>https://cabforum.org/2025/04/11/ballot-sc081v3-introduce-schedule-of-reducing-validity-and-data-reuse-periods/</p>
+<p><a href="https://cabforum.org/2025/04/11/ballot-sc081v3-introduce-schedule-of-reducing-validity-and-data-reuse-periods/">https://cabforum.org/2025/04/11/ballot-sc081v3-introduce-schedule-of-reducing-validity-and-data-reuse-periods/</a></p>
 <h3 id="czas-zycia-certyfikatu">Czas życia certyfikatu</h3>
 <p>Pierwszą zmianą, która uprzykrzy ręczną rotację certyfikatów, jest sam okres ważności. Certyfikaty wystawiane od 15 marca 2026 będą coraz krótsze, aż do docelowej wartości 47 dni.</p>
 <p><em>6.3.2 Certificate operational periods and key pair usage periods</em> (<a href="https://cabforum.org/2025/04/11/ballot-sc081v3-introduce-schedule-of-reducing-validity-and-data-reuse-periods/BR-SC081v3.pdf#%5B%7B%22num%22%3A287%2C%22gen%22%3A0%7D%2C%7B%22name%22%3A%22XYZ%22%7D%2C69%2C561%2C0%5D">strona 85</a>)</p>
@@ -281,33 +297,35 @@ MIIEADC...
 <h2 id="test-dns-01">Test dns-01</h2>
 <p>Do obsługi certyfikatów <code>wildcard</code> trzeba użyć trybu <code>dns-01</code>. Jest to obecnie jedyny sposób wykazania, że jest się właścicielem całej strefy, a nie tylko pojedynczych nazw. <code>acme.sh</code> wspiera używane przeze mnie usługi: <code>CloudFlare</code> oraz <code>OVHcloud</code>.</p>
 <p>Tutorial do OVH znajduje się na stronie wiki <a href="https://github.com/acmesh-official/acme.sh/wiki/How-to-use-OVH-domain-api">How to use OVH domain api</a>.</p>
-<p>Dodatkowo przejrzałem dokumentację i kody:
-- Zarządzanie kluczami API w OVH: <a href="https://help.ovhcloud.com/csm/en-gb-api-getting-started-ovhcloud-api?id=kb_article_view&amp;sysparm_article=KB0042784">https://help.ovhcloud.com/csm/en-gb-api-getting-started-ovhcloud-api</a>
-- Specyfikacja API w OVH: <a href="https://eu.api.ovh.com/console/?section=%2Fdomain&amp;branch=v1#get-/domain">https://eu.api.ovh.com/console/</a>
-- Kod skryptu <code>dns_ovh.sh</code>: <a href="https://github.com/acmesh-official/acme.sh/blob/master/dnsapi/dns_ovh.sh">https://github.com/acmesh-official/acme.sh/blob/master/dnsapi/dns_ovh.sh</a></p>
+<p>Dodatkowo przejrzałem dokumentację i kody:</p>
+<ul>
+<li>Zarządzanie kluczami API w OVH: <a href="https://help.ovhcloud.com/csm/en-gb-api-getting-started-ovhcloud-api?id=kb_article_view&amp;sysparm_article=KB0042784">https://help.ovhcloud.com/csm/en-gb-api-getting-started-ovhcloud-api</a></li>
+<li>Specyfikacja API w OVH: <a href="https://eu.api.ovh.com/console/?section=%2Fdomain&amp;branch=v1#get-/domain">https://eu.api.ovh.com/console/</a></li>
+<li>Kod skryptu <code>dns_ovh.sh</code>: <a href="https://github.com/acmesh-official/acme.sh/blob/master/dnsapi/dns_ovh.sh">https://github.com/acmesh-official/acme.sh/blob/master/dnsapi/dns_ovh.sh</a></li>
+</ul>
 <h3 id="generowanie-klucza-api-ovhcloud">Generowanie klucza API OVHcloud</h3>
 <p>Po zalogowaniu się w panelu OVH przeszedłem na stronę do zarządzania kluczami API.</p>
 <figure class='figure-image'>
-  <a class="glightbox" href="/img/2026-03-15-47-day-certs/ovh-1.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/ovh-1.png' alt='ovh-1.png' ></a>
-  <figcaption>ovh-1.png</figcaption>
+  <a class="glightbox" href="/img/2026-03-15-47-day-certs/ovh-1.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/ovh-1.png' alt='OVH API Keys' ></a>
+  <figcaption>OVH API Keys</figcaption>
 </figure>
 
 <figure class='figure-image'>
-  <a class="glightbox" href="/img/2026-03-15-47-day-certs/ovh-2.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/ovh-2.png' alt='ovh-2.png' ></a>
-  <figcaption>ovh-2.png</figcaption>
+  <a class="glightbox" href="/img/2026-03-15-47-day-certs/ovh-2.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/ovh-2.png' alt='OVH API Keys' ></a>
+  <figcaption>OVH API Keys</figcaption>
 </figure>
 
 <p>Dodałem uprawnienia do zarządzania strefą <code>medynski.ovh</code>. Dodatkowo ograniczyłem użycie klucza do wybranego zakresu IP.</p>
 <figure class='figure-image'>
-  <a class="glightbox" href="/img/2026-03-15-47-day-certs/ovh-3.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/ovh-3.png' alt='ovh-3.png' ></a>
-  <figcaption>ovh-3.png</figcaption>
+  <a class="glightbox" href="/img/2026-03-15-47-day-certs/ovh-3.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/ovh-3.png' alt='OVH API Keys' ></a>
+  <figcaption>OVH API Keys</figcaption>
 </figure>
 
 <p>Można też <a href="https://api.ovh.com/createToken/?GET=/auth/time&amp;GET=/domain/zone/example.com&amp;GET=/domain/zone/example.com/*&amp;POST=/domain/zone/example.com/*&amp;PUT=/domain/zone/example.com/*&amp;DELETE=/domain/zone/example.com/record/*">skorzystać z linku</a>, który od razu ustawi wymagane uprawnienia w formularzu.</p>
 <p>Po wciśnięciu przycisku <code>Create</code> dostaniemy wszystkie wymagane wartości dla <code>dns_api</code>.</p>
 <figure class='figure-image'>
-  <a class="glightbox" href="/img/2026-03-15-47-day-certs/ovh-4.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/ovh-4.png' alt='ovh-4.png' ></a>
-  <figcaption>ovh-4.png</figcaption>
+  <a class="glightbox" href="/img/2026-03-15-47-day-certs/ovh-4.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/ovh-4.png' alt='OVH API Keys' ></a>
+  <figcaption>OVH API Keys</figcaption>
 </figure>
 
 <h3 id="ustawienie-zmiennych">Ustawienie zmiennych</h3>
@@ -385,25 +403,320 @@ MIIED...
 </code></pre>
 <p>W trakcie działania skryptu sprawdziłem wpisy w strefie <code>medynski.ovh</code>.</p>
 <figure class='figure-image'>
-  <a class="glightbox" href="/img/2026-03-15-47-day-certs/ovh-5.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/ovh-5.png' alt='ovh-5.png' ></a>
-  <figcaption>ovh-5.png</figcaption>
+  <a class="glightbox" href="/img/2026-03-15-47-day-certs/ovh-5.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/ovh-5.png' alt='OVH DNS Zone' ></a>
+  <figcaption>OVH DNS Zone</figcaption>
 </figure>
 
 <p>Po wygenerowaniu certyfikatu sprawdziłem szczegóły w <a href="https://keystore-explorer.org/features.html">KeyStore Explorer</a>. Wygląda cudownie :)</p>
 <figure class='figure-image'>
-  <a class="glightbox" href="/img/2026-03-15-47-day-certs/keystore-explorer.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/keystore-explorer.png' alt='keystore-explorer.png' ></a>
-  <figcaption>keystore-explorer.png</figcaption>
+  <a class="glightbox" href="/img/2026-03-15-47-day-certs/keystore-explorer.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/keystore-explorer.png' alt='Cert Details' ></a>
+  <figcaption>Cert Details</figcaption>
 </figure>
 
 <figure class='figure-image'>
-  <a class="glightbox" href="/img/2026-03-15-47-day-certs/keystore-explorer-2.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/keystore-explorer-2.png' alt='keystore-explorer-2.png' ></a>
-  <figcaption>keystore-explorer-2.png</figcaption>
+  <a class="glightbox" href="/img/2026-03-15-47-day-certs/keystore-explorer-2.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/keystore-explorer-2.png' alt='Cert SANs' ></a>
+  <figcaption>Cert SANs</figcaption>
 </figure>
 
 <h2 id="test-dns-01-z-wykorzystaniem-aliasow">Test dns-01 z wykorzystaniem aliasów</h2>
+<p>Działanie aliasów jest dobrze opisane na <a href="https://github.com/acmesh-official/acme.sh/wiki/DNS-alias-mode">Wiki projektu</a> <code>acme.sh</code> oraz na <a href="https://letsencrypt.org/docs/challenge-types/#dns-01-challenge">stronach Let's Encrypt</a>.</p>
+<h3 id="konfiguracja-cloudflare">Konfiguracja CloudFlare</h3>
+<p>Pierwszym krokiem jest ustawienie aliasów w <code>CloudFlare</code> dla domeny <code>nerdoza.studio</code>. Po zalogowaniu się do panelu administratora dodałem alias dla <code>ACME</code>. Można to zrobić na dwa sposoby, więc przetestuje obydwa. Poniżej konfiguracja DNS'ów w <code>CloudFlare</code>.</p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2026-03-15-47-day-certs/cf-dns.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/cf-dns.png' alt='CloudFlare DNS Setup' ></a>
+  <figcaption>CloudFlare DNS Setup</figcaption>
+</figure>
+
+<h3 id="wystawienie-certyfikatu-z-opcja-challenge-alias">Wystawienie certyfikatu z opcją <code>--challenge-alias</code></h3>
+<p>Pierwszy test korzysta z wpisu DNS <code>_acme-challenge.test1 CNAME _acme-challenge.test1.medynski.ovh.</code>. Po uruchomieniu komendy widać, że DNS'y ustawiane są w <code>OVHcloud</code>, a weryfikacja zachodzi dla domeny <code>nerdoza.studio</code>. Works as intended :)</p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2026-03-15-47-day-certs/ovh-challenge-alias.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/ovh-challenge-alias.png' alt='OVH challenge-alias' ></a>
+  <figcaption>OVH challenge-alias</figcaption>
+</figure>
+
+<pre><code class="language-bash"># sleep added to manually check DNS zone in OVH admin panel
+# @see https://github.com/acmesh-official/acme.sh/wiki/Options-and-Params
+acme.sh --issue --dns dns_ovh --dnssleep 60 --challenge-alias test1.medynski.ovh -d test1.nerdoza.studio -d *.test1.nerdoza.studio --force
+
+[Fri Mar 20 07:37:19 AM CET 2026] Using CA: https://acme.zerossl.com/v2/DV90
+[Fri Mar 20 07:37:19 AM CET 2026] Creating domain key
+[Fri Mar 20 07:37:19 AM CET 2026] The domain key is here: /home/user/.acme.sh/test1.nerdoza.studio_ecc/test1.nerdoza.studio.key
+[Fri Mar 20 07:37:19 AM CET 2026] Multi domain='DNS:test1.nerdoza.studio,DNS:*.test1.nerdoza.studio'
+[Fri Mar 20 07:37:21 AM CET 2026] Getting webroot for domain='test1.nerdoza.studio'
+[Fri Mar 20 07:37:21 AM CET 2026] Getting webroot for domain='*.test1.nerdoza.studio'
+[Fri Mar 20 07:37:21 AM CET 2026] Adding TXT value: AALxxxxx for domain: _acme-challenge.test1.medynski.ovh
+[Fri Mar 20 07:37:21 AM CET 2026] Using OVH endpoint: ovh-eu
+[Fri Mar 20 07:37:21 AM CET 2026] Checking authentication
+[Fri Mar 20 07:37:22 AM CET 2026] Consumer key is ok.
+[Fri Mar 20 07:37:23 AM CET 2026] Adding record
+[Fri Mar 20 07:37:23 AM CET 2026] Added, sleep 10 seconds.
+[Fri Mar 20 07:37:34 AM CET 2026] The TXT record has been successfully added.
+[Fri Mar 20 07:37:34 AM CET 2026] Adding TXT value: Qmmxxxxx for domain: _acme-challenge.test1.medynski.ovh
+[Fri Mar 20 07:37:34 AM CET 2026] Using OVH endpoint: ovh-eu
+[Fri Mar 20 07:37:34 AM CET 2026] Checking authentication
+[Fri Mar 20 07:37:35 AM CET 2026] Consumer key is ok.
+[Fri Mar 20 07:37:36 AM CET 2026] Adding record
+[Fri Mar 20 07:37:36 AM CET 2026] Added, sleep 10 seconds.
+[Fri Mar 20 07:37:47 AM CET 2026] The TXT record has been successfully added.
+[Fri Mar 20 07:37:47 AM CET 2026] Sleeping for 60 seconds to wait for the the TXT records to take effect
+[Fri Mar 20 07:38:48 AM CET 2026] Verifying: test1.nerdoza.studio
+[Fri Mar 20 07:38:49 AM CET 2026] Processing. The CA is processing your order, please wait. (1/30)
+[Fri Mar 20 07:38:52 AM CET 2026] Success
+[Fri Mar 20 07:38:52 AM CET 2026] Verifying: *.test1.nerdoza.studio
+[Fri Mar 20 07:38:53 AM CET 2026] Processing. The CA is processing your order, please wait. (1/30)
+[Fri Mar 20 07:38:56 AM CET 2026] Success
+[Fri Mar 20 07:38:56 AM CET 2026] Removing DNS records.
+[Fri Mar 20 07:38:56 AM CET 2026] Removing txt: AALxxxxx for domain: _acme-challenge.test1.medynski.ovh
+[Fri Mar 20 07:38:56 AM CET 2026] Using OVH endpoint: ovh-eu
+[Fri Mar 20 07:38:56 AM CET 2026] Checking authentication
+[Fri Mar 20 07:38:56 AM CET 2026] Consumer key is ok.
+[Fri Mar 20 07:38:59 AM CET 2026] Successfully removed
+[Fri Mar 20 07:38:59 AM CET 2026] Removing txt: Qmmxxxxx for domain: _acme-challenge.test1.medynski.ovh
+[Fri Mar 20 07:38:59 AM CET 2026] Using OVH endpoint: ovh-eu
+[Fri Mar 20 07:38:59 AM CET 2026] Checking authentication
+[Fri Mar 20 07:38:59 AM CET 2026] Consumer key is ok.
+[Fri Mar 20 07:39:01 AM CET 2026] Successfully removed
+[Fri Mar 20 07:39:01 AM CET 2026] Verification finished, beginning signing.
+[Fri Mar 20 07:39:01 AM CET 2026] Let's finalize the order.
+[Fri Mar 20 07:39:01 AM CET 2026] Le_OrderFinalize='https://acme.zerossl.com/v2/DV90/order/xxxxx/finalize'
+[Fri Mar 20 07:39:02 AM CET 2026] Order status is 'processing', let's sleep and retry.
+[Fri Mar 20 07:39:02 AM CET 2026] Sleeping for 15 seconds then retrying
+[Fri Mar 20 07:39:18 AM CET 2026] Polling order status: https://acme.zerossl.com/v2/DV90/order/xxxxx
+[Fri Mar 20 07:39:18 AM CET 2026] Downloading cert.
+[Fri Mar 20 07:39:18 AM CET 2026] Le_LinkCert='https://acme.zerossl.com/v2/DV90/cert/xxxxx'
+[Fri Mar 20 07:39:19 AM CET 2026] Cert success.
+-----BEGIN CERTIFICATE-----
+MIIEG...
+-----END CERTIFICATE-----
+[Fri Mar 20 07:39:19 AM CET 2026] Your cert is in: /home/user/.acme.sh/test1.nerdoza.studio_ecc/test1.nerdoza.studio.cer
+[Fri Mar 20 07:39:19 AM CET 2026] Your cert key is in: /home/user/.acme.sh/test1.nerdoza.studio_ecc/test1.nerdoza.studio.key
+[Fri Mar 20 07:39:19 AM CET 2026] The intermediate CA cert is in: /home/user/.acme.sh/test1.nerdoza.studio_ecc/ca.cer
+[Fri Mar 20 07:39:19 AM CET 2026] And the full-chain cert is in: /home/user/.acme.sh/test1.nerdoza.studio_ecc/fullchain.cer
+</code></pre>
+<h3 id="wystawienie-certyfikatu-z-opcja-domain-alias">Wystawienie certyfikatu z opcją <code>--domain-alias</code></h3>
+<p>Drugi test korzysta z wpisu <code>_acme-challenge.test2 CNAME test2.medynski.ovh.</code>. Po uruchomieniu komendy ponownie widać, że DNS'y ustawiane są w <code>OVHcloud</code>, a weryfikacja zachodzi dla domeny <code>nerdoza.studio</code>. Tym razem widać, że skrypt nie dodaje prefixu <code>_acme-challenge</code> i używa CNAME as-is.</p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2026-03-15-47-day-certs/ovh-domain-alias.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/ovh-domain-alias.png' alt='OVH domain-alias' ></a>
+  <figcaption>OVH domain-alias</figcaption>
+</figure>
+
+<pre><code class="language-bash"># sleep added to manually check DNS zone in OVH admin panel
+# @see https://github.com/acmesh-official/acme.sh/wiki/Options-and-Params
+acme.sh --issue --dns dns_ovh --dnssleep 60 --domain-alias test2.medynski.ovh -d test2.nerdoza.studio -d *.test2.nerdoza.studio --force
+
+[Fri Mar 20 07:51:29 AM CET 2026] Using CA: https://acme.zerossl.com/v2/DV90
+[Fri Mar 20 07:51:29 AM CET 2026] Creating domain key
+[Fri Mar 20 07:51:29 AM CET 2026] The domain key is here: /home/user/.acme.sh/test2.nerdoza.studio_ecc/test2.nerdoza.studio.key
+[Fri Mar 20 07:51:29 AM CET 2026] Multi domain='DNS:test2.nerdoza.studio,DNS:*.test2.nerdoza.studio'
+[Fri Mar 20 07:51:31 AM CET 2026] Getting webroot for domain='test2.nerdoza.studio'
+[Fri Mar 20 07:51:31 AM CET 2026] Getting webroot for domain='*.test2.nerdoza.studio'
+[Fri Mar 20 07:51:31 AM CET 2026] Adding TXT value: ORgxxxxx for domain: test2.medynski.ovh
+[Fri Mar 20 07:51:31 AM CET 2026] Using OVH endpoint: ovh-eu
+[Fri Mar 20 07:51:31 AM CET 2026] Checking authentication
+[Fri Mar 20 07:51:32 AM CET 2026] Consumer key is ok.
+[Fri Mar 20 07:51:32 AM CET 2026] Adding record
+[Fri Mar 20 07:51:33 AM CET 2026] Added, sleep 10 seconds.
+[Fri Mar 20 07:51:44 AM CET 2026] The TXT record has been successfully added.
+[Fri Mar 20 07:51:44 AM CET 2026] Adding TXT value: 3Dgxxxxx for domain: test2.medynski.ovh
+[Fri Mar 20 07:51:44 AM CET 2026] Using OVH endpoint: ovh-eu
+[Fri Mar 20 07:51:44 AM CET 2026] Checking authentication
+[Fri Mar 20 07:51:44 AM CET 2026] Consumer key is ok.
+[Fri Mar 20 07:51:45 AM CET 2026] Adding record
+[Fri Mar 20 07:51:46 AM CET 2026] Added, sleep 10 seconds.
+[Fri Mar 20 07:51:57 AM CET 2026] The TXT record has been successfully added.
+[Fri Mar 20 07:51:57 AM CET 2026] Sleeping for 60 seconds to wait for the the TXT records to take effect
+[Fri Mar 20 07:52:58 AM CET 2026] Verifying: test2.nerdoza.studio
+[Fri Mar 20 07:52:58 AM CET 2026] Processing. The CA is processing your order, please wait. (1/30)
+[Fri Mar 20 07:53:02 AM CET 2026] Success
+[Fri Mar 20 07:53:02 AM CET 2026] Verifying: *.test2.nerdoza.studio
+[Fri Mar 20 07:53:02 AM CET 2026] Processing. The CA is processing your order, please wait. (1/30)
+[Fri Mar 20 07:53:05 AM CET 2026] Success
+[Fri Mar 20 07:53:05 AM CET 2026] Removing DNS records.
+[Fri Mar 20 07:53:05 AM CET 2026] Removing txt: ORgxxxxx for domain: test2.medynski.ovh
+[Fri Mar 20 07:53:05 AM CET 2026] Using OVH endpoint: ovh-eu
+[Fri Mar 20 07:53:05 AM CET 2026] Checking authentication
+[Fri Mar 20 07:53:06 AM CET 2026] Consumer key is ok.
+[Fri Mar 20 07:53:08 AM CET 2026] Successfully removed
+[Fri Mar 20 07:53:08 AM CET 2026] Removing txt: 3Dgxxxxx for domain: test2.medynski.ovh
+[Fri Mar 20 07:53:08 AM CET 2026] Using OVH endpoint: ovh-eu
+[Fri Mar 20 07:53:08 AM CET 2026] Checking authentication
+[Fri Mar 20 07:53:08 AM CET 2026] Consumer key is ok.
+[Fri Mar 20 07:53:10 AM CET 2026] Successfully removed
+[Fri Mar 20 07:53:10 AM CET 2026] Verification finished, beginning signing.
+[Fri Mar 20 07:53:10 AM CET 2026] Let's finalize the order.
+[Fri Mar 20 07:53:10 AM CET 2026] Le_OrderFinalize='https://acme.zerossl.com/v2/DV90/order/xxxxx/finalize'
+[Fri Mar 20 07:53:10 AM CET 2026] Order status is 'processing', let's sleep and retry.
+[Fri Mar 20 07:53:10 AM CET 2026] Sleeping for 15 seconds then retrying
+[Fri Mar 20 07:53:26 AM CET 2026] Polling order status: https://acme.zerossl.com/v2/DV90/order/xxxxx
+[Fri Mar 20 07:53:27 AM CET 2026] Downloading cert.
+[Fri Mar 20 07:53:27 AM CET 2026] Le_LinkCert='https://acme.zerossl.com/v2/DV90/cert/xxxxx'
+[Fri Mar 20 07:53:27 AM CET 2026] Cert success.
+-----BEGIN CERTIFICATE-----
+MIIEG...
+-----END CERTIFICATE-----
+[Fri Mar 20 07:53:27 AM CET 2026] Your cert is in: /home/user/.acme.sh/test2.nerdoza.studio_ecc/test2.nerdoza.studio.cer
+[Fri Mar 20 07:53:27 AM CET 2026] Your cert key is in: /home/user/.acme.sh/test2.nerdoza.studio_ecc/test2.nerdoza.studio.key
+[Fri Mar 20 07:53:27 AM CET 2026] The intermediate CA cert is in: /home/user/.acme.sh/test2.nerdoza.studio_ecc/ca.cer
+[Fri Mar 20 07:53:27 AM CET 2026] And the full-chain cert is in: /home/user/.acme.sh/test2.nerdoza.studio_ecc/fullchain.cer
+</code></pre>
+<h2 id="prywatne-pki-z-wykorzystaniem-hashicorp-vault">Prywatne PKI z wykorzystaniem HashiCorp Vault</h2>
+<p>Do przetestowania pozostał jedynie temat prywatnego <code>PKI</code> z <code>ACME</code>. Skorzystałem z <a href="https://www.hashicorp.com/en/products/vault">HashiCorp Vault</a> do zbudowania własnego Certificate Authority.</p>
+<p>Zestawienie środowiska testowego jest całkiem <a href="https://developer.hashicorp.com/vault/tutorials/pki/pki-engine">dobrze opisane na stronie projektu</a>. Użyłem instalacji w <code>dockerze</code>.</p>
+<ul>
+<li>uruchomienie serwera<br>
+  <code>docker run -it --rm --cap-add=IPC_LOCK \
+    -e 'VAULT_LOCAL_CONFIG={"storage": {"file": {"path": "/vault/file"}}, "listener": [{"tcp": { "address": "0.0.0.0:8201","tls_disable": true}}], "default_lease_ttl": "168h", "max_lease_ttl": "720h", "ui": true}' \
+    -p 8201:8201 hashicorp/vault server</code></li>
+<li>
+<p>konfiguracja <a href="https://developer.hashicorp.com/vault/tutorials/pki/pki-engine#step-1-generate-root-certificate-authority">root CA</a> (mount: <code>pki/</code>)<br>
+<br />
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2026-03-15-47-day-certs/vault-root.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/vault-root.png' alt='Vault Root CA' ></a>
+  <figcaption>Vault Root CA</figcaption>
+</figure></p>
+</li>
+<li>
+<p>konfiguracja <a href="https://developer.hashicorp.com/vault/tutorials/pki/pki-engine#step-2-generate-intermediate-ca">intermediate CA</a> (mount: <code>pki_int/</code>)<br>
+<br />
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2026-03-15-47-day-certs/vault-subca.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/vault-subca.png' alt='Vault Intermediate CA' ></a>
+  <figcaption>Vault Intermediate CA</figcaption>
+</figure></p>
+</li>
+<li>
+<p>ustawienie <a href="https://developer.hashicorp.com/vault/tutorials/pki/pki-engine#step-3-create-a-role">roli</a> (swoją nazwałem: <code>medynski-dot-ovh</code>)<br>
+<br />
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2026-03-15-47-day-certs/vault-subca-role.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/vault-subca-role.png' alt='Vault IntCA Role' ></a>
+  <figcaption>Vault IntCA Role</figcaption>
+</figure>
+</p>
+</li>
+</ul>
+<p>Następnie trzeba skonfigurować <code>ACME</code> dla <code>pki_int/</code>. Kroki opisane są w <a href="https://developer.hashicorp.com/vault/api-docs/secret/pki/issuance#acme-certificate-issuance">dokumentacji Vault</a>. Wszystkie opcje wyklikałem zgodnie z instrukcją z <code>GUI</code>, poza ustawieniem nagłówków. Te ustawiłem bezpośrednio w kontenerze vault.</p>
+<p>Podczas konfiguracji <code>ACME</code> musiałem podać Cluster Endpoint.</p>
+<pre><code class="language-text"># vault CLI
+&gt; vault write pki_int/config/acme enabled=true
+
+Error writing to: pki_int/config/acme.
+URL: /v1/pki_int/config/acme
+Code: 500
+Errors:
+  1 error occurred:
+    * ACME feature requires local cluster 'path' field configuration to be set
+</code></pre>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2026-03-15-47-day-certs/vault-cluster-path.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/vault-cluster-path.png' alt='Vault pki configuration' ></a>
+  <figcaption>Vault pki configuration</figcaption>
+</figure>
+
+<pre><code class="language-bash"># switch to container shell
+docker exec -it vault-acme /bin/sh
+
+# set vault addr (plain HTTP)
+export VAULT_ADDR=http://127.0.0.1:8201
+
+# login
+vault login
+
+# tune pki_int
+vault secrets tune \
+  -allowed-response-headers=Location \
+  -allowed-response-headers=Replay-Nonce \
+  -allowed-response-headers=Link \
+  pki_int/
+</code></pre>
+<p>Bez ustawienia nagłówków <code>acme.sh</code> protestował poniższym błędem.</p>
+<pre><code class="language-text">[Sat Mar 21 10:36:25 AM CET 2026] Using CA: http://172.16.16.21:8201/v1/pki_int/acme/directory
+[Sat Mar 21 10:36:25 AM CET 2026] Account key creation OK.
+[Sat Mar 21 10:36:25 AM CET 2026] Registering account: http://172.16.16.21:8201/v1/pki_int/acme/directory
+[Sat Mar 21 10:36:25 AM CET 2026] Please refer to https://curl.haxx.se/libcurl/c/libcurl-errors.html for error code: 7
+[Sat Mar 21 10:36:25 AM CET 2026] Please refer to https://curl.haxx.se/libcurl/c/libcurl-errors.html for error code: 7
+[Sat Mar 21 10:36:25 AM CET 2026] Could not get nonce, let's try again.
+</code></pre>
+<p>Żeby skorzystać z prywatnego wystawcy certów wystarczy podać dodatkowy parametr <code>--server</code>.</p>
+<pre><code class="language-bash"># sleep added to manually check DNS zone in OVH admin panel
+# @see https://github.com/acmesh-official/acme.sh/wiki/Options-and-Params
+acme.sh --issue --dns dns_ovh --dnssleep 60 -d vault-test.medynski.ovh --server http://172.16.16.21:8201/v1/pki_int/acme/directory --force
+
+[Sat Mar 21 10:38:38 AM CET 2026] Using CA: http://172.16.16.21:8201/v1/pki_int/acme/directory
+[Sat Mar 21 10:38:38 AM CET 2026] Registering account: http://172.16.16.21:8201/v1/pki_int/acme/directory
+[Sat Mar 21 10:38:39 AM CET 2026] Registered
+[Sat Mar 21 10:38:39 AM CET 2026] ACCOUNT_THUMBPRINT='g7iP8xxxxx'
+[Sat Mar 21 10:38:39 AM CET 2026] Creating domain key
+[Sat Mar 21 10:38:39 AM CET 2026] The domain key is here: /home/user/.acme.sh/vault-test.medynski.ovh_ecc/vault-test.medynski.ovh.key
+[Sat Mar 21 10:38:39 AM CET 2026] Single domain='vault-test.medynski.ovh'
+[Sat Mar 21 10:38:39 AM CET 2026] Getting webroot for domain='vault-test.medynski.ovh'
+[Sat Mar 21 10:38:39 AM CET 2026] Adding TXT value: KbMxxxxx for domain: _acme-challenge.vault-test.medynski.ovh
+[Sat Mar 21 10:38:39 AM CET 2026] Using OVH endpoint: ovh-eu
+[Sat Mar 21 10:38:39 AM CET 2026] Checking authentication
+[Sat Mar 21 10:38:40 AM CET 2026] Consumer key is ok.
+[Sat Mar 21 10:38:41 AM CET 2026] Adding record
+[Sat Mar 21 10:38:41 AM CET 2026] Added, sleep 10 seconds.
+[Sat Mar 21 10:38:52 AM CET 2026] The TXT record has been successfully added.
+[Sat Mar 21 10:38:52 AM CET 2026] Sleeping for 60 seconds to wait for the the TXT records to take effect
+[Sat Mar 21 10:39:54 AM CET 2026] Verifying: vault-test.medynski.ovh
+[Sat Mar 21 10:39:54 AM CET 2026] Processing. The CA is processing your order, please wait. (1/30)
+[Sat Mar 21 10:39:57 AM CET 2026] Success
+[Sat Mar 21 10:39:57 AM CET 2026] Removing DNS records.
+[Sat Mar 21 10:39:57 AM CET 2026] Removing txt: KbMxxxxx for domain: _acme-challenge.vault-test.medynski.ovh
+[Sat Mar 21 10:39:57 AM CET 2026] Using OVH endpoint: ovh-eu
+[Sat Mar 21 10:39:57 AM CET 2026] Checking authentication
+[Sat Mar 21 10:39:57 AM CET 2026] Consumer key is ok.
+[Sat Mar 21 10:40:00 AM CET 2026] Successfully removed
+[Sat Mar 21 10:40:00 AM CET 2026] Verification finished, beginning signing.
+[Sat Mar 21 10:40:00 AM CET 2026] Let's finalize the order.
+[Sat Mar 21 10:40:00 AM CET 2026] Le_OrderFinalize='http://172.16.16.21:8201/v1/pki_int/acme/order/ff1115b1-xxxxx/finalize'
+[Sat Mar 21 10:40:00 AM CET 2026] Downloading cert.
+[Sat Mar 21 10:40:00 AM CET 2026] Le_LinkCert='http://172.16.16.21:8201/v1/pki_int/acme/order/ff1115b1-xxxxx/cert'
+[Sat Mar 21 10:40:00 AM CET 2026] Cert success.
+-----BEGIN CERTIFICATE-----
+MIIEL...
+-----END CERTIFICATE-----
+[Sat Mar 21 10:40:00 AM CET 2026] Your cert is in: /home/user/.acme.sh/vault-test.medynski.ovh_ecc/vault-test.medynski.ovh.cer
+[Sat Mar 21 10:40:00 AM CET 2026] Your cert key is in: /home/user/.acme.sh/vault-test.medynski.ovh_ecc/vault-test.medynski.ovh.key
+[Sat Mar 21 10:40:00 AM CET 2026] The intermediate CA cert is in: /home/user/.acme.sh/vault-test.medynski.ovh_ecc/ca.cer
+[Sat Mar 21 10:40:00 AM CET 2026] And the full-chain cert is in: /home/user/.acme.sh/vault-test.medynski.ovh_ecc/fullchain.cer
+</code></pre>
+<p>Widać, że wszystko działa, jak należy. W <code>OVHcloud</code> pojawił się wpis <code>TXT</code>.</p>
+<p>![OVHcloud DNS](/img/2026-03-15-47-day-certs/vault-acme-1.png</p>
+<p>Wystawiony certyfikat jest prawidłowy. Wpis pojawił się w Vaulcie.</p>
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2026-03-15-47-day-certs/vault-cert-1.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/vault-cert-1.png' alt='Vault cert' ></a>
+  <figcaption>Vault cert</figcaption>
+</figure>
+
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2026-03-15-47-day-certs/vault-cert-2.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/vault-cert-2.png' alt='Vault cert' ></a>
+  <figcaption>Vault cert</figcaption>
+</figure>
+
+<figure class='figure-image'>
+  <a class="glightbox" href="/img/2026-03-15-47-day-certs/vault-cert-3.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/vault-cert-3.png' alt='Vault cert' ></a>
+  <figcaption>Vault cert</figcaption>
+</figure>
+
+<h2 id="lokalny-dns">Lokalny DNS</h2>
 <blockquote>
 <p>TODO</p>
+<p>Zrobić test z lokalnym DNS'em opartym na <a href="https://hub.docker.com/r/powerdns/pdns-auth-51">PowerDNS</a>.
+<code>acme.sh</code> wspiera <a href="https://github.com/acmesh-official/acme.sh/blob/master/dnsapi/dns_pdns.sh">PowerDNS API</a>.
+<code>HashiCorp Vault</code> wspiera custom resolver.</p>
 </blockquote>
+<h2 id="automatyzacja">Automatyzacja</h2>
+<blockquote>
+<p>TODO</p>
+<p>Zaprojektować automat zarządzany przez Ansible / Jenkins.</p>
+</blockquote>
+<h2 id="linki">Linki</h2>
+<ul>
+<li><a href="https://letsencrypt.org/docs/challenge-types/">https://letsencrypt.org/docs/challenge-types/</a></li>
+<li><a href="https://github.com/acmesh-official/acme.sh">https://github.com/acmesh-official/acme.sh</a></li>
+<li><a href="https://eu.api.ovh.com/console/">https://eu.api.ovh.com/console/</a></li>
+<li><a href="https://www.hashicorp.com/en/products/vault">https://www.hashicorp.com/en/products/vault</a></li>
+<li><a href="https://developer.hashicorp.com/vault/docs/secrets/pki">https://developer.hashicorp.com/vault/docs/secrets/pki</a></li>
+<li><a href="https://doc.powerdns.com/authoritative/installation.html">https://doc.powerdns.com/authoritative/installation.html</a></li>
+</ul>
               
             </div>
           </div><footer>
