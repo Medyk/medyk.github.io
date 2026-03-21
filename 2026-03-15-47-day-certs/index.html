@@ -563,36 +563,42 @@ MIIEG...
 <p>Do przetestowania pozostał jedynie temat prywatnego <code>PKI</code> z <code>ACME</code>. Skorzystałem z <a href="https://www.hashicorp.com/en/products/vault">HashiCorp Vault</a> do zbudowania własnego Certificate Authority.</p>
 <p>Zestawienie środowiska testowego jest całkiem <a href="https://developer.hashicorp.com/vault/tutorials/pki/pki-engine">dobrze opisane na stronie projektu</a>. Użyłem instalacji w <code>dockerze</code>.</p>
 <ul>
-<li>uruchomienie serwera<br>
-  <code>docker run -it --rm --cap-add=IPC_LOCK \
-    -e 'VAULT_LOCAL_CONFIG={"storage": {"file": {"path": "/vault/file"}}, "listener": [{"tcp": { "address": "0.0.0.0:8201","tls_disable": true}}], "default_lease_ttl": "168h", "max_lease_ttl": "720h", "ui": true}' \
-    -p 8201:8201 hashicorp/vault server</code></li>
 <li>
-<p>konfiguracja <a href="https://developer.hashicorp.com/vault/tutorials/pki/pki-engine#step-1-generate-root-certificate-authority">root CA</a> (mount: <code>pki/</code>)<br>
-<br />
-<figure class='figure-image'>
+<p>uruchomienie serwera</p>
+<pre><code>docker run -it --rm --cap-add=IPC_LOCK \
+  -e 'VAULT_LOCAL_CONFIG={"storage": {"file": {"path": "/vault/file"}}, "listener": [{"tcp": { "address": "0.0.0.0:8201","tls_disable": true}}], "default_lease_ttl": "168h", "max_lease_ttl": "720h", "ui": true}' \
+  -p 8201:8201 hashicorp/vault server
+</code></pre>
+</li>
+<li>
+<p>konfiguracja <a href="https://developer.hashicorp.com/vault/tutorials/pki/pki-engine#step-1-generate-root-certificate-authority">root CA</a> (mount: <code>pki/</code>)</p>
+<p><figure class='figure-image'>
   <a class="glightbox" href="/img/2026-03-15-47-day-certs/vault-root.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/vault-root.png' alt='Vault Root CA' ></a>
-  <figcaption>Vault Root CA</figcaption>
-</figure></p>
-</li>
-<li>
-<p>konfiguracja <a href="https://developer.hashicorp.com/vault/tutorials/pki/pki-engine#step-2-generate-intermediate-ca">intermediate CA</a> (mount: <code>pki_int/</code>)<br>
 <br />
-<figure class='figure-image'>
-  <a class="glightbox" href="/img/2026-03-15-47-day-certs/vault-subca.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/vault-subca.png' alt='Vault Intermediate CA' ></a>
-  <figcaption>Vault Intermediate CA</figcaption>
-</figure></p>
-</li>
-<li>
-<p>ustawienie <a href="https://developer.hashicorp.com/vault/tutorials/pki/pki-engine#step-3-create-a-role">roli</a> (swoją nazwałem: <code>medynski-dot-ovh</code>)<br>
-<br />
-<figure class='figure-image'>
-  <a class="glightbox" href="/img/2026-03-15-47-day-certs/vault-subca-role.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/vault-subca-role.png' alt='Vault IntCA Role' ></a>
-  <figcaption>Vault IntCA Role</figcaption>
-</figure>
-</p>
+<figcaption>Vault Root CA</figcaption></p>
 </li>
 </ul>
+</figure>
+<ul>
+<li>
+<p>konfiguracja <a href="https://developer.hashicorp.com/vault/tutorials/pki/pki-engine#step-2-generate-intermediate-ca">intermediate CA</a> (mount: <code>pki_int/</code>)</p>
+<p><figure class='figure-image'>
+  <a class="glightbox" href="/img/2026-03-15-47-day-certs/vault-subca.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/vault-subca.png' alt='Vault Intermediate CA' ></a>
+<br />
+<figcaption>Vault Intermediate CA</figcaption></p>
+</li>
+</ul>
+</figure>
+<ul>
+<li>
+<p>ustawienie <a href="https://developer.hashicorp.com/vault/tutorials/pki/pki-engine#step-3-create-a-role">roli</a> (swoją nazwałem: <code>medynski-dot-ovh</code>)</p>
+<p><figure class='figure-image'>
+  <a class="glightbox" href="/img/2026-03-15-47-day-certs/vault-subca-role.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/vault-subca-role.png' alt='Vault IntCA Role' ></a>
+<br />
+<figcaption>Vault IntCA Role</figcaption></p>
+</li>
+</ul>
+</figure>
 <p>Następnie trzeba skonfigurować <code>ACME</code> dla <code>pki_int/</code>. Kroki opisane są w <a href="https://developer.hashicorp.com/vault/api-docs/secret/pki/issuance#acme-certificate-issuance">dokumentacji Vault</a>. Wszystkie opcje wyklikałem zgodnie z instrukcją z <code>GUI</code>, poza ustawieniem nagłówków. Te ustawiłem bezpośrednio w kontenerze vault.</p>
 <p>Podczas konfiguracji <code>ACME</code> musiałem podać Cluster Endpoint.</p>
 <pre><code class="language-text"># vault CLI
@@ -637,6 +643,7 @@ vault secrets tune \
 <p>Żeby skorzystać z prywatnego wystawcy certów wystarczy podać dodatkowy parametr <code>--server</code>.</p>
 <pre><code class="language-bash"># sleep added to manually check DNS zone in OVH admin panel
 # @see https://github.com/acmesh-official/acme.sh/wiki/Options-and-Params
+# @see https://github.com/acmesh-official/acme.sh/wiki/Server
 acme.sh --issue --dns dns_ovh --dnssleep 60 -d vault-test.medynski.ovh --server http://172.16.16.21:8201/v1/pki_int/acme/directory --force
 
 [Sat Mar 21 10:38:38 AM CET 2026] Using CA: http://172.16.16.21:8201/v1/pki_int/acme/directory
