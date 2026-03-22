@@ -1,154 +1,147 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+
+<html class="writer-html5" lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Maciej Medyński" /><link rel="canonical" href="https://blog.nerdoza.studio/2026-03-15-47-day-certs/" />
-      <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>2026.03.15 - 47-dniowe certyfikaty - Nerdoza Studio</title>
-    <link rel="stylesheet" href="../css/theme.css" />
-    <link rel="stylesheet" href="../css/theme_extra.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
-        <link href="../css/extra.css" rel="stylesheet" />
-    
-      <script>
+<meta charset="utf-8"/>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="Maciej Medyński" name="author"/><link href="https://blog.nerdoza.studio/2026-03-15-47-day-certs/" rel="canonical"/>
+<link href="../img/favicon.ico" rel="shortcut icon"/>
+<title>2026.03.15 - 47-dniowe certyfikaty - Nerdoza Studio</title>
+<link href="../css/theme.css" rel="stylesheet"/>
+<link href="../css/theme_extra.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" rel="stylesheet"/>
+<link href="../css/extra.css" rel="stylesheet"/>
+<script>
         // Current page data
         var mkdocs_page_name = "2026.03.15 - 47-dniowe certyfikaty";
         var mkdocs_page_input_path = "2026-03-15-47-day-certs.md";
         var mkdocs_page_url = "/2026-03-15-47-day-certs/";
       </script>
-    
-    <script src="../js/jquery-3.6.0.min.js" defer></script>
-    <!--[if lt IE 9]>
+<script defer="" src="../js/jquery-3.6.0.min.js"></script>
+<!--[if lt IE 9]>
       <script src="../js/html5shiv.min.js"></script>
     <![endif]-->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
-      <script>hljs.initHighlightingOnLoad();</script> 
- <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
     html.glightbox-open { overflow: initial; height: 100%; }
     .gslide-title { margin-top: 0px; user-select: text; }
     .gslide-desc { color: #666; user-select: text; }
     .gslide-image img { background: white; }</style> <script src="../assets/javascripts/glightbox.min.js"></script></head>
-
 <body class="wy-body-for-nav" role="document">
-
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
-    <div class="wy-side-scroll">
-      <div class="wy-side-nav-search">
-          <a href=".." class="icon icon-home"> Nerdoza Studio
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side stickynav" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href=".."> Nerdoza Studio
         </a><div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
-      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
-  </form>
+<form action="../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input name="q" placeholder="Search docs" title="Type search term here" type="text"/>
+</form>
 </div>
-      </div>
-
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="./">2026.03.15 - 47-dniowe certyfikaty</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#intro">Intro</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#co-sie-zmieni">Co się zmieni?</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#czas-zycia-certyfikatu">Czas życia certyfikatu</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#walidacja-wasciciela-domeny">Walidacja właściciela domeny</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#analiza-i-wybor-rozwiazania">Analiza i wybór rozwiązania</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#instalacja">Instalacja</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#test-http-01">Test http-01</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#test-dns-01">Test dns-01</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#generowanie-klucza-api-ovhcloud">Generowanie klucza API OVHcloud</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#ustawienie-zmiennych">Ustawienie zmiennych</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#generowanie-certyfikatu">Generowanie certyfikatu</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#test-dns-01-z-wykorzystaniem-aliasow">Test dns-01 z wykorzystaniem aliasów</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#konfiguracja-cloudflare">Konfiguracja CloudFlare</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#wystawienie-certyfikatu-z-opcja-challenge-alias">Wystawienie certyfikatu z opcją --challenge-alias</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#wystawienie-certyfikatu-z-opcja-domain-alias">Wystawienie certyfikatu z opcją --domain-alias</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#prywatne-pki-z-wykorzystaniem-hashicorp-vault">Prywatne PKI z wykorzystaniem HashiCorp Vault</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#publiczny-dostep">Publiczny dostęp</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#wymuszenie-eab">Wymuszenie EAB</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#lokalny-dns">Lokalny DNS</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#automatyzacja">Automatyzacja</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#linki">Linki</a>
-    </li>
-    </ul>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../2025-06-29-proxmox-fix/">2025.06.29 - Proxmox Fix</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../2025-05-09-synology-truenas/">2025.05.09 - Synology DS414 → TrueNAS</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../2024-05-17-factorio-stats/">2024.05.17 - Factorio Stats</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../2024-04-27-factorio/">2024.04.27 - Factorio Headless Server</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../2022-12-25-ssh-certificates/">2022.12.25 - SSH Certificates</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../2022-11-12-wireguard/">2022.11.12 - Wireguard</a>
-                </li>
-              </ul>
-      </div>
-    </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="..">Nerdoza Studio</a>
-        
-      </nav>
-      <div class="wy-nav-content">
-        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
-  <ul class="wy-breadcrumbs">
-    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
-      <li>2026.03.15 - 47-dniowe certyfikaty</li>
-    <li class="wy-breadcrumbs-aside">
-    </li>
-  </ul>
-  <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-            <div class="section" itemprop="articleBody">
-              
-                <h1 id="20260315-47-dniowe-certyfikaty">2026.03.15 - 47-dniowe certyfikaty</h1>
+<div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal current" href="./">2026.03.15 - 47-dniowe certyfikaty</a>
+<ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="#intro">Intro</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#co-sie-zmieni">Co się zmieni?</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#czas-zycia-certyfikatu">Czas życia certyfikatu</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#walidacja-wasciciela-domeny">Walidacja właściciela domeny</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#analiza-i-wybor-rozwiazania">Analiza i wybór rozwiązania</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#instalacja">Instalacja</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#test-http-01">Test http-01</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#test-dns-01">Test dns-01</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#generowanie-klucza-api-ovhcloud">Generowanie klucza API OVHcloud</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ustawienie-zmiennych">Ustawienie zmiennych</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#generowanie-certyfikatu">Generowanie certyfikatu</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#test-dns-01-z-wykorzystaniem-aliasow">Test dns-01 z wykorzystaniem aliasów</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#konfiguracja-cloudflare">Konfiguracja CloudFlare</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#wystawienie-certyfikatu-z-opcja-challenge-alias">Wystawienie certyfikatu z opcją --challenge-alias</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#wystawienie-certyfikatu-z-opcja-domain-alias">Wystawienie certyfikatu z opcją --domain-alias</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#prywatne-pki-z-wykorzystaniem-hashicorp-vault">Prywatne PKI z wykorzystaniem HashiCorp Vault</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#publiczny-dostep">Publiczny dostęp</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#wymuszenie-eab">Wymuszenie EAB</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#lokalny-dns">Lokalny DNS</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#automatyzacja">Automatyzacja</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#linki">Linki</a>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../2025-06-29-proxmox-fix/">2025.06.29 - Proxmox Fix</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../2025-05-09-synology-truenas/">2025.05.09 - Synology DS414 → TrueNAS</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../2024-05-17-factorio-stats/">2024.05.17 - Factorio Stats</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../2024-04-27-factorio/">2024.04.27 - Factorio Headless Server</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../2022-12-25-ssh-certificates/">2022.12.25 - SSH Certificates</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../2022-11-12-wireguard/">2022.11.12 - Wireguard</a>
+</li>
+</ul>
+</div>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
+<nav aria-label="Mobile navigation menu" class="wy-nav-top" role="navigation">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="..">Nerdoza Studio</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content"><div aria-label="breadcrumbs navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a alt="Docs" class="icon icon-home" href=".."></a> »</li>
+<li>2026.03.15 - 47-dniowe certyfikaty</li>
+<li class="wy-breadcrumbs-aside">
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div class="section" itemprop="articleBody">
+<h1 id="20260315-47-dniowe-certyfikaty">2026.03.15 - 47-dniowe certyfikaty</h1>
 <h2 id="intro">Intro</h2>
 <p>Z wejściem nowych czasów trwania certyfikatów oraz walidacji właścicieli domen postanowiłem przyjrzeć się automatyzacji całego procesu obsługi certów.</p>
 <h2 id="co-sie-zmieni">Co się zmieni?</h2>
@@ -189,11 +182,10 @@
 </tbody>
 </table>
 <p>Certum wykazało się nadgorliwością i u nich certyfikaty są krótsze już od 13 marca (w końcu piątek 13-go) :)</p>
-<figure class='figure-image'>
-  <a class="glightbox" href="/img/2026-03-15-47-day-certs/certum-info.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/certum-info.png' alt='Certum SSL Info' ></a>
-  <figcaption>Certum SSL Info</figcaption>
+<figure class="figure-image">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="/img/2026-03-15-47-day-certs/certum-info.png"><img alt="Certum SSL Info" src="/img/2026-03-15-47-day-certs/certum-info.png"/></a>
+<figcaption>Certum SSL Info</figcaption>
 </figure>
-
 <h3 id="walidacja-wasciciela-domeny">Walidacja właściciela domeny</h3>
 <p>Drugą zmianą jest walidacja właściciela domeny. Aktualnie wystawca certyfikatów (CA) po walidacji właściciela przechowywał informacje ponad rok bez wymogu ponownej weryfikacji. Powodowało to problemy, jeśli domena zmieniła właściciela, stary mógł nadal wystawić sobie certyfikat :)</p>
 <p><em>4.2.1 Performing identification and authentication functions</em> (<a href="https://cabforum.org/2025/04/11/ballot-sc081v3-introduce-schedule-of-reducing-validity-and-data-reuse-periods/BR-SC081v3.pdf#%5B%7B%22num%22%3A125%2C%22gen%22%3A0%7D%2C%7B%22name%22%3A%22XYZ%22%7D%2C69%2C275%2C0%5D">strona 61</a>)</p>
@@ -311,42 +303,38 @@ MIIEADC...
 </ul>
 <h3 id="generowanie-klucza-api-ovhcloud">Generowanie klucza API OVHcloud</h3>
 <p>Po zalogowaniu się w panelu OVH przeszedłem na stronę do zarządzania kluczami API.</p>
-<figure class='figure-image'>
-  <a class="glightbox" href="/img/2026-03-15-47-day-certs/ovh-1.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/ovh-1.png' alt='OVH API Keys' ></a>
-  <figcaption>OVH API Keys</figcaption>
+<figure class="figure-image">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="/img/2026-03-15-47-day-certs/ovh-1.png"><img alt="OVH API Keys" src="/img/2026-03-15-47-day-certs/ovh-1.png"/></a>
+<figcaption>OVH API Keys</figcaption>
 </figure>
-
-<figure class='figure-image'>
-  <a class="glightbox" href="/img/2026-03-15-47-day-certs/ovh-2.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/ovh-2.png' alt='OVH API Keys' ></a>
-  <figcaption>OVH API Keys</figcaption>
+<figure class="figure-image">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="/img/2026-03-15-47-day-certs/ovh-2.png"><img alt="OVH API Keys" src="/img/2026-03-15-47-day-certs/ovh-2.png"/></a>
+<figcaption>OVH API Keys</figcaption>
 </figure>
-
 <p>Dodałem uprawnienia do zarządzania strefą <code>medynski.ovh</code>. Dodatkowo ograniczyłem użycie klucza do wybranego zakresu IP.</p>
-<figure class='figure-image'>
-  <a class="glightbox" href="/img/2026-03-15-47-day-certs/ovh-3.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/ovh-3.png' alt='OVH API Keys' ></a>
-  <figcaption>OVH API Keys</figcaption>
+<figure class="figure-image">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="/img/2026-03-15-47-day-certs/ovh-3.png"><img alt="OVH API Keys" src="/img/2026-03-15-47-day-certs/ovh-3.png"/></a>
+<figcaption>OVH API Keys</figcaption>
 </figure>
-
 <p>Można też <a href="https://api.ovh.com/createToken/?GET=/auth/time&amp;GET=/domain/zone/example.com&amp;GET=/domain/zone/example.com/*&amp;POST=/domain/zone/example.com/*&amp;PUT=/domain/zone/example.com/*&amp;DELETE=/domain/zone/example.com/record/*">skorzystać z linku</a>, który od razu ustawi wymagane uprawnienia w formularzu.</p>
 <p>Po wciśnięciu przycisku <code>Create</code> dostaniemy wszystkie wymagane wartości dla <code>dns_api</code>.</p>
-<figure class='figure-image'>
-  <a class="glightbox" href="/img/2026-03-15-47-day-certs/ovh-4.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/ovh-4.png' alt='OVH API Keys' ></a>
-  <figcaption>OVH API Keys</figcaption>
+<figure class="figure-image">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="/img/2026-03-15-47-day-certs/ovh-4.png"><img alt="OVH API Keys" src="/img/2026-03-15-47-day-certs/ovh-4.png"/></a>
+<figcaption>OVH API Keys</figcaption>
 </figure>
-
 <h3 id="ustawienie-zmiennych">Ustawienie zmiennych</h3>
 <p>Zgodnie z opisem <a href="https://github.com/acmesh-official/acme.sh/blob/master/dnsapi/dns_ovh.sh">dnsapi/dns_ovh.sh</a> ustawiłem zmienne środowiskowe.</p>
 <pre><code class="language-bash"># endpoint (eu is default)
 export export OVH_END_POINT=ovh-eu
 
 # application key
-export OVH_AK=&quot;your application key&quot;
+export OVH_AK="your application key"
 
 # application secret
-export OVH_AS=&quot;your application secret&quot;
+export OVH_AS="your application secret"
 
 # consumer key
-export OVH_CK=&quot;your consumer key&quot;
+export OVH_CK="your consumer key"
 </code></pre>
 <h3 id="generowanie-certyfikatu">Generowanie certyfikatu</h3>
 <p>Wygenerowałem certyfikat <code>wildcard</code> korzystając z weryfikacji domeny via API OVHcloud.</p>
@@ -408,38 +396,33 @@ MIIED...
 [Thu Mar 19 01:46:48 AM CET 2026] And the full-chain cert is in: /home/user/.acme.sh/blog.medynski.ovh_ecc/fullchain.cer
 </code></pre>
 <p>W trakcie działania skryptu sprawdziłem wpisy w strefie <code>medynski.ovh</code>.</p>
-<figure class='figure-image'>
-  <a class="glightbox" href="/img/2026-03-15-47-day-certs/ovh-5.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/ovh-5.png' alt='OVH DNS Zone' ></a>
-  <figcaption>OVH DNS Zone</figcaption>
+<figure class="figure-image">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="/img/2026-03-15-47-day-certs/ovh-5.png"><img alt="OVH DNS Zone" src="/img/2026-03-15-47-day-certs/ovh-5.png"/></a>
+<figcaption>OVH DNS Zone</figcaption>
 </figure>
-
 <p>Po wygenerowaniu certyfikatu sprawdziłem szczegóły w <a href="https://keystore-explorer.org/features.html">KeyStore Explorer</a>. Wygląda cudownie :)</p>
-<figure class='figure-image'>
-  <a class="glightbox" href="/img/2026-03-15-47-day-certs/keystore-explorer.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/keystore-explorer.png' alt='Cert Details' ></a>
-  <figcaption>Cert Details</figcaption>
+<figure class="figure-image">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="/img/2026-03-15-47-day-certs/keystore-explorer.png"><img alt="Cert Details" src="/img/2026-03-15-47-day-certs/keystore-explorer.png"/></a>
+<figcaption>Cert Details</figcaption>
 </figure>
-
-<figure class='figure-image'>
-  <a class="glightbox" href="/img/2026-03-15-47-day-certs/keystore-explorer-2.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/keystore-explorer-2.png' alt='Cert SANs' ></a>
-  <figcaption>Cert SANs</figcaption>
+<figure class="figure-image">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="/img/2026-03-15-47-day-certs/keystore-explorer-2.png"><img alt="Cert SANs" src="/img/2026-03-15-47-day-certs/keystore-explorer-2.png"/></a>
+<figcaption>Cert SANs</figcaption>
 </figure>
-
 <h2 id="test-dns-01-z-wykorzystaniem-aliasow">Test dns-01 z wykorzystaniem aliasów</h2>
 <p>Działanie aliasów jest dobrze opisane na <a href="https://github.com/acmesh-official/acme.sh/wiki/DNS-alias-mode">Wiki projektu</a> <code>acme.sh</code> oraz na <a href="https://letsencrypt.org/docs/challenge-types/#dns-01-challenge">stronach Let's Encrypt</a>.</p>
 <h3 id="konfiguracja-cloudflare">Konfiguracja CloudFlare</h3>
 <p>Pierwszym krokiem jest ustawienie aliasów w <code>CloudFlare</code> dla domeny <code>nerdoza.studio</code>. Po zalogowaniu się do panelu administratora dodałem alias dla <code>ACME</code>. Można to zrobić na dwa sposoby, więc przetestuje obydwa. Poniżej konfiguracja DNS'ów w <code>CloudFlare</code>.</p>
-<figure class='figure-image'>
-  <a class="glightbox" href="/img/2026-03-15-47-day-certs/cf-dns.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/cf-dns.png' alt='CloudFlare DNS Setup' ></a>
-  <figcaption>CloudFlare DNS Setup</figcaption>
+<figure class="figure-image">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="/img/2026-03-15-47-day-certs/cf-dns.png"><img alt="CloudFlare DNS Setup" src="/img/2026-03-15-47-day-certs/cf-dns.png"/></a>
+<figcaption>CloudFlare DNS Setup</figcaption>
 </figure>
-
 <h3 id="wystawienie-certyfikatu-z-opcja-challenge-alias">Wystawienie certyfikatu z opcją <code>--challenge-alias</code></h3>
 <p>Pierwszy test korzysta z wpisu DNS <code>_acme-challenge.test1 CNAME _acme-challenge.test1.medynski.ovh.</code>. Po uruchomieniu komendy widać, że DNS'y ustawiane są w <code>OVHcloud</code>, a weryfikacja zachodzi dla domeny <code>nerdoza.studio</code>. Works as intended :)</p>
-<figure class='figure-image'>
-  <a class="glightbox" href="/img/2026-03-15-47-day-certs/ovh-challenge-alias.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/ovh-challenge-alias.png' alt='OVH challenge-alias' ></a>
-  <figcaption>OVH challenge-alias</figcaption>
+<figure class="figure-image">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="/img/2026-03-15-47-day-certs/ovh-challenge-alias.png"><img alt="OVH challenge-alias" src="/img/2026-03-15-47-day-certs/ovh-challenge-alias.png"/></a>
+<figcaption>OVH challenge-alias</figcaption>
 </figure>
-
 <pre><code class="language-bash"># sleep added to manually check DNS zone in OVH admin panel
 # @see https://github.com/acmesh-official/acme.sh/wiki/Options-and-Params
 acme.sh --issue --dns dns_ovh --dnssleep 60 --challenge-alias test1.medynski.ovh -d test1.nerdoza.studio -d *.test1.nerdoza.studio --force
@@ -501,11 +484,10 @@ MIIEG...
 </code></pre>
 <h3 id="wystawienie-certyfikatu-z-opcja-domain-alias">Wystawienie certyfikatu z opcją <code>--domain-alias</code></h3>
 <p>Drugi test korzysta z wpisu <code>_acme-challenge.test2 CNAME test2.medynski.ovh.</code>. Po uruchomieniu komendy ponownie widać, że DNS'y ustawiane są w <code>OVHcloud</code>, a weryfikacja zachodzi dla domeny <code>nerdoza.studio</code>. Tym razem widać, że skrypt nie dodaje prefixu <code>_acme-challenge</code> i używa CNAME as-is.</p>
-<figure class='figure-image'>
-  <a class="glightbox" href="/img/2026-03-15-47-day-certs/ovh-domain-alias.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/ovh-domain-alias.png' alt='OVH domain-alias' ></a>
-  <figcaption>OVH domain-alias</figcaption>
+<figure class="figure-image">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="/img/2026-03-15-47-day-certs/ovh-domain-alias.png"><img alt="OVH domain-alias" src="/img/2026-03-15-47-day-certs/ovh-domain-alias.png"/></a>
+<figcaption>OVH domain-alias</figcaption>
 </figure>
-
 <pre><code class="language-bash"># sleep added to manually check DNS zone in OVH admin panel
 # @see https://github.com/acmesh-official/acme.sh/wiki/Options-and-Params
 acme.sh --issue --dns dns_ovh --dnssleep 60 --domain-alias test2.medynski.ovh -d test2.nerdoza.studio -d *.test2.nerdoza.studio --force
@@ -579,33 +561,33 @@ MIIEG...
 </li>
 <li>
 <p>konfiguracja <a href="https://developer.hashicorp.com/vault/tutorials/pki/pki-engine#step-1-generate-root-certificate-authority">root CA</a> (mount: <code>pki/</code>)</p>
-<p><figure class='figure-image'>
-  <a class="glightbox" href="/img/2026-03-15-47-day-certs/vault-root.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/vault-root.png' alt='Vault Root CA' ></a>
-<br />
-<figcaption>Vault Root CA</figcaption></p>
+<p><figure class="figure-image">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="/img/2026-03-15-47-day-certs/vault-root.png"><img alt="Vault Root CA" src="/img/2026-03-15-47-day-certs/vault-root.png"/></a>
+<br/>
+<figcaption>Vault Root CA</figcaption></figure></p>
 </li>
 </ul>
-</figure>
+
 <ul>
 <li>
 <p>konfiguracja <a href="https://developer.hashicorp.com/vault/tutorials/pki/pki-engine#step-2-generate-intermediate-ca">intermediate CA</a> (mount: <code>pki_int/</code>)</p>
-<p><figure class='figure-image'>
-  <a class="glightbox" href="/img/2026-03-15-47-day-certs/vault-subca.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/vault-subca.png' alt='Vault Intermediate CA' ></a>
-<br />
-<figcaption>Vault Intermediate CA</figcaption></p>
+<p><figure class="figure-image">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="/img/2026-03-15-47-day-certs/vault-subca.png"><img alt="Vault Intermediate CA" src="/img/2026-03-15-47-day-certs/vault-subca.png"/></a>
+<br/>
+<figcaption>Vault Intermediate CA</figcaption></figure></p>
 </li>
 </ul>
-</figure>
+
 <ul>
 <li>
 <p>ustawienie <a href="https://developer.hashicorp.com/vault/tutorials/pki/pki-engine#step-3-create-a-role">roli</a> (swoją nazwałem: <code>medynski-dot-ovh</code>)</p>
-<p><figure class='figure-image'>
-  <a class="glightbox" href="/img/2026-03-15-47-day-certs/vault-subca-role.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/vault-subca-role.png' alt='Vault IntCA Role' ></a>
-<br />
-<figcaption>Vault IntCA Role</figcaption></p>
+<p><figure class="figure-image">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="/img/2026-03-15-47-day-certs/vault-subca-role.png"><img alt="Vault IntCA Role" src="/img/2026-03-15-47-day-certs/vault-subca-role.png"/></a>
+<br/>
+<figcaption>Vault IntCA Role</figcaption></figure></p>
 </li>
 </ul>
-</figure>
+
 <p>Następnie trzeba skonfigurować <code>ACME</code> dla <code>pki_int/</code>. Kroki opisane są w <a href="https://developer.hashicorp.com/vault/api-docs/secret/pki/issuance#acme-certificate-issuance">dokumentacji Vault</a>. Wszystkie opcje wyklikałem zgodnie z instrukcją z <code>GUI</code>, poza ustawieniem nagłówków. Te ustawiłem bezpośrednio w kontenerze vault.</p>
 <p>Podczas konfiguracji <code>ACME</code> musiałem podać Cluster Endpoint.</p>
 <pre><code class="language-text"># vault CLI
@@ -618,11 +600,10 @@ Errors:
   1 error occurred:
     * ACME feature requires local cluster 'path' field configuration to be set
 </code></pre>
-<figure class='figure-image'>
-  <a class="glightbox" href="/img/2026-03-15-47-day-certs/vault-cluster-path.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/vault-cluster-path.png' alt='Vault pki configuration' ></a>
-  <figcaption>Vault pki configuration</figcaption>
+<figure class="figure-image">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="/img/2026-03-15-47-day-certs/vault-cluster-path.png"><img alt="Vault pki configuration" src="/img/2026-03-15-47-day-certs/vault-cluster-path.png"/></a>
+<figcaption>Vault pki configuration</figcaption>
 </figure>
-
 <pre><code class="language-bash"># switch to container shell
 docker exec -it vault-acme /bin/sh
 
@@ -694,49 +675,43 @@ MIIEL...
 [Sat Mar 21 10:40:00 AM CET 2026] And the full-chain cert is in: /home/user/.acme.sh/vault-test.medynski.ovh_ecc/fullchain.cer
 </code></pre>
 <p>Widać, że wszystko działa, jak należy. W <code>OVHcloud</code> pojawił się wpis <code>TXT</code>.</p>
-<figure class='figure-image'>
-  <a class="glightbox" href="/img/2026-03-15-47-day-certs/vault-acme-1.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/vault-acme-1.png' alt='OVHcloud DNS' ></a>
-  <figcaption>OVHcloud DNS</figcaption>
+<figure class="figure-image">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="/img/2026-03-15-47-day-certs/vault-acme-1.png"><img alt="OVHcloud DNS" src="/img/2026-03-15-47-day-certs/vault-acme-1.png"/></a>
+<figcaption>OVHcloud DNS</figcaption>
 </figure>
-
 <p>Wystawiony certyfikat jest prawidłowy. Wpis pojawił się w Vaulcie.</p>
-<figure class='figure-image'>
-  <a class="glightbox" href="/img/2026-03-15-47-day-certs/vault-cert-1.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/vault-cert-1.png' alt='Vault cert' ></a>
-  <figcaption>Vault cert</figcaption>
+<figure class="figure-image">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="/img/2026-03-15-47-day-certs/vault-cert-1.png"><img alt="Vault cert" src="/img/2026-03-15-47-day-certs/vault-cert-1.png"/></a>
+<figcaption>Vault cert</figcaption>
 </figure>
-
-<figure class='figure-image'>
-  <a class="glightbox" href="/img/2026-03-15-47-day-certs/vault-cert-2.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/vault-cert-2.png' alt='Vault cert' ></a>
-  <figcaption>Vault cert</figcaption>
+<figure class="figure-image">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="/img/2026-03-15-47-day-certs/vault-cert-2.png"><img alt="Vault cert" src="/img/2026-03-15-47-day-certs/vault-cert-2.png"/></a>
+<figcaption>Vault cert</figcaption>
 </figure>
-
-<figure class='figure-image'>
-  <a class="glightbox" href="/img/2026-03-15-47-day-certs/vault-cert-3.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/vault-cert-3.png' alt='Vault cert' ></a>
-  <figcaption>Vault cert</figcaption>
+<figure class="figure-image">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="/img/2026-03-15-47-day-certs/vault-cert-3.png"><img alt="Vault cert" src="/img/2026-03-15-47-day-certs/vault-cert-3.png"/></a>
+<figcaption>Vault cert</figcaption>
 </figure>
-
 <h3 id="wymuszenie-eab">Wymuszenie EAB</h3>
 <p>Zmieniłem politykę EAB dla ACME pki_int. Od teraz nie można wystawić certyfikatu bez "logowania się" użytkownika.</p>
-<figure class='figure-image'>
-  <a class="glightbox" href="/img/2026-03-15-47-day-certs/vault-eab-1.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/vault-eab-1.png' alt='Vault EAB Policy' ></a>
-  <figcaption>Vault EAB Policy</figcaption>
+<figure class="figure-image">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="/img/2026-03-15-47-day-certs/vault-eab-1.png"><img alt="Vault EAB Policy" src="/img/2026-03-15-47-day-certs/vault-eab-1.png"/></a>
+<figcaption>Vault EAB Policy</figcaption>
 </figure>
-
 <p>Próba wygenerowania certyfikatu kończy się teraz błędem.</p>
 <pre><code>[Sat Mar 21 03:11:48 PM CET 2026] Using CA: http://172.16.16.21:8201/v1/pki_int/acme/directory
 [Sat Mar 21 03:11:48 PM CET 2026] Single domain='vault-test-47.medynski.ovh'
-[Sat Mar 21 03:11:48 PM CET 2026] Error creating new order. Le_OrderFinalize not found. {&quot;type&quot;:&quot;urn:ietf:params:acme:error:externalAccountRequired&quot;,&quot;detail&quot;:&quot;The request must include a value for the 'externalAccountBinding' field&quot;}
+[Sat Mar 21 03:11:48 PM CET 2026] Error creating new order. Le_OrderFinalize not found. {"type":"urn:ietf:params:acme:error:externalAccountRequired","detail":"The request must include a value for the 'externalAccountBinding' field"}
 [Sat Mar 21 03:11:48 PM CET 2026] Please check log file for more details: /home/user/.acme.sh/acme.sh.log
 </code></pre>
 <p>Należy zarejestrować nowe konto podając EAB. Po stronie <code>vault</code> EAB wygenerowałem w konsoli GUI.</p>
-<figure class='figure-image'>
-  <a class="glightbox" href="/img/2026-03-15-47-day-certs/vault-eab-2.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img src='/img/2026-03-15-47-day-certs/vault-eab-2.png' alt='Vault EAB Create' ></a>
-  <figcaption>Vault EAB Create</figcaption>
+<figure class="figure-image">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="/img/2026-03-15-47-day-certs/vault-eab-2.png"><img alt="Vault EAB Create" src="/img/2026-03-15-47-day-certs/vault-eab-2.png"/></a>
+<figcaption>Vault EAB Create</figcaption>
 </figure>
-
 <pre><code class="language-bash"># set EAB
-export EAB_KEY=&quot;d1745201-xxxxx&quot;          # vault 'id' field
-export EAB_HMAC_KEY=&quot;vault-eab-0-xxxxx&quot;  # vault 'key' field
+export EAB_KEY="d1745201-xxxxx"          # vault 'id' field
+export EAB_HMAC_KEY="vault-eab-0-xxxxx"  # vault 'key' field
 
 # remove old registration
 rm -rf ~/.acme.sh/ca/172.16.16.21/v1/pki_int/acme/directory
@@ -745,8 +720,8 @@ rm -rf ~/.acme.sh/ca/172.16.16.21/v1/pki_int/acme/directory
 # @see https://github.com/acmesh-official/acme.sh/wiki/Options-and-Params
 acme.sh --register-account \
   --server http://172.16.16.21:8201/v1/pki_int/acme/directory \
-  --eab-kid &quot;$EAB_KEY&quot; \
-  --eab-hmac-key &quot;$EAB_HMAC_KEY&quot;
+  --eab-kid "$EAB_KEY" \
+  --eab-hmac-key "$EAB_HMAC_KEY"
 </code></pre>
 <p>Generowanie certyfikatów ponownie działa.</p>
 <pre><code class="language-bash">acme.sh --issue --dns dns_ovh -d vault-test-47.medynski.ovh --server http://172.16.16.21:8201/v1/pki_int/acme/directory --force
@@ -776,6 +751,33 @@ acme.sh --register-account \
 <code>acme.sh</code> wspiera <a href="https://github.com/acmesh-official/acme.sh/blob/master/dnsapi/dns_pdns.sh">PowerDNS API</a>.
 <code>HashiCorp Vault</code> wspiera custom resolver.</p>
 </blockquote>
+<div class="mermaid">sequenceDiagram
+    autonumber
+    participant Cron as Harmonogram (Cron)
+    participant Acme as acme.sh (Klient)
+    participant Vault as HashiCorp Vault (PKI / ACME)
+    participant PDNS as PowerDNS (API)
+
+    Cron-&gt;&gt;Acme: Uruchomienie procesu odświeżania
+    Acme-&gt;&gt;Vault: Żądanie wydania certyfikatu (Certificate Signing Request)
+    Vault--&gt;&gt;Acme: Zwrócenie wyzwania DNS-01 (token dla rekordu TXT)
+
+    Note over Acme, PDNS: Faza autoryzacji domeny
+    Acme-&gt;&gt;PDNS: Utworzenie rekordu TXT (_acme-challenge.domena.pl) przez REST API
+    PDNS--&gt;&gt;Acme: Potwierdzenie dodania rekordu
+
+    Acme-&gt;&gt;Vault: Informacja o gotowości wyzwania do weryfikacji
+    Vault-&gt;&gt;PDNS: Odpytanie serwera DNS o rekord TXT dla _acme-challenge.domena.pl
+    PDNS--&gt;&gt;Vault: Zwrócenie wartości rekordu TXT
+
+    Note over Acme, Vault: Faza wydania certyfikatu
+    Vault--&gt;&gt;Acme: Weryfikacja poprawna. Wydanie podpisanego certyfikatu
+
+    Note over Acme, PDNS: Sprzątanie i wdrożenie
+    Acme-&gt;&gt;PDNS: Usunięcie rekordu TXT (_acme-challenge.domena.pl) przez API
+    Acme-&gt;&gt;Acme: Zapisanie certyfikatów na dysku
+    Acme-&gt;&gt;Acme: Wykonanie skryptu przeładowania usługi (np. Nginx/Apache reload)
+</div>
 <h2 id="automatyzacja">Automatyzacja</h2>
 <blockquote>
 <p>TODO</p>
@@ -791,47 +793,36 @@ acme.sh --register-account \
 <li><a href="https://doc.powerdns.com/authoritative/installation.html">https://doc.powerdns.com/authoritative/installation.html</a></li>
 <li><a href="https://www.cyberciti.biz/faq/how-to-add-cron-job-entry-for-acme-sh/">https://www.cyberciti.biz/faq/how-to-add-cron-job-entry-for-acme-sh/</a></li>
 </ul>
-              
-            </div>
-          </div><footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../2025-06-29-proxmox-fix/" class="btn btn-neutral float-right" title="2025.06.29 - Proxmox Fix">Next <span class="icon icon-circle-arrow-right"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <!-- Copyright etc -->
-  </div>
+</div>
+</div><footer>
+<div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
+<a class="btn btn-neutral float-right" href="../2025-06-29-proxmox-fix/" title="2025.06.29 - Proxmox Fix">Next <span class="icon icon-circle-arrow-right"></span></a>
+</div>
+<hr/>
+<div role="contentinfo">
+<!-- Copyright etc -->
+</div>
 
   Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
 </footer>
-          
-        </div>
-      </div>
-
-    </section>
-
-  </div>
-
-  <div class="rst-versions" role="note" aria-label="Versions">
-  <span class="rst-current-version" data-toggle="rst-current-version">
-    
-    
-    
-      <span><a href="../2025-06-29-proxmox-fix/" style="color: #fcfcfc">Next &raquo;</a></span>
-    
-  </span>
 </div>
-    <script>var base_url = '..';</script>
-    <script src="../js/theme_extra.js" defer></script>
-    <script src="../js/theme.js" defer></script>
-      <script src="../search/main.js" defer></script>
-    <script defer>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span><a href="../2025-06-29-proxmox-fix/" style="color: #fcfcfc">Next »</a></span>
+</span>
+</div>
+<script>var base_url = '..';</script>
+<script defer="" src="../js/theme_extra.js"></script>
+<script defer="" src="../js/theme.js"></script>
+<script defer="" src="../search/main.js"></script>
+<script defer="">
         window.onload = function () {
             SphinxRtdTheme.Navigation.enable(true);
         };
     </script>
-
-<script>const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});</script></body>
+<script>const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});</script><script type="module">import mermaid from "https://unpkg.com/mermaid@10.4.0/dist/mermaid.esm.min.mjs";
+mermaid.initialize({});</script></body>
 </html>
